@@ -67,7 +67,7 @@ a{text-decoration:none;color:inherit;}
 ::-webkit-scrollbar-track{background:transparent;}
 ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:4px;}
 .app{display:flex;height:100vh;overflow:hidden;}
-.sidebar{width:var(--sw);flex-shrink:0;background:var(--navy);display:flex;flex-direction:column;overflow-y:auto;transition:width .25s;}
+.sidebar{width:var(--sw);flex-shrink:0;background:var(--navy);display:flex;flex-direction:column;overflow-y:auto;transition:width .25s;position:relative;z-index:10;}
 .sidebar.collapsed{width:62px;}
 .sidebar.collapsed .sb-label,.sidebar.collapsed .sb-sec-lbl,.sidebar.collapsed .sb-badge,.sidebar.collapsed .sb-org-text,.sidebar.collapsed .sb-user-text,.sidebar.collapsed .sb-upgrade,.sidebar.collapsed .sb-logo-text{display:none;}
 .sidebar.collapsed .sb-item{justify-content:center;padding:10px;}
@@ -1123,6 +1123,15 @@ tr:hover td { background: var(--s2); }
   *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
 }
 
+/* Mobile overlay — hidden by default, only shown via JS on mobile */
+.mobile-overlay {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(7,17,43,.5);
+  z-index: 1100;
+  backdrop-filter: blur(2px);
+}
+
 /* ═══ BULK ACTION BAR ═══ */
 .bulk-bar {
   position: sticky; top: 0; z-index: 20;
@@ -1193,13 +1202,6 @@ tr:hover td { background: var(--s2); }
   .sidebar.mobile-open { transform: translateX(0); }
 
   /* Mobile sidebar overlay backdrop */
-  .mobile-overlay {
-    display: none;
-    position: fixed; inset: 0;
-    background: rgba(7,17,43,.5);
-    z-index: 1100;
-    backdrop-filter: blur(2px);
-  }
   .mobile-overlay.active { display: block; }
 
   /* Right panel takes full width */
@@ -4017,16 +4019,15 @@ document.addEventListener('keydown', e => {
 // ════════════════════════════════════════════════════════
 
 function toggleMobileSidebar() {
-  const sidebar  = document.getElementById('sidebar');
-  const overlay  = document.getElementById('mobile-overlay');
-  const isOpen   = sidebar.classList.contains('mobile-open');
+  if (window.innerWidth > 768) return; // safety guard — desktop only
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('mobile-overlay');
+  const isOpen  = sidebar.classList.contains('mobile-open');
   if (isOpen) {
-    sidebar.classList.remove('mobile-open');
-    overlay.classList.remove('active');
-    document.body.style.overflow = '';
+    closeMobileSidebar();
   } else {
     sidebar.classList.add('mobile-open');
-    overlay.classList.add('active');
+    overlay.style.display = 'block'; // explicit show
     document.body.style.overflow = 'hidden';
   }
 }
@@ -4035,7 +4036,7 @@ function closeMobileSidebar() {
   const sidebar = document.getElementById('sidebar');
   const overlay = document.getElementById('mobile-overlay');
   sidebar.classList.remove('mobile-open');
-  overlay.classList.remove('active');
+  overlay.style.display = 'none'; // explicit hide
   document.body.style.overflow = '';
 }
 
