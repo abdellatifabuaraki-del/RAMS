@@ -3,43 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta http-equiv="Pragma" content="no-cache">
-<meta http-equiv="Expires" content="0">
-
-<!-- Primary Meta -->
 <title>RAMS — Recruitment Agency Management System</title>
-<meta name="description" content="RAMS is a full-featured Recruitment Agency Management System — manage applicants, job orders, pipelines, documents, billing, and team roles in one place.">
-<meta name="keywords" content="recruitment agency, applicant tracking, job orders, ATS, RAMS, staffing software, HR management">
-<meta name="author" content="RAMS SaaS">
-<meta name="robots" content="index, follow">
-<meta name="theme-color" content="#1447E6">
-
-<!-- Open Graph / Facebook -->
-<meta property="og:type" content="website">
-<meta property="og:title" content="RAMS — Recruitment Agency Management System">
-<meta property="og:description" content="Manage applicants, pipelines, job orders, documents, and your full team — all in one modern SaaS platform.">
-<meta property="og:image" content="https://placehold.co/1200x630/1447E6/ffffff?text=RAMS+SaaS">
-<meta property="og:url" content="">
-<meta property="og:site_name" content="RAMS">
-
-<!-- Twitter Card -->
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="RAMS — Recruitment Agency Management System">
-<meta name="twitter:description" content="Manage applicants, pipelines, job orders, documents, and your full team — all in one modern SaaS platform.">
-<meta name="twitter:image" content="https://placehold.co/1200x630/1447E6/ffffff?text=RAMS+SaaS">
-
-<!-- Favicon (inline SVG as data URI) -->
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231447E6'/%3E%3Ctext x='16' y='22' font-family='sans-serif' font-weight='800' font-size='14' fill='white' text-anchor='middle'%3ERM%3C/text%3E%3C/svg%3E">
-<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231447E6'/%3E%3Ctext x='16' y='22' font-family='sans-serif' font-weight='800' font-size='14' fill='white' text-anchor='middle'%3ERM%3C/text%3E%3C/svg%3E">
-
-<!-- Canonical -->
-<link rel="canonical" href="">
-
-<!-- Fonts -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -67,7 +31,7 @@ a{text-decoration:none;color:inherit;}
 ::-webkit-scrollbar-track{background:transparent;}
 ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:4px;}
 .app{display:flex;height:100vh;overflow:hidden;}
-.sidebar{width:var(--sw);flex-shrink:0;background:var(--navy);display:flex;flex-direction:column;overflow-y:auto;transition:width .25s;position:relative;z-index:10;}
+.sidebar{width:var(--sw);flex-shrink:0;background:var(--navy);display:flex;flex-direction:column;overflow-y:auto;transition:width .25s;}
 .sidebar.collapsed{width:62px;}
 .sidebar.collapsed .sb-label,.sidebar.collapsed .sb-sec-lbl,.sidebar.collapsed .sb-badge,.sidebar.collapsed .sb-org-text,.sidebar.collapsed .sb-user-text,.sidebar.collapsed .sb-upgrade,.sidebar.collapsed .sb-logo-text{display:none;}
 .sidebar.collapsed .sb-item{justify-content:center;padding:10px;}
@@ -95,7 +59,7 @@ a{text-decoration:none;color:inherit;}
 .sb-org-plan{font-size:10px;color:rgba(255,255,255,.35);font-family:'IBM Plex Mono',monospace;}
 .sb-section{padding:14px 8px 4px;}
 .sb-sec-lbl{font-size:10px;color:rgba(255,255,255,.22);font-family:'IBM Plex Mono',monospace;letter-spacing:.12em;text-transform:uppercase;padding:0 6px;margin-bottom:3px;}
-.sb-item{display:flex;align-items:center;gap:8px;padding:8px 8px;border-radius:7px;cursor:pointer;font-size:13.5px;color:rgba(255,255,255,.5);transition:all .13s;margin-bottom:1px;position:relative;white-space:nowrap;-webkit-tap-highlight-color:transparent;touch-action:manipulation;user-select:none;}
+.sb-item{display:flex;align-items:center;gap:8px;padding:8px 8px;border-radius:7px;cursor:pointer;font-size:13.5px;color:rgba(255,255,255,.5);transition:all .13s;margin-bottom:1px;position:relative;white-space:nowrap;}
 .sb-item:hover{background:rgba(255,255,255,.07);color:rgba(255,255,255,.85);}
 .sb-item.active{background:var(--brand);color:#fff;}
 .sb-item svg{width:15px;height:15px;flex-shrink:0;opacity:.8;}
@@ -355,956 +319,112 @@ tbody tr:hover td{background:var(--s2);}
 *,*::before,*::after{transition:background-color .2s,border-color .2s,color .1s;}
 .empty-state{text-align:center;padding:48px 20px;color:var(--muted);}
 .tag{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:5px;font-size:11px;font-weight:600;background:var(--s2);color:var(--muted);border:1px solid var(--border);}
-  transition: all .14s;
-  margin-bottom: 1px;
-  position: relative; white-space: nowrap;
-  overflow: hidden;
-}
-.sb-item::before {
-  content: '';
-  position: absolute; left: 0; top: 50%;
-  transform: translateY(-50%) scaleY(0);
-  width: 3px; height: 60%;
-  background: var(--brand-m);
-  border-radius: 0 3px 3px 0;
-  transition: transform .15s var(--transition);
-}
-.sb-item:hover { background: rgba(255,255,255,.06); color: rgba(255,255,255,.8); }
-.sb-item:hover::before { transform: translateY(-50%) scaleY(1); }
-.sb-item.active { background: var(--brand); color: #fff; box-shadow: 0 2px 12px rgba(20,71,230,.35); }
-.sb-item.active::before { display: none; }
-.sb-item svg { width: 15px; height: 15px; flex-shrink: 0; opacity: .75; }
-.sb-item.active svg, .sb-item:hover svg { opacity: 1; }
-.sb-label { flex: 1; overflow: hidden; text-overflow: ellipsis; }
-.sb-badge {
-  background: rgba(255,255,255,.12); color: rgba(255,255,255,.8);
-  font-size: 9.5px; font-weight: 700;
-  padding: 1px 5px; border-radius: 20px;
-  font-family: 'IBM Plex Mono', monospace; flex-shrink: 0;
-}
-.sb-badge.red { background: #EF4444; color: #fff; }
-.sb-badge.green { background: #16A34A; color: #fff; }
-.sb-badge.amber { background: #D97706; color: #fff; }
 
-.sb-footer { margin-top: auto; border-top: 1px solid rgba(255,255,255,.05); padding: 8px; }
-.sb-upgrade {
-  background: linear-gradient(135deg, rgba(20,71,230,.35), rgba(20,71,230,.1));
-  border: 1px solid rgba(20,71,230,.25);
-  border-radius: 9px; padding: 12px; margin-bottom: 8px;
-}
-.sb-upgrade-title { font-size: 11.5px; font-weight: 700; color: #fff; margin-bottom: 2px; }
-.sb-upgrade-sub { font-size: 10.5px; color: rgba(255,255,255,.45); margin-bottom: 8px; line-height: 1.5; }
-.sb-upgrade-btn {
-  width: 100%; padding: 6px;
-  background: var(--brand); border: none; border-radius: 6px;
-  color: #fff; font-size: 11px; font-weight: 700; cursor: pointer;
-  transition: all .15s;
-}
-.sb-upgrade-btn:hover { background: var(--brand-d); box-shadow: var(--brand-glow); }
-
-.sb-user {
-  display: flex; align-items: center; gap: 8px;
-  padding: 7px 8px; border-radius: 7px; cursor: pointer; transition: .15s;
-}
-.sb-user:hover { background: rgba(255,255,255,.06); }
-.sb-avatar {
-  width: 28px; height: 28px; border-radius: 7px;
-  background: var(--brand);
+/* ════ AUTH GATE ════ */
+#app { display: none; }
+#app.active { display: flex; }
+#login-screen {
+  position: fixed; inset: 0; z-index: 9999;
+  background: var(--bg);
   display: flex; align-items: center; justify-content: center;
-  font-size: 10.5px; font-weight: 800; color: #fff; flex-shrink: 0;
 }
-.sb-uname { font-size: 12px; font-weight: 700; color: rgba(255,255,255,.85); }
-.sb-urole { font-size: 9.5px; color: rgba(255,255,255,.28); font-family: 'IBM Plex Mono', monospace; }
-
-/* Role switcher */
-.role-switcher { position: relative; margin: 0 0 6px; }
-.role-switch-btn {
-  width: 100%; padding: 7px 9px;
-  background: rgba(255,255,255,.06);
-  border: 1px solid rgba(255,255,255,.09);
-  border-radius: 7px; color: rgba(255,255,255,.65);
-  font-size: 11.5px; font-weight: 600; cursor: pointer;
-  display: flex; align-items: center; gap: 7px;
-  font-family: 'Bricolage Grotesque', sans-serif; transition: .15s;
-}
-.role-switch-btn:hover { background: rgba(255,255,255,.11); }
-.role-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
-.role-dropdown {
-  position: absolute; bottom: 100%; left: 0; right: 0;
-  background: var(--navy2);
-  border: 1px solid rgba(255,255,255,.1);
-  border-radius: 10px; overflow: hidden;
-  z-index: 600; display: none; margin-bottom: 4px;
-  box-shadow: var(--lg);
-}
-.role-dropdown.open { display: block; animation: slideUp .18s var(--transition); }
-.role-opt {
-  padding: 8px 11px; font-size: 12px;
-  color: rgba(255,255,255,.55); cursor: pointer;
-  display: flex; align-items: center; gap: 8px; transition: .1s;
-}
-.role-opt:hover { background: rgba(255,255,255,.07); color: #fff; }
-.role-opt.active-role { color: #fff; background: rgba(20,71,230,.22); }
-
-/* ═══ HEADER ═══ */
-.header {
-  height: var(--hh); background: var(--surface);
-  border-bottom: 1px solid var(--border);
-  display: flex; align-items: center;
-  padding: 0 22px; gap: 10px; flex-shrink: 0;
-  position: sticky; top: 0; z-index: 100;
-}
-.hdr-title { font-size: 15.5px; font-weight: 800; color: var(--text); margin-right: auto; white-space: nowrap; letter-spacing: -.2px; }
-.hdr-title span { color: var(--brand); }
-.search-cmd {
-  display: flex; align-items: center; gap: 8px;
-  background: var(--s2); border: 1.5px solid var(--border);
-  border-radius: 8px; padding: 6px 11px; width: 228px; cursor: pointer;
-  transition: all .15s;
-}
-.search-cmd:hover { border-color: var(--brand); background: var(--brand-ll); }
-.search-cmd span { font-size: 12.5px; color: var(--placeholder); flex: 1; }
-.search-cmd kbd {
-  font-size: 9.5px; font-family: 'IBM Plex Mono', monospace;
-  color: var(--dim); background: var(--border); padding: 2px 5px; border-radius: 4px;
-}
-.hdr-sep { width: 1px; height: 20px; background: var(--border); flex-shrink: 0; }
-.hdr-btn {
-  width: 32px; height: 32px; border-radius: 7px;
-  border: 1.5px solid var(--border); background: var(--surface);
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer; position: relative; color: var(--muted);
-  transition: all .15s; flex-shrink: 0;
-}
-.hdr-btn:hover { background: var(--s2); border-color: var(--border2); color: var(--text2); }
-.hdr-dot {
-  position: absolute; top: 6px; right: 6px;
-  width: 7px; height: 7px;
-  background: var(--red); border-radius: 50%;
-  border: 2px solid var(--surface);
-  animation: pulse 2s infinite;
-}
-.hdr-avatar {
-  width: 32px; height: 32px; border-radius: 7px;
-  background: var(--brand); color: #fff;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 11.5px; font-weight: 800; cursor: pointer; flex-shrink: 0;
-  box-shadow: 0 2px 6px rgba(20,71,230,.3);
-  transition: transform .15s;
-}
-.hdr-avatar:hover { transform: scale(1.05); }
-
-/* ═══ SHARED COMPONENTS ═══ */
-.pg-hdr { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 22px; gap: 12px; }
-.pg-hdr-l h1 { font-size: 20px; font-weight: 800; color: var(--text); letter-spacing: -.4px; }
-.pg-hdr-l p { font-size: 12.5px; color: var(--muted); margin-top: 2px; }
-.pg-hdr-r { display: flex; gap: 7px; align-items: center; flex-shrink: 0; }
-
-.btn {
-  display: inline-flex; align-items: center; gap: 6px;
-  padding: 7.5px 15px; border-radius: 8px;
-  font-size: 12.5px; font-weight: 700; cursor: pointer; border: none;
-  transition: all .16s var(--transition); white-space: nowrap;
-  font-family: 'Bricolage Grotesque', sans-serif; letter-spacing: -.1px;
-}
-.btn:active { transform: scale(.97); }
-.btn-p { background: var(--brand); color: #fff; }
-.btn-p:hover { background: var(--brand-d); box-shadow: var(--brand-glow); transform: translateY(-1px); }
-.btn-s { background: var(--surface); color: var(--text2); border: 1.5px solid var(--border); }
-.btn-s:hover { background: var(--s2); border-color: var(--border2); }
-.btn-ghost { background: transparent; color: var(--muted); border: none; padding: 7.5px 11px; }
-.btn-ghost:hover { background: var(--s2); color: var(--text); }
-.btn-danger { background: var(--rbg); color: var(--red); border: 1.5px solid var(--rbd); }
-.btn-danger:hover { background: var(--rbd); }
-.btn-sm { padding: 5.5px 11px; font-size: 12px; }
-.btn-xs { padding: 3.5px 8px; font-size: 11px; }
-
-.card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); box-shadow: var(--xs); }
-.card-hover { transition: all .18s var(--transition); }
-.card-hover:hover { box-shadow: var(--sm); border-color: var(--border2); transform: translateY(-1px); }
-.cp { padding: 20px; }
-
-.pill {
-  display: inline-flex; align-items: center; gap: 4px;
-  padding: 2.5px 8px; border-radius: 20px;
-  font-size: 10.5px; font-weight: 600;
-  font-family: 'IBM Plex Mono', monospace; white-space: nowrap;
-}
-.pill::before {
-  content: ''; width: 5px; height: 5px; border-radius: 50%;
-  background: currentColor; flex-shrink: 0; opacity: .8;
-}
-.pill-green  { background: var(--gbg); color: var(--green); border: 1px solid var(--gbd); }
-.pill-amber  { background: var(--abg); color: var(--amber); border: 1px solid var(--abd); }
-.pill-red    { background: var(--rbg); color: var(--red);   border: 1px solid var(--rbd); }
-.pill-blue   { background: var(--brand-l); color: var(--brand); border: 1px solid #BFCFFF; }
-.pill-purple { background: var(--pbg); color: var(--purple); border: 1px solid #DDD6FE; }
-.pill-orange { background: var(--obg); color: var(--orange); border: 1px solid #FDBA74; }
-.pill-teal   { background: #F0F9FF; color: var(--teal); border: 1px solid #BAE6FD; }
-.pill-gray   { background: var(--s2); color: var(--muted); border: 1px solid var(--border); }
-
-/* ═══ TABLE ═══ */
-.table-wrap { overflow-x: auto; overflow-y: visible; -webkit-overflow-scrolling: touch; }
-table { width: 100%; border-collapse: collapse; }
-thead { position: sticky; top: 0; z-index: 10; }
-th {
-  background: var(--s2); color: var(--muted);
-  font-size: 11px; font-weight: 700; letter-spacing: .05em;
-  text-transform: uppercase; padding: 9px 14px;
-  text-align: left; white-space: nowrap;
-  border-bottom: 1px solid var(--border);
-  font-family: 'IBM Plex Mono', monospace;
-  user-select: none;
-}
-th.sortable { cursor: pointer; transition: color .12s; }
-th.sortable:hover { color: var(--brand); }
-th .sort-icon { margin-left: 5px; font-size: 9px; opacity: .5; }
-th.sorted { color: var(--brand); }
-th.sorted .sort-icon { opacity: 1; }
-td {
-  padding: 11px 14px; border-bottom: 1px solid var(--border);
-  font-size: 13px; vertical-align: middle;
-  transition: background .1s;
-}
-tr:last-child td { border-bottom: none; }
-tr:hover td { background: var(--s2); }
-.table-check { width: 16px; height: 16px; cursor: pointer; accent-color: var(--brand); }
-
-/* ═══ FORM ELEMENTS ═══ */
-.form-group { margin-bottom: 16px; }
-.form-label { font-size: 12px; font-weight: 700; color: var(--text2); margin-bottom: 5px; display: block; letter-spacing: .01em; }
-.form-label .req { color: var(--red); margin-left: 2px; }
-.form-input {
-  width: 100%; padding: 8px 11px;
-  background: var(--surface); border: 1.5px solid var(--border);
-  border-radius: 7px; font-size: 13px; color: var(--text);
-  transition: all .15s; outline: none;
-}
-.form-input:focus { border-color: var(--brand); box-shadow: 0 0 0 3px rgba(20,71,230,.1); background: var(--brand-ll); }
-.form-input:hover:not(:focus) { border-color: var(--border2); }
-.form-input::placeholder { color: var(--placeholder); }
-.form-input.error { border-color: var(--red); box-shadow: 0 0 0 3px rgba(220,38,38,.1); }
-.form-error { font-size: 11px; color: var(--red); margin-top: 4px; display: flex; align-items: center; gap: 4px; }
-.form-hint { font-size: 11px; color: var(--muted); margin-top: 4px; }
-.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-.form-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
-
-/* ═══ TOOLTIP ═══ */
-[data-tip] { position: relative; }
-[data-tip]::after {
-  content: attr(data-tip);
-  position: absolute; bottom: calc(100% + 6px); left: 50%;
-  transform: translateX(-50%) scale(.9);
-  background: var(--text); color: var(--surface);
-  font-size: 11px; font-weight: 600; padding: 4px 8px; border-radius: 5px;
-  white-space: nowrap; pointer-events: none;
-  opacity: 0; transition: all .15s var(--transition);
-  z-index: 9999;
-}
-[data-tip]:hover::after { opacity: 1; transform: translateX(-50%) scale(1); }
-
-/* ═══ STAT CARDS ═══ */
-.stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 22px; }
-.stat-card {
+.login-card {
   background: var(--surface); border: 1px solid var(--border);
-  border-radius: var(--r2); padding: 18px;
-  box-shadow: var(--xs); transition: all .2s var(--transition);
-  cursor: default;
+  border-radius: 18px; padding: 44px 40px;
+  width: 100%; max-width: 420px;
+  box-shadow: 0 20px 60px rgba(0,0,0,.10), 0 4px 16px rgba(0,0,0,.06);
 }
-.stat-card:hover { box-shadow: var(--sm); transform: translateY(-2px); border-color: var(--border2); }
-.stat-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 12px; }
-.stat-icon {
-  width: 36px; height: 36px; border-radius: 9px;
-  display: flex; align-items: center; justify-content: center; font-size: 16px;
+.login-logo { display: flex; align-items: center; gap: 12px; margin-bottom: 32px; }
+.login-logo-mark {
+  width: 42px; height: 42px; background: var(--brand);
+  border-radius: 10px; display: flex; align-items: center;
+  justify-content: center; font-weight: 800; font-size: 16px; color: #fff; flex-shrink: 0;
 }
-.stat-badge { font-size: 11px; font-weight: 700; padding: 2px 7px; border-radius: 20px; font-family: 'IBM Plex Mono', monospace; }
-.stat-badge.up { background: var(--gbg); color: var(--green); }
-.stat-badge.down { background: var(--rbg); color: var(--red); }
-.stat-val { font-size: 26px; font-weight: 800; color: var(--text); letter-spacing: -.8px; margin-bottom: 2px; }
-.stat-lbl { font-size: 12px; color: var(--muted); font-weight: 500; }
-
-/* ═══ MODALS ═══ */
-.overlay {
-  position: fixed; inset: 0; z-index: 900;
-  background: rgba(0,0,0,.45); backdrop-filter: blur(4px);
-  display: flex; align-items: center; justify-content: center;
-  padding: 20px; opacity: 0; transition: opacity .2s;
+.login-logo-name { font-size: 20px; font-weight: 800; color: var(--text); letter-spacing: -.4px; }
+.login-logo-sub  { font-size: 12px; color: var(--muted); margin-top: 1px; }
+.login-title { font-size: 22px; font-weight: 800; color: var(--text); margin-bottom: 4px; letter-spacing: -.3px; }
+.login-sub   { font-size: 13px; color: var(--muted); margin-bottom: 28px; }
+.login-field { margin-bottom: 16px; }
+.login-label { display: block; font-size: 12.5px; font-weight: 700; color: var(--text2); margin-bottom: 6px; }
+.login-input {
+  width: 100%; padding: 11px 14px;
+  border: 1.5px solid var(--border); border-radius: 9px;
+  font-size: 14px; color: var(--text); background: var(--s2);
+  outline: none; transition: border-color .15s, box-shadow .15s;
+  font-family: 'Bricolage Grotesque', sans-serif; box-sizing: border-box;
 }
-.overlay.active { opacity: 1; }
-.overlay.active .modal { animation: scaleIn .22s var(--transition); }
-.modal {
-  background: var(--surface); border-radius: var(--r2);
-  box-shadow: var(--lg); width: 100%;
-  max-height: 90vh; overflow-y: auto;
-  border: 1px solid var(--border);
-}
-.modal-sm { max-width: 420px; }
-.modal-md { max-width: 560px; }
-.modal-lg { max-width: 720px; }
-.modal-xl { max-width: 900px; }
-.modal-hdr {
-  padding: 18px 22px 16px;
-  border-bottom: 1px solid var(--border);
-  display: flex; align-items: flex-start; gap: 12px;
-  position: sticky; top: 0; background: var(--surface); z-index: 5;
-}
-.modal-hdr h2 { font-size: 15.5px; font-weight: 800; letter-spacing: -.2px; flex: 1; margin-top: 1px; }
-.modal-hdr p { font-size: 12px; color: var(--muted); margin-top: 2px; }
-.modal-body { padding: 20px 22px; }
-.modal-foot {
-  padding: 14px 22px;
-  border-top: 1px solid var(--border);
-  display: flex; align-items: center; justify-content: flex-end; gap: 8px;
-  position: sticky; bottom: 0; background: var(--surface);
-}
-.close-btn {
-  width: 28px; height: 28px; border-radius: 6px;
-  background: var(--s2); border: none; cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  color: var(--muted); font-size: 14px; transition: .14s; flex-shrink: 0;
-}
-.close-btn:hover { background: var(--rbg); color: var(--red); }
-
-/* ═══ DRAWER ═══ */
-.drawer-overlay {
-  position: fixed; inset: 0; z-index: 800;
-  background: rgba(0,0,0,.35); backdrop-filter: blur(3px);
-  opacity: 0; transition: opacity .22s;
-  pointer-events: none;
-}
-.drawer-overlay.active { opacity: 1; pointer-events: all; }
-.drawer {
-  position: fixed; top: 0; right: 0; bottom: 0;
-  width: 520px; max-width: 90vw;
-  background: var(--surface); z-index: 801;
-  box-shadow: -8px 0 48px rgba(0,0,0,.15);
-  display: flex; flex-direction: column;
-  transform: translateX(100%);
-  transition: transform .28s var(--transition);
-  border-left: 1px solid var(--border);
-}
-.drawer.active { transform: none; }
-.drawer-hdr {
-  padding: 18px 20px 16px;
-  border-bottom: 1px solid var(--border);
-  display: flex; align-items: flex-start; gap: 10px;
-}
-.drawer-hdr h2 { font-size: 15px; font-weight: 800; flex: 1; }
-.drawer-body { flex: 1; overflow-y: auto; }
-.drawer-tabs { display: flex; gap: 2px; padding: 12px 18px 0; border-bottom: 1px solid var(--border); }
-.dtab {
-  padding: 7px 14px; font-size: 12.5px; font-weight: 700;
-  border: none; background: none; cursor: pointer; color: var(--muted);
-  border-bottom: 2.5px solid transparent; margin-bottom: -1px;
-  transition: all .14s; border-radius: 5px 5px 0 0;
-}
-.dtab.active { color: var(--brand); border-bottom-color: var(--brand); }
-.dtab:hover:not(.active) { color: var(--text2); background: var(--s2); }
-.dtab-panel { display: none; padding: 18px; }
-.dtab-panel.active { display: block; }
-
-/* ═══ TOAST ═══ */
-#toast-stack {
-  position: fixed; bottom: 22px; right: 22px;
-  z-index: 9999; display: flex; flex-direction: column; gap: 8px;
-  pointer-events: none;
-}
-.toast {
-  display: flex; align-items: center; gap: 10px;
-  background: var(--navy); color: #fff;
-  border: 1px solid rgba(255,255,255,.1);
-  border-radius: 10px; padding: 11px 15px;
-  box-shadow: var(--lg); min-width: 260px; max-width: 360px;
-  pointer-events: all;
-  animation: slideIn .3s var(--transition);
-  position: relative; overflow: hidden;
-}
-[data-theme="dark"] .toast { background: var(--surface); border-color: var(--border2); }
-.toast-icon { width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; flex-shrink: 0; }
-.toast.success .toast-icon { background: rgba(22,163,74,.2); color: var(--green); }
-.toast.error .toast-icon { background: rgba(220,38,38,.2); color: var(--red); }
-.toast.info .toast-icon { background: rgba(20,71,230,.2); color: var(--brand); }
-.toast-msg { font-size: 12.5px; flex: 1; font-weight: 600; }
-.toast-close { font-size: 12px; color: rgba(255,255,255,.4); cursor: pointer; padding: 2px; transition: color .12s; }
-.toast-close:hover { color: #fff; }
-.toast-bar {
-  position: absolute; bottom: 0; left: 0; height: 2px;
-  background: rgba(255,255,255,.2); border-radius: 0 2px 2px 0;
-}
-.toast.success .toast-bar { background: var(--green); }
-.toast.error .toast-bar { background: var(--red); }
-.toast.info .toast-bar { background: var(--brand-m); }
-
-/* ═══ COMMAND PALETTE ═══ */
-.cmd-overlay {
-  position: fixed; inset: 0; z-index: 1000;
-  background: rgba(0,0,0,.55); backdrop-filter: blur(6px);
-  display: none; align-items: flex-start; justify-content: center;
-  padding-top: 100px;
-}
-.cmd-overlay.open { display: flex; animation: fadeUp .15s ease; }
-.cmd-box {
-  background: var(--surface); border-radius: var(--r2);
-  box-shadow: var(--lg); border: 1px solid var(--border2);
-  width: 580px; max-width: 90vw; overflow: hidden;
-}
-.cmd-input-row {
-  display: flex; align-items: center; gap: 10px;
-  padding: 14px 16px; border-bottom: 1px solid var(--border);
-}
-.cmd-input-row svg { color: var(--muted); flex-shrink: 0; }
-.cmd-input {
-  flex: 1; background: none; border: none; outline: none;
-  font-size: 15px; font-weight: 600; color: var(--text);
-  placeholder: 'Search anything...';
-}
-.cmd-list { max-height: 380px; overflow-y: auto; }
-.cmd-section-lbl {
-  padding: 10px 14px 5px;
-  font-size: 10px; font-weight: 700; color: var(--dim);
-  text-transform: uppercase; letter-spacing: .1em;
-  font-family: 'IBM Plex Mono', monospace;
-}
-.cmd-item {
-  display: flex; align-items: center; gap: 10px;
-  padding: 9px 14px; cursor: pointer; font-size: 13px;
-  color: var(--text2); transition: .1s; border-radius: 0;
-}
-.cmd-item:hover, .cmd-item.cmd-active { background: var(--brand-ll); color: var(--brand); }
-.cmd-item-icon {
-  width: 28px; height: 28px; border-radius: 7px;
-  background: var(--s2); display: flex; align-items: center;
-  justify-content: center; font-size: 13px; flex-shrink: 0;
-}
-.cmd-item:hover .cmd-item-icon, .cmd-item.cmd-active .cmd-item-icon { background: var(--brand-l); }
-.cmd-item-lbl { flex: 1; font-weight: 600; }
-.cmd-item-sub { font-size: 11px; color: var(--muted); }
-.cmd-foot {
-  padding: 8px 14px; border-top: 1px solid var(--border);
-  display: flex; gap: 12px; font-size: 11px; color: var(--dim);
-}
-.cmd-key { font-family: 'IBM Plex Mono', monospace; }
-
-/* ═══ NOTIFICATIONS PANEL ═══ */
-.notif-panel {
-  position: absolute; top: calc(100% + 8px); right: 0;
-  width: 340px; background: var(--surface);
-  border: 1px solid var(--border); border-radius: var(--r2);
-  box-shadow: var(--lg); z-index: 500;
-  display: none; overflow: hidden;
-}
-.notif-panel.open { display: block; animation: slideUp .18s var(--transition); }
-.notif-hdr { padding: 13px 15px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
-.notif-hdr h3 { font-size: 13.5px; font-weight: 800; }
-.notif-list { max-height: 380px; overflow-y: auto; }
-.notif-item {
-  padding: 12px 15px; border-bottom: 1px solid var(--border);
-  cursor: pointer; transition: .14s; display: flex; gap: 10px; align-items: flex-start;
-}
-.notif-item:last-child { border-bottom: none; }
-.notif-item:hover { background: var(--s2); }
-.notif-item.unread { background: var(--brand-ll); }
-.notif-item.unread:hover { background: var(--brand-l); }
-.notif-dot { width: 7px; height: 7px; background: var(--brand); border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
-.notif-dot.read { background: transparent; border: 1.5px solid var(--border2); }
-.notif-content { flex: 1; min-width: 0; }
-.notif-title { font-size: 12.5px; font-weight: 700; color: var(--text); margin-bottom: 2px; }
-.notif-body { font-size: 11.5px; color: var(--muted); line-height: 1.5; }
-.notif-time { font-size: 10px; color: var(--dim); font-family: 'IBM Plex Mono', monospace; margin-top: 3px; }
-.notif-foot { padding: 10px 15px; border-top: 1px solid var(--border); text-align: center; }
-
-/* ═══ TABS ═══ */
-.tabs { display: flex; gap: 2px; border-bottom: 1px solid var(--border); margin-bottom: 20px; }
-.tab {
-  padding: 8px 16px; font-size: 13px; font-weight: 700;
-  border: none; background: none; cursor: pointer; color: var(--muted);
-  border-bottom: 2px solid transparent; margin-bottom: -1px;
-  transition: all .14s; white-space: nowrap; border-radius: 5px 5px 0 0;
-}
-.tab.active { color: var(--brand); border-bottom-color: var(--brand); }
-.tab:hover:not(.active) { background: var(--s2); color: var(--text2); }
-.tab-panel { display: none; }
-.tab-panel.active { display: block; }
-
-/* ═══ EMPTY STATE ═══ */
-.empty-state {
-  display: flex; flex-direction: column; align-items: center;
-  justify-content: center; padding: 60px 20px; text-align: center;
-}
-.empty-icon { font-size: 40px; margin-bottom: 14px; opacity: .4; }
-.empty-title { font-size: 15px; font-weight: 800; color: var(--text); margin-bottom: 6px; }
-.empty-sub { font-size: 13px; color: var(--muted); max-width: 280px; line-height: 1.6; margin-bottom: 20px; }
-
-/* ═══ SHIMMER SKELETON ═══ */
-.skeleton {
-  background: linear-gradient(90deg, var(--s2) 25%, var(--border) 50%, var(--s2) 75%);
-  background-size: 200% 100%;
-  animation: shimmer 1.5s infinite;
-  border-radius: 5px;
-}
-
-/* ═══ FILTER BAR ═══ */
-.filter-bar { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
-.filter-search {
-  display: flex; align-items: center; gap: 8px;
-  background: var(--surface); border: 1.5px solid var(--border);
-  border-radius: 8px; padding: 7px 11px; flex: 1; min-width: 200px;
-  transition: all .15s;
-}
-.filter-search:focus-within { border-color: var(--brand); box-shadow: 0 0 0 3px rgba(20,71,230,.08); }
-.filter-search input { border: none; background: none; outline: none; font-size: 13px; flex: 1; color: var(--text); }
-.filter-search input::placeholder { color: var(--placeholder); }
-.filter-search svg { color: var(--dim); flex-shrink: 0; }
-.filter-select {
-  padding: 7px 10px; background: var(--surface); border: 1.5px solid var(--border);
-  border-radius: 8px; font-size: 12.5px; color: var(--text2); cursor: pointer;
-  outline: none; transition: .15s; font-family: 'Bricolage Grotesque', sans-serif;
-  font-weight: 600;
-}
-.filter-select:focus { border-color: var(--brand); }
-
-/* ═══ PAGINATION ═══ */
-.pagination { display: flex; align-items: center; gap: 4px; margin-top: 14px; justify-content: center; }
-.pg-btn {
-  width: 30px; height: 30px; border-radius: 6px;
-  border: 1.5px solid var(--border); background: var(--surface);
-  cursor: pointer; display: flex; align-items: center; justify-content: center;
-  font-size: 12.5px; color: var(--muted); font-weight: 700; transition: .14s;
-}
-.pg-btn:hover { border-color: var(--border2); background: var(--s2); color: var(--text); }
-.pg-btn.active { background: var(--brand); border-color: var(--brand); color: #fff; }
-.pg-btn:disabled { opacity: .35; cursor: default; pointer-events: none; }
-.pg-info { font-size: 11.5px; color: var(--muted); margin: 0 8px; font-family: 'IBM Plex Mono', monospace; }
-
-/* ═══ KANBAN ═══ */
-.kanban-board { display: flex; gap: 14px; overflow-x: auto; padding-bottom: 12px; min-height: 0; }
-.kanban-col { flex-shrink: 0; width: 265px; }
-.kanban-col-hdr {
-  display: flex; align-items: center; gap: 8px;
-  padding: 10px 14px; border-radius: 9px 9px 0 0;
-  border: 1px solid var(--border); border-bottom: none;
+.login-input:focus {
+  border-color: var(--brand);
+  box-shadow: 0 0 0 3px rgba(20,71,230,.12);
   background: var(--surface);
 }
-.kanban-col-hdr h3 { font-size: 12.5px; font-weight: 800; flex: 1; }
-.kanban-cnt {
-  font-size: 10.5px; font-weight: 700; padding: 2px 7px;
-  border-radius: 20px; font-family: 'IBM Plex Mono', monospace;
+.login-btn {
+  width: 100%; padding: 12px; background: var(--brand); color: #fff;
+  border: none; border-radius: 9px; font-size: 14.5px; font-weight: 700;
+  cursor: pointer; transition: background .15s, transform .1s;
+  font-family: 'Bricolage Grotesque', sans-serif; margin-top: 8px;
 }
-.kanban-body {
-  border: 1px solid var(--border); border-top: 0;
-  border-radius: 0 0 9px 9px;
-  min-height: 160px; padding: 8px;
-  background: var(--s2); display: flex; flex-direction: column; gap: 6px;
+.login-btn:hover  { background: var(--brand-d); }
+.login-btn:active { transform: scale(.98); }
+.login-btn:disabled { opacity: .6; cursor: not-allowed; }
+.login-error {
+  background: var(--rbg); border: 1px solid var(--red);
+  border-radius: 8px; padding: 10px 13px;
+  font-size: 12.5px; color: var(--red); margin-bottom: 16px; display: none;
 }
-.kanban-card {
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: 8px; padding: 11px 12px;
-  cursor: pointer; transition: all .16s var(--transition);
-  box-shadow: var(--xs);
+.login-divider { border: none; border-top: 1px solid var(--border); margin: 22px 0 18px; }
+.login-api-label { font-size: 12px; font-weight: 700; color: var(--muted); display: block; margin-bottom: 6px; }
+.login-api-label span { font-weight: 400; opacity: .7; }
+.login-api-input {
+  width: 100%; padding: 9px 12px; border: 1.5px solid var(--border);
+  border-radius: 8px; font-size: 12px; font-family: 'IBM Plex Mono', monospace;
+  color: var(--text); background: var(--s2); outline: none;
+  transition: border-color .15s; box-sizing: border-box;
 }
-.kanban-card:hover { box-shadow: var(--sm); border-color: var(--border2); transform: translateY(-1px); }
-.kanban-card-name { font-size: 12.5px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
-.kanban-card-sub { font-size: 11px; color: var(--muted); }
-.kanban-card-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 8px; }
-
-/* ═══ ANALYTICS ═══ */
-.analytics-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 18px; margin-bottom: 18px; }
-.chart-placeholder {
-  height: 220px; display: flex; align-items: flex-end; gap: 8px;
-  padding: 20px; overflow: hidden;
+.login-api-input:focus { border-color: var(--brand); background: var(--surface); }
+.login-demo-hint { margin-top: 14px; text-align: center; font-size: 12px; color: var(--dim); }
+.login-demo-hint code {
+  font-family: 'IBM Plex Mono', monospace; background: var(--s2);
+  padding: 2px 6px; border-radius: 4px; font-size: 11.5px;
 }
-.bar-group { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; }
-.bar {
-  width: 100%; border-radius: 6px 6px 0 0;
-  transition: height .6s var(--transition), opacity .3s;
-  position: relative; cursor: pointer;
-  min-width: 28px;
-}
-.bar:hover { opacity: .8; }
-.bar-val { font-size: 10.5px; font-weight: 700; color: var(--text); font-family: 'IBM Plex Mono', monospace; }
-.bar-lbl { font-size: 10px; color: var(--muted); font-family: 'IBM Plex Mono', monospace; }
-
-/* ═══ DASHBOARD SPECIFIC ═══ */
-.dash-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 18px; }
-.activity-item {
-  display: flex; align-items: flex-start; gap: 10px;
-  padding: 10px 0; border-bottom: 1px solid var(--border);
-}
-.activity-item:last-child { border-bottom: none; }
-.activity-dot {
-  width: 7px; height: 7px; border-radius: 50%;
-  flex-shrink: 0; margin-top: 5px;
-}
-.activity-text { flex: 1; }
-.activity-title { font-size: 12.5px; font-weight: 600; color: var(--text); }
-.activity-time { font-size: 11px; color: var(--dim); font-family: 'IBM Plex Mono', monospace; }
-
-/* ═══ SETTINGS ═══ */
-.settings-layout { display: grid; grid-template-columns: 200px 1fr; gap: 22px; }
-.settings-nav { display: flex; flex-direction: column; gap: 2px; }
-.settings-nav-item {
-  padding: 8px 12px; border-radius: 7px; cursor: pointer;
-  font-size: 13px; font-weight: 600; color: var(--muted); transition: .12s;
-}
-.settings-nav-item:hover { background: var(--s2); color: var(--text); }
-.settings-nav-item.active { background: var(--brand-l); color: var(--brand); font-weight: 800; }
-.settings-section { display: none; }
-.settings-section.active { display: block; }
-.settings-field {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 14px 0; border-bottom: 1px solid var(--border);
-}
-.settings-field:last-child { border-bottom: none; }
-.settings-field-info { flex: 1; padding-right: 20px; }
-.settings-field-lbl { font-size: 13.5px; font-weight: 700; color: var(--text); margin-bottom: 2px; }
-.settings-field-sub { font-size: 12px; color: var(--muted); }
-
-/* ═══ TOGGLE ═══ */
-.toggle {
-  width: 38px; height: 22px; background: var(--border2); border-radius: 20px;
-  cursor: pointer; position: relative; transition: background .2s; flex-shrink: 0; border: none;
-}
-.toggle::after {
-  content: ''; position: absolute;
-  width: 16px; height: 16px; top: 3px; left: 3px;
-  background: #fff; border-radius: 50%;
-  transition: transform .22s var(--transition);
-  box-shadow: 0 1px 3px rgba(0,0,0,.2);
-}
-.toggle.on { background: var(--brand); }
-.toggle.on::after { transform: translateX(16px); }
-
-/* ═══ AUDIT ═══ */
-.audit-item {
-  display: flex; align-items: flex-start; gap: 12px;
-  padding: 12px 0; border-bottom: 1px solid var(--border);
-}
-.audit-item:last-child { border-bottom: none; }
-.audit-ico {
-  width: 30px; height: 30px; border-radius: 8px;
-  display: flex; align-items: center; justify-content: center; font-size: 13px;
-  flex-shrink: 0;
-}
-.audit-content { flex: 1; }
-.audit-action { font-size: 13px; font-weight: 700; color: var(--text); }
-.audit-meta { font-size: 11.5px; color: var(--muted); margin-top: 1px; }
-.audit-time { font-size: 11px; color: var(--dim); font-family: 'IBM Plex Mono', monospace; white-space: nowrap; }
-
-/* ═══ CHAT ═══ */
-.chat-layout { display: grid; grid-template-columns: 240px 1fr; gap: 0; height: calc(100vh - var(--hh) - 48px); border-radius: var(--r); overflow: hidden; border: 1px solid var(--border); }
-.chat-sidebar { background: var(--surface); border-right: 1px solid var(--border); overflow-y: auto; }
-.chat-thread { padding: 10px 8px; border-bottom: 1px solid var(--border); cursor: pointer; transition: .12s; }
-.chat-thread:hover { background: var(--s2); }
-.chat-thread.active { background: var(--brand-l); }
-.chat-thread-name { font-size: 13px; font-weight: 700; color: var(--text); }
-.chat-thread-preview { font-size: 11.5px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.chat-main { display: flex; flex-direction: column; background: var(--s2); }
-.chat-msgs { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 10px; }
-.chat-msg { display: flex; gap: 9px; align-items: flex-start; }
-.chat-msg.me { flex-direction: row-reverse; }
-.chat-bubble {
-  max-width: 70%; background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px 12px 12px 3px;
-  padding: 8px 12px; font-size: 13px; line-height: 1.5;
-}
-.chat-msg.me .chat-bubble { background: var(--brand); color: #fff; border-color: var(--brand); border-radius: 12px 12px 3px 12px; }
-.chat-av { width: 28px; height: 28px; border-radius: 7px; background: var(--brand); display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 800; color: #fff; flex-shrink: 0; }
-.chat-input-bar { padding: 12px 14px; border-top: 1px solid var(--border); background: var(--surface); display: flex; gap: 8px; }
-.chat-input {
-  flex: 1; padding: 8px 12px; background: var(--s2);
-  border: 1.5px solid var(--border); border-radius: 8px;
-  font-size: 13px; outline: none; resize: none;
-  transition: .15s; font-family: 'Bricolage Grotesque', sans-serif;
-}
-.chat-input:focus { border-color: var(--brand); }
-
-/* ═══ BILLING ═══ */
-.billing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 18px; }
-.plan-card { border: 2px solid var(--border); border-radius: var(--r2); padding: 22px; position: relative; transition: all .2s; }
-.plan-card.current { border-color: var(--brand); background: var(--brand-ll); }
-.plan-badge { position: absolute; top: 14px; right: 14px; font-size: 10px; font-weight: 800; padding: 2px 8px; border-radius: 20px; background: var(--brand); color: #fff; font-family: 'IBM Plex Mono', monospace; }
-.plan-name { font-size: 16px; font-weight: 800; margin-bottom: 4px; }
-.plan-price { font-size: 30px; font-weight: 800; letter-spacing: -1px; color: var(--text); margin-bottom: 2px; }
-.plan-price span { font-size: 14px; font-weight: 500; color: var(--muted); }
-.plan-feature { display: flex; align-items: center; gap: 8px; font-size: 12.5px; color: var(--text2); padding: 4px 0; }
-.plan-feature-ico { color: var(--green); }
-
-/* ═══ RBAC MATRIX ═══ */
-.rbac-table { font-size: 11.5px; }
-.rbac-table th { font-size: 10px; text-align: center; }
-.rbac-table td { text-align: center; }
-.rbac-table td:first-child { text-align: left; font-weight: 700; }
-.rbac-check { color: var(--green); font-size: 13px; }
-.rbac-x { color: var(--border2); font-size: 13px; }
-
-/* ═══ INTEGRATION CARD ═══ */
-.integ-card {
-  display: flex; align-items: center; gap: 14px;
-  padding: 15px 18px; background: var(--surface);
-  border: 1px solid var(--border); border-radius: var(--r);
-  transition: all .16s; cursor: default;
-}
-.integ-card:hover { box-shadow: var(--sm); border-color: var(--border2); }
-.integ-logo { width: 42px; height: 42px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
-.integ-info { flex: 1; }
-.integ-name { font-size: 14px; font-weight: 800; color: var(--text); }
-.integ-sub { font-size: 12px; color: var(--muted); }
-
-/* ═══ PROGRESS BAR ═══ */
-.prog-bar { height: 6px; background: var(--border); border-radius: 20px; overflow: hidden; }
-.prog-fill { height: 100%; border-radius: 20px; transition: width .6s var(--transition); }
-
-/* ═══ DOCUMENT CARD ═══ */
-.doc-card {
-  display: flex; align-items: center; gap: 12px;
-  padding: 12px 15px; background: var(--surface);
-  border: 1px solid var(--border); border-radius: var(--r);
-  transition: .15s; cursor: pointer;
-}
-.doc-card:hover { box-shadow: var(--sm); border-color: var(--border2); }
-.doc-icon { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
-
-/* ═══ PIPELINE STAGES ═══ */
-.pipeline-stages { display: flex; align-items: center; gap: 0; margin: 12px 0; }
-.pipe-stage {
-  flex: 1; text-align: center; padding: 7px 10px;
-  font-size: 10.5px; font-weight: 700; color: var(--muted);
-  background: var(--s2); border: 1px solid var(--border);
-  position: relative; transition: all .2s;
-}
-.pipe-stage::after {
-  content: '';
-  position: absolute; right: -10px; top: 50%;
-  transform: translateY(-50%);
-  width: 0; height: 0;
-  border-top: 15px solid transparent; border-bottom: 15px solid transparent;
-  border-left: 10px solid var(--border); z-index: 2;
-}
-.pipe-stage:last-child::after { display: none; }
-.pipe-stage.done { background: var(--gbg); border-color: var(--gbd); color: var(--green); }
-.pipe-stage.current { background: var(--brand); border-color: var(--brand); color: #fff; }
-
-/* ═══ DARK MODE ═══ */
-[data-theme="dark"] .sb-logo-mark { box-shadow: 0 2px 10px rgba(20,71,230,.5); }
-[data-theme="dark"] .stat-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,.3); }
-[data-theme="dark"] .kanban-card:hover { box-shadow: 0 4px 14px rgba(0,0,0,.3); }
-
-/* ═══ PRINT ═══ */
-@media print {
-  .sidebar, .header { display: none; }
-  .content { overflow: visible; }
-  .app { height: auto; }
-}
-
-/* ═══ REDUCED MOTION ═══ */
-
-/* ── Mobile sidebar touch targets ─────────────────── */
-@media (max-width: 768px) {
-  .sb-item {
-    padding: 12px 10px !important;
-    font-size: 14px !important;
-    min-height: 48px;
-    -webkit-tap-highlight-color: rgba(255,255,255,0.1);
-    touch-action: manipulation;
-  }
-  .sidebar {
-    touch-action: pan-y;
-    -webkit-overflow-scrolling: touch;
-  }
-  /* Ensure sidebar is above everything when open */
-  .sidebar.mobile-open {
-    z-index: 1200;
-    box-shadow: 4px 0 24px rgba(0,0,0,0.4);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
-}
-
-/* Mobile overlay — hidden by default, only shown via JS on mobile */
-.mobile-overlay {
-  display: none;
-  position: fixed; inset: 0;
-  background: rgba(7,17,43,.5);
-  z-index: 1100;
-  backdrop-filter: blur(2px);
-}
-
-/* ═══ BULK ACTION BAR ═══ */
-.bulk-bar {
-  position: sticky; top: 0; z-index: 20;
-  background: var(--brand); color: #fff;
-  border-radius: 8px; padding: 10px 16px;
-  display: flex; align-items: center; gap: 12px; margin-bottom: 12px;
-  animation: slideUp .2s var(--transition);
-}
-.bulk-bar span { font-size: 13px; font-weight: 700; flex: 1; }
-
-/* Auth gate — app hidden until JS confirms valid session */
-#app { display: none !important; }
-#app.session-active { display: flex !important; }
-
-
-/* ── Hamburger button (hidden on desktop) ─── */
-.header-hamburger {
-  display: none;
-  width: 36px; height: 36px;
-  background: none; border: none;
-  cursor: pointer; flex-shrink: 0;
-  align-items: center; justify-content: center;
-  border-radius: 7px; color: var(--text);
-  transition: background .15s;
-}
-.header-hamburger:hover { background: var(--s2); }
-.header-hamburger svg { display: block; }
-
-/* ═══════════════════════════════════════════════════════
-   RESPONSIVE BREAKPOINTS
-   ════════════════════════════════════════════════════════ */
-
-/* ── Tablet (≤1024px) ───────────────────────────────────── */
-@media (max-width: 1024px) {
-  :root { --sw: 220px; }
-
-  .kpi-grid, .stat-grid { grid-template-columns: repeat(2, 1fr); }
-  .dash-grid { grid-template-columns: 1fr; }
-  .dash-grid2 { grid-template-columns: 1fr 1fr; }
-  .analytics-grid { grid-template-columns: 1fr; }
-  .billing-grid { grid-template-columns: 1fr; }
-  .integ-grid { grid-template-columns: repeat(2, 1fr); }
-  .settings-layout { grid-template-columns: 180px 1fr; gap: 14px; }
-  .chat-layout { grid-template-columns: 200px 1fr; }
-
-  .content-pad { padding: 18px 20px; }
-  .pg-hdr { flex-wrap: wrap; }
-  .pg-hdr-r { flex-wrap: wrap; }
-}
-
-/* ── Mobile (≤768px) ────────────────────────────────────── */
-@media (max-width: 768px) {
-  :root { --sw: 0px; --hh: 56px; }
-
-  /* Body scrolls on mobile instead of being locked */
-  body { overflow: auto; height: auto; }
-  .app { flex-direction: column; height: auto; min-height: 100vh; overflow: visible; }
-
-  /* Sidebar becomes a slide-in drawer on mobile */
-  .sidebar {
-    position: fixed; left: 0; top: 0; bottom: 0;
-    width: 260px !important;
-    z-index: 1200;
-    transform: translateX(-100%);
-    transition: transform .25s ease;
-    overflow-y: auto;
-  }
-  .sidebar.mobile-open { transform: translateX(0); }
-
-  /* Mobile sidebar overlay backdrop */
-  .mobile-overlay.active { display: block; }
-
-  /* Right panel takes full width */
-  .right { width: 100%; min-width: 0; overflow: visible; }
-
-  /* Header: show hamburger, hide search cmd */
-  .header { padding: 0 14px; gap: 8px; }
-  .header-hamburger { display: flex !important; }
-  .search-cmd { display: none; }
-  .hdr-sep { display: none; }
-
-  /* Content scrolls naturally */
-  .content { overflow: visible; height: auto; }
-  .content-pad { padding: 14px 14px 80px; }
-
-  /* Grids → single column */
-  .kpi-grid, .stat-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-  .dash-grid, .dash-grid2 { grid-template-columns: 1fr; gap: 12px; }
-  .analytics-grid { grid-template-columns: 1fr; }
-  .billing-grid { grid-template-columns: 1fr; }
-  .integ-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
-  .form-row, .form-row-3 { grid-template-columns: 1fr; }
-  .settings-layout { grid-template-columns: 1fr; }
-  .settings-nav { flex-direction: row; flex-wrap: wrap; gap: 4px; margin-bottom: 14px; }
-  .settings-nav-item { padding: 6px 10px; font-size: 12px; }
-  .chat-layout { grid-template-columns: 1fr; height: auto; }
-  .chat-threads { display: none; }
-  .chat-threads.mobile-open { display: flex; }
-
-  /* Page header stacks */
-  .pg-hdr { flex-direction: column; align-items: flex-start; gap: 10px; margin-bottom: 14px; }
-  .pg-hdr-l h1 { font-size: 17px; }
-  .pg-hdr-r { width: 100%; justify-content: flex-start; flex-wrap: wrap; gap: 6px; }
-  .pg-hdr-r .btn { font-size: 12px; padding: 7px 12px; }
-
-  /* Filter bar wraps and stacks */
-  .filter-bar { gap: 6px; }
-  .filter-bar .filter-inp,
-  .filter-bar .filter-sel { font-size: 12px; padding: 7px 10px; }
-
-  /* Tables: scroll horizontally */
-  .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-  table { min-width: 600px; }
-  td, th { padding: 9px 10px; font-size: 12px; }
-
-  /* Cards */
-  .card { padding: 14px; }
-  .stat-card { padding: 14px 12px; }
-  .stat-val { font-size: 24px; }
-
-  /* Kanban scrolls horizontally */
-  .kanban-board { overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 16px; }
-  .kanban-col { min-width: 220px; flex-shrink: 0; }
-
-  /* Drawer full-screen on mobile */
-  .drawer { width: 100% !important; max-width: 100vw; }
-
-  /* Modals full-screen on mobile */
-  .modal {
-    width: 100% !important;
-    max-width: 100% !important;
-    border-radius: 16px 16px 0 0;
-    margin: auto 0 0;
-    max-height: 90vh;
-  }
-  .overlay { align-items: flex-end !important; }
-
-  /* Notifications panel */
-  .notif-panel { right: 8px; left: 8px; width: auto; }
-
-  /* Bulk bar */
-  .bulk-bar { flex-wrap: wrap; gap: 6px; }
-
-  /* Buttons in mobile */
-  .btn-sm { font-size: 12px; padding: 6px 10px; }
-
-  /* RBAC matrix scrolls */
-  .rbac-wrap { overflow-x: auto; }
-
-  /* Billing plan cards */
-  .plan-cards { flex-direction: column; }
-
-  /* Toast stack */
-  #toast-stack { left: 12px; right: 12px; bottom: 12px; }
-  .toast { min-width: 0; width: 100%; }
-}
-
-/* ── Small mobile (≤480px) ──────────────────────────────── */
-@media (max-width: 480px) {
-  .kpi-grid, .stat-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
-  .stat-val { font-size: 20px; }
-  .stat-lbl { font-size: 11px; }
-  .integ-grid { grid-template-columns: 1fr; }
-  .content-pad { padding: 12px 12px 80px; }
-  .pg-hdr-l h1 { font-size: 15px; }
-  td, th { padding: 8px 8px; font-size: 11.5px; }
-  .btn { font-size: 12px; padding: 7px 11px; }
-}
-</style>
 </style>
 </head>
 <body>
-<div class="app" id="app">
+<!-- ════ LOGIN SCREEN ════ -->
+<div id="login-screen">
+  <div class="login-card">
+    <div class="login-logo">
+      <div class="login-logo-mark">RM</div>
+      <div>
+        <div class="login-logo-name">RAMS</div>
+        <div class="login-logo-sub">Recruitment Agency Management</div>
+      </div>
+    </div>
+    <div class="login-title">Welcome back</div>
+    <div class="login-sub">Sign in to your agency dashboard</div>
+    <div class="login-error" id="login-error"></div>
+    <div class="login-field">
+      <label class="login-label">Email address</label>
+      <input class="login-input" id="login-email" type="email" placeholder="admin@rams.io" autocomplete="email">
+    </div>
+    <div class="login-field">
+      <label class="login-label">Password</label>
+      <input class="login-input" id="login-password" type="password"
+        placeholder="••••••••" autocomplete="current-password"
+       >
+    </div>
+    <button class="login-btn" id="login-btn">Sign In</button>
+    <hr class="login-divider">
+    <label class="login-api-label">API URL <span>(leave blank for demo mode)</span></label>
+    <input class="login-api-input" id="login-api-url" type="url"
+      placeholder="https://your-api.railway.app">
+    <div class="login-demo-hint">
+      Demo: <code>admin@rams.io</code> / <code>password123</code>
+    </div>
+  </div>
+</div>
+
+<div class="app" id="app" style="display:none">
 <aside class="sidebar" id="sidebar">
   <div class="sb-logo">
     <div class="sb-logo-mark">R</div>
@@ -1318,25 +438,25 @@ tr:hover td { background: var(--s2); }
   </div>
   <div class="sb-section">
     <div class="sb-sec-lbl">Core</div>
-    <div class="sb-item active" onclick="go('dashboard',this)" data-page="dashboard"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span class="sb-label">Dashboard</span></div>
-    <div class="sb-item" onclick="go('pipeline',this)" data-page="pipeline"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><span class="sb-label">Pipeline</span><span class="sb-badge" id="sb-pipeline-count">0</span></div>
-    <div class="sb-item" onclick="go('applicants',this)" data-page="applicants"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span class="sb-label">Applicants</span><span class="sb-badge" id="sb-app-count">0</span></div>
-    <div class="sb-item" onclick="go('documents',this)" data-page="documents"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span class="sb-label">Documents</span><span class="sb-badge red" id="sb-doc-count">0</span></div>
-    <div class="sb-item" onclick="go('joborders',this)" data-page="jobs"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/></svg><span class="sb-label">Job Orders</span><span class="sb-badge" id="sb-job-count">0</span></div>
+    <div class="sb-item active" onclick="go('dashboard',this)"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span class="sb-label">Dashboard</span></div>
+    <div class="sb-item" onclick="go('pipeline',this)"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><span class="sb-label">Pipeline</span><span class="sb-badge" id="sb-pipeline-count">0</span></div>
+    <div class="sb-item" onclick="go('applicants',this)"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span class="sb-label">Applicants</span><span class="sb-badge" id="sb-app-count">0</span></div>
+    <div class="sb-item" onclick="go('documents',this)"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span class="sb-label">Documents</span><span class="sb-badge red" id="sb-doc-count">0</span></div>
+    <div class="sb-item" onclick="go('joborders',this)"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/></svg><span class="sb-label">Job Orders</span><span class="sb-badge" id="sb-job-count">0</span></div>
   </div>
   <div class="sb-section">
     <div class="sb-sec-lbl">Analytics</div>
-    <div class="sb-item" onclick="go('analytics',this)" data-page="analytics"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg><span class="sb-label">Analytics</span></div>
-    <div class="sb-item" onclick="go('accounting',this)" data-page="accounting"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg><span class="sb-label">Accounting</span></div>
-    <div class="sb-item" onclick="go('audit',this)" data-page="audit"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span class="sb-label">Audit Trail</span></div>
+    <div class="sb-item" onclick="go('analytics',this)"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg><span class="sb-label">Analytics</span></div>
+    <div class="sb-item" onclick="go('accounting',this)"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg><span class="sb-label">Accounting</span></div>
+    <div class="sb-item" onclick="go('audit',this)"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span class="sb-label">Audit Trail</span></div>
   </div>
   <div class="sb-section">
     <div class="sb-sec-lbl">Workspace</div>
-    <div class="sb-item" onclick="go('chat',this)" data-page="chat"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span class="sb-label">Chat</span><span class="sb-badge amber" id="sb-chat-count">5</span></div>
-    <div class="sb-item" onclick="go('integrations',this)" data-page="integrations"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="3"/><circle cx="5" cy="19" r="3"/><circle cx="19" cy="19" r="3"/><line x1="12" y1="8" x2="5" y2="16"/><line x1="12" y1="8" x2="19" y2="16"/></svg><span class="sb-label">Integrations</span></div>
-    <div class="sb-item" onclick="go('billing',this)" data-page="billing"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg><span class="sb-label">Billing</span></div>
-    <div class="sb-item" onclick="go('roles',this)" data-page="roles"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg><span class="sb-label">Roles & Permissions</span></div>
-    <div class="sb-item" onclick="go('settings',this)" data-page="settings"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg><span class="sb-label">Settings</span></div>
+    <div class="sb-item" onclick="go('chat',this)"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span class="sb-label">Chat</span><span class="sb-badge amber" id="sb-chat-count">5</span></div>
+    <div class="sb-item" onclick="go('integrations',this)"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="3"/><circle cx="5" cy="19" r="3"/><circle cx="19" cy="19" r="3"/><line x1="12" y1="8" x2="5" y2="16"/><line x1="12" y1="8" x2="19" y2="16"/></svg><span class="sb-label">Integrations</span></div>
+    <div class="sb-item" onclick="go('billing',this)"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg><span class="sb-label">Billing</span></div>
+    <div class="sb-item" onclick="go('roles',this)"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg><span class="sb-label">Roles & Permissions</span></div>
+    <div class="sb-item" onclick="go('settings',this)"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg><span class="sb-label">Settings</span></div>
   </div>
   <div class="sb-footer">
     <div class="sb-upgrade">
@@ -1352,15 +472,12 @@ tr:hover td { background: var(--s2); }
       </button>
       <div class="role-dropdown" id="role-dropdown"></div>
     </div>
-    <div class="sb-user" style="position:relative">
+    <div class="sb-user">
       <div class="sb-avatar" id="sb-avatar">SA</div>
       <div style="flex:1;min-width:0">
         <div class="sb-uname" id="sb-uname">Super Admin</div>
-        <div class="sb-urole" id="sb-urole"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="9cfdf8f1f5f2dceefdf1efb2f5f3">[email&#160;protected]</a></div>
+        <div class="sb-urole" id="sb-urole">admin@globalmanpower.ph</div>
       </div>
-      <button onclick="handleLogout()" title="Sign out"
-        style="background:none;border:none;cursor:pointer;opacity:.5;padding:4px;border-radius:5px;color:rgba(255,255,255,.8);font-size:14px;transition:.15s;flex-shrink:0"
-        onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=.5">⏻</button>
     </div>
   </div>
 </aside>
@@ -1368,11 +485,6 @@ tr:hover td { background: var(--s2); }
 <div class="right">
   <!-- HEADER -->
   <header class="header" role="banner">
-    <button class="header-hamburger" onclick="toggleMobileSidebar()" aria-label="Open menu" id="hamburger-btn">
-      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-        <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
-      </svg>
-    </button>
     <div class="hdr-title">RAMS <span>·</span> <span id="hdr-page-title">Dashboard</span></div>
     <div class="search-cmd" onclick="openCmd()" role="button" tabindex="0" aria-label="Open command palette">
       <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
@@ -1505,15 +617,15 @@ tr:hover td { background: var(--s2); }
           <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
           <input type="text" id="app-search" placeholder="Search by name, ID, contact…" oninput="filterApplicants()" aria-label="Search applicants">
         </div>
-        <select class="filter-select" id="app-filter-status" onchange="filterApplicants()" aria-label="Filter by status">
+        <select class="filter-select" id="app-status-filter" onchange="filterApplicants()" aria-label="Filter by status">
           <option value="">All Status</option>
           <option>Applied</option><option>Screening</option><option>Interview</option>
           <option>Medical</option><option>Deployed</option><option>Rejected</option>
         </select>
-        <select class="filter-select" id="app-filter-agent" onchange="filterApplicants()" aria-label="Filter by agent">
+        <select class="filter-select" id="app-agent-filter" onchange="filterApplicants()" aria-label="Filter by agent">
           <option value="">All Agents</option>
         </select>
-        <select class="filter-select" id="app-filter-medical" onchange="filterApplicants()" aria-label="Filter by medical">
+        <select class="filter-select" id="app-medical-filter" onchange="filterApplicants()" aria-label="Filter by medical">
           <option value="">All Medical</option>
           <option>Passed</option><option>Pending</option><option>Failed</option>
         </select>
@@ -1830,7 +942,7 @@ tr:hover td { background: var(--s2); }
       <div class="card">
         <div style="padding:14px 18px;border-bottom:1px solid var(--border);font-size:14px;font-weight:800">Permission Matrix</div>
         <div class="table-wrap">
-          <table class="rbac-table" id="rbac-matrix" class="rbac-wrap" style="width:100%;border-collapse:collapse" role="grid" aria-label="Permission matrix"></table>
+          <table class="rbac-table" id="rbac-matrix" style="width:100%;border-collapse:collapse" role="grid" aria-label="Permission matrix"></table>
         </div>
       </div>
     </div>
@@ -2103,227 +1215,6 @@ tr:hover td { background: var(--s2); }
 
 <!-- Toast Stack -->
 <div id="toast-stack" role="alert" aria-live="polite" aria-atomic="false"></div>
-
-<!-- Mobile sidebar overlay -->
-<div class="mobile-overlay" id="mobile-overlay" onclick="toggleMobileSidebar()"></div>
-
-<!-- LOGIN SCREEN -->
-<div id="auth-screen" style="display:flex;position:fixed;inset:0;z-index:9999;background:var(--bg);align-items:center;justify-content:center;flex-direction:column">
-  <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:40px 36px;width:100%;max-width:400px;box-shadow:var(--lg)">
-    <div style="display:flex;align-items:center;gap:10px;margin-bottom:28px">
-      <div style="width:36px;height:36px;background:var(--brand);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff">RM</div>
-      <div>
-        <div style="font-size:17px;font-weight:800;color:var(--text)">RAMS</div>
-        <div style="font-size:11px;color:var(--muted)">Recruitment Agency Management</div>
-      </div>
-    </div>
-    <div id="auth-error" style="display:none;background:var(--rbg);border:1px solid var(--red);border-radius:8px;padding:10px 12px;font-size:12.5px;color:var(--red);margin-bottom:16px"></div>
-    <div style="margin-bottom:14px">
-      <label style="font-size:12px;font-weight:700;color:var(--text2);display:block;margin-bottom:5px">Email</label>
-      <input id="login-email" type="email" placeholder="you@rams.io" autocomplete="email"
-        style="width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:13.5px;background:var(--s2);color:var(--text);outline:none"
-        onfocus="this.style.borderColor='var(--brand)'" onblur="this.style.borderColor='var(--border)'"
-        onkeydown="if(event.key==='Enter')document.getElementById('login-password').focus()">
-    </div>
-    <div style="margin-bottom:20px">
-      <label style="font-size:12px;font-weight:700;color:var(--text2);display:block;margin-bottom:5px">Password</label>
-      <input id="login-password" type="password" placeholder="••••••••" autocomplete="current-password"
-        style="width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:13.5px;background:var(--s2);color:var(--text);outline:none"
-        onfocus="this.style.borderColor='var(--brand)'" onblur="this.style.borderColor='var(--border)'"
-        onkeydown="if(event.key==='Enter')handleLogin()">
-    </div>
-    <button id="login-btn" onclick="handleLogin()"
-      style="width:100%;padding:11px;background:var(--brand);color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;transition:background .15s"
-      onmouseover="this.style.background='var(--brand-d)'" onmouseout="this.style.background='var(--brand)'">
-      Sign In
-    </button>
-    <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border)">
-      <label style="font-size:11.5px;font-weight:700;color:var(--muted);display:block;margin-bottom:5px">API URL <span style="font-weight:400;opacity:.7">(leave blank for demo mode)</span></label>
-      <input id="api-url-input" type="url" placeholder="https://your-api.railway.app"
-        style="width:100%;padding:8px 10px;border:1.5px solid var(--border);border-radius:7px;font-size:12px;background:var(--s2);color:var(--text);font-family:'IBM Plex Mono',monospace;outline:none"
-        onfocus="this.style.borderColor='var(--brand)'" onblur="this.style.borderColor='var(--border)'">
-    </div>
-    <div style="margin-top:12px;font-size:11.5px;color:var(--dim);text-align:center">
-      Demo: <span style="font-family:'IBM Plex Mono',monospace"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="7e1f1a1317103e0c1f130d501711">[email&#160;protected]</a> / password123</span>
-    </div>
-  </div>
-</div>
-
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-// API LAYER
-const API = (() => {
-  const LS_TOKEN = 'rams_token', LS_USER = 'rams_user', LS_URL = 'rams_api_url';
-  let _token = localStorage.getItem(LS_TOKEN) || null;
-  let _user  = JSON.parse(localStorage.getItem(LS_USER) || 'null');
-  let _baseUrl = localStorage.getItem(LS_URL) || '';
-  let _demo  = !_baseUrl;
-
-  const setSession = (token, user, url) => {
-    _token = token; _user = user; _baseUrl = url; _demo = !url;
-    token ? localStorage.setItem(LS_TOKEN, token) : localStorage.removeItem(LS_TOKEN);
-    user  ? localStorage.setItem(LS_USER, JSON.stringify(user)) : localStorage.removeItem(LS_USER);
-    url   ? localStorage.setItem(LS_URL, url) : localStorage.removeItem(LS_URL);
-  };
-  const clearSession = () => setSession(null, null, '');
-  const isDemo = () => _demo;
-  const getUser = () => _user;
-
-  const request = async (method, path, body, isFormData) => {
-    if (_demo) throw new Error('DEMO_MODE');
-    const url = _baseUrl.replace(/\/$/, '') + '/api' + path;
-    const headers = {};
-    if (_token) headers['Authorization'] = 'Bearer ' + _token;
-    if (!isFormData) headers['Content-Type'] = 'application/json';
-    const opts = { method, headers };
-    if (body) opts.body = isFormData ? body : JSON.stringify(body);
-    const res = await fetch(url, opts);
-    if (res.status === 401) { clearSession(); showAuthScreen(); throw new Error('Session expired'); }
-    const data = await res.json().catch(() => ({}));
-    if (!res.ok) throw new Error(data.error || 'HTTP ' + res.status);
-    return data;
-  };
-
-  return {
-    get:    (p)      => request('GET',    p),
-    post:   (p, b)   => request('POST',   p, b),
-    patch:  (p, b)   => request('PATCH',  p, b),
-    del:    (p)      => request('DELETE', p),
-    upload: (p, fd)  => request('POST',   p, fd, true),
-    isDemo, getUser, setSession, clearSession,
-  };
-})();
-
-// AUTH FLOW
-function showAuthScreen() {
-  document.getElementById('auth-screen').style.display = 'flex';
-  document.getElementById('app').style.display = 'none';
-  document.getElementById('api-url-input').value = localStorage.getItem('rams_api_url') || '';
-  setTimeout(() => document.getElementById('login-email').focus(), 100);
-}
-function hideAuthScreen() {
-  document.getElementById('auth-screen').style.display = 'none';
-  const appEl = document.getElementById('app');
-  appEl.classList.add('session-active');
-  appEl.style.display = 'flex';
-}
-async function handleLogin() {
-  const email = document.getElementById('login-email').value.trim();
-  const pass  = document.getElementById('login-password').value;
-  const url   = document.getElementById('api-url-input').value.trim();
-  const errEl = document.getElementById('auth-error');
-  const btn   = document.getElementById('login-btn');
-  errEl.style.display = 'none';
-  if (!url) {
-    if (email === 'admin@rams.io' && pass === 'password123') {
-      API.setSession('demo', { name: 'Admin User', email, role: 'admin' }, '');
-      hideAuthScreen(); bootApp(); return;
-    }
-    errEl.textContent = 'Demo credentials: admin@rams.io / password123';
-    errEl.style.display = 'block'; return;
-  }
-  if (!email || !pass) { errEl.textContent = 'Email and password required.'; errEl.style.display = 'block'; return; }
-  btn.textContent = 'Signing in…'; btn.disabled = true;
-  try {
-    API.setSession(null, null, url);
-    const { token, user } = await API.post('/auth/login', { email, password: pass });
-    API.setSession(token, user, url);
-    hideAuthScreen(); bootApp();
-  } catch(err) {
-    errEl.textContent = err.message || 'Login failed.';
-    errEl.style.display = 'block';
-    API.clearSession();
-  } finally { btn.textContent = 'Sign In'; btn.disabled = false; }
-}
-async function handleLogout() {
-  if (!API.isDemo()) { try { await API.post('/auth/logout', {}); } catch(_) {} }
-  API.clearSession(); showAuthScreen();
-}
-
-// LIVE DATA LAYER
-const LiveDB = {
-  norm: {
-    applicant: a => ({ ...a, id: a.id, name: (a.first_name ? a.first_name + ' ' + (a.last_name||'') : a.name)||'', agent: a.agent_name||a.agent||'', contact: a.phone||a.contact||'', job: a.position||a.job||'', medical: a.medical_status||a.medical||'Pending', date: (a.created_at||a.date||'').slice(0,10) }),
-    job:        j => ({ ...j, country: j.destination||j.country||'', salary: j.salary_min ? j.salary_min + '–' + j.salary_max : j.salary||'' }),
-    expense:    e => ({ ...e, desc: e.description||e.desc||'', date: (e.expense_date||e.created_at||e.date||'').slice(0,10) }),
-    document:   d => ({ ...d, name: d.original_name||d.doc_type||d.name||'', applicant: d.applicant_name||d.applicant||'', date: (d.created_at||d.date||'').slice(0,10), size: d.size_bytes ? Math.round(d.size_bytes/1024)+' KB' : d.size||'—' }),
-    audit:      l => ({ ...l, user: l.user_name||l.user||'', time: (l.created_at||l.time||'').replace('T',' ').slice(0,16), type: /delete/i.test(l.action)?'delete':/create/i.test(l.action)?'create':/export/i.test(l.action)?'export':'update', detail: l.detail||l.action||'' }),
-  },
-  async getApplicants(p={}) {
-    if (API.isDemo()) return DB.applicants;
-    try { const r = await API.get('/applicants?' + new URLSearchParams(p)); return (r.data||r).map(this.norm.applicant); } catch(e) { return DB.applicants; }
-  },
-  async createApplicant(d) {
-    if (API.isDemo()) { const r={id:'APP-'+(DB.applicants.length+1).toString().padStart(3,'0'),...d,date:new Date().toISOString().slice(0,10)};DB.applicants.unshift(r);return r; }
-    const [f,...l]=(d.name||'').split(' ');
-    return API.post('/applicants',{first_name:f,last_name:l.join(' '),...d,position:d.job,medical_status:d.medical,phone:d.contact});
-  },
-  async updateApplicant(id,d) {
-    if (API.isDemo()) { const i=DB.applicants.findIndex(a=>a.id===id);if(i>=0)DB.applicants[i]={...DB.applicants[i],...d};return DB.applicants[i]; }
-    const body={...d};
-    if(body.name){const[f,...l]=body.name.split(' ');body.first_name=f;body.last_name=l.join(' ');}
-    if(body.medical)body.medical_status=body.medical;
-    if(body.job)body.position=body.job;
-    if(body.contact)body.phone=body.contact;
-    return API.patch('/applicants/'+id,body);
-  },
-  async deleteApplicant(id) {
-    if(API.isDemo()){DB.applicants=DB.applicants.filter(a=>a.id!==id);return;}
-    return API.del('/applicants/'+id);
-  },
-  async getJobs(p={}) {
-    if(API.isDemo())return DB.jobs;
-    try{const r=await API.get('/jobs?'+new URLSearchParams(p));return(Array.isArray(r)?r:r.data||[]).map(this.norm.job);}catch(e){return DB.jobs;}
-  },
-  async createJob(d) {
-    if(API.isDemo()){const r={id:'JOB-'+(DB.jobs.length+1).toString().padStart(3,'0'),filled:0,...d};DB.jobs.unshift(r);return r;}
-    return API.post('/jobs',{...d,destination:d.country});
-  },
-  async deleteJob(id) {
-    if(API.isDemo()){DB.jobs=DB.jobs.filter(j=>j.id!==id);return;}
-    return API.del('/jobs/'+id);
-  },
-  async getExpenses(p={}) {
-    if(API.isDemo())return DB.expenses;
-    try{const r=await API.get('/expenses?'+new URLSearchParams(p));return(Array.isArray(r)?r:r.data||[]).map(this.norm.expense);}catch(e){return DB.expenses;}
-  },
-  async createExpense(d) {
-    if(API.isDemo()){const r={id:'EXP-'+(DB.expenses.length+1).toString().padStart(3,'0'),...d};DB.expenses.unshift(r);return r;}
-    return API.post('/expenses',{...d,description:d.desc||d.description});
-  },
-  async deleteExpense(id) {
-    if(API.isDemo()){DB.expenses=DB.expenses.filter(e=>e.id!==id);return;}
-    return API.del('/expenses/'+id);
-  },
-  async getDocuments(p={}) {
-    if(API.isDemo())return DB.documents;
-    try{const r=await API.get('/documents?'+new URLSearchParams(p));return(Array.isArray(r)?r:[]).map(this.norm.document);}catch(e){return DB.documents;}
-  },
-  async uploadDocument(fd) {
-    if(API.isDemo()){toast('Demo mode — upload simulated','info');return{};}
-    return API.upload('/documents/upload',fd);
-  },
-  async reviewDocument(id,status,notes='') {
-    if(API.isDemo()){const d=DB.documents.find(x=>x.id===id);if(d)d.status=status;return d;}
-    return API.patch('/documents/'+id+'/review',{status,notes});
-  },
-  async getAudit(p={}) {
-    if(API.isDemo())return DB.auditLog;
-    try{const r=await API.get('/audit?'+new URLSearchParams(p));return(Array.isArray(r)?r:[]).map(this.norm.audit);}catch(e){return DB.auditLog;}
-  },
-  async getAnalytics() {
-    if(API.isDemo())return null;
-    try{return await API.get('/analytics');}catch(e){return null;}
-  },
-  async getNotifications() {
-    if(API.isDemo())return DB.notifications;
-    try{return await API.get('/notifications');}catch(e){return DB.notifications;}
-  },
-  async markAllRead() {
-    if(API.isDemo()){DB.notifications.forEach(n=>n.read=true);return;}
-    try{await API.post('/notifications/mark-read',{});}catch(e){}
-  },
-};
-</script>
 
 <script>
 // ════════════════════════════════════════════════════════
@@ -2882,9 +1773,9 @@ function renderKanban() {
 // ════════════════════════════════════════════════════════
 function filterApplicants() {
   const q = document.getElementById('app-search').value.toLowerCase();
-  const s = document.getElementById('app-filter-status').value;
-  const a = document.getElementById('app-filter-agent').value;
-  const m = document.getElementById('app-filter-medical').value;
+  const s = document.getElementById('app-status-filter').value;
+  const a = document.getElementById('app-agent-filter').value;
+  const m = document.getElementById('app-medical-filter').value;
   filteredApps = DB.applicants.filter(x =>
     (!q || x.name.toLowerCase().includes(q) || x.id.toLowerCase().includes(q) || x.contact.includes(q)) &&
     (!s || x.status === s) && (!a || x.agent === a) && (!m || x.medical === m)
@@ -2894,9 +1785,9 @@ function filterApplicants() {
 }
 function clearFilters() {
   document.getElementById('app-search').value = '';
-  document.getElementById('app-filter-status').value = '';
-  document.getElementById('app-filter-agent').value = '';
-  document.getElementById('app-filter-medical').value = '';
+  document.getElementById('app-status-filter').value = '';
+  document.getElementById('app-agent-filter').value = '';
+  document.getElementById('app-medical-filter').value = '';
   filterApplicants();
 }
 function sortTable(col) {
@@ -2913,7 +1804,7 @@ function sortTable(col) {
   renderApplicants();
 }
 function renderApplicants() {
-  const agentFilter = document.getElementById('app-filter-agent');
+  const agentFilter = document.getElementById('app-agent-filter');
   const agents = [...new Set(DB.applicants.map(a=>a.agent))];
   if (agentFilter.options.length <= 1) {
     agents.forEach(a => { const o = document.createElement('option'); o.value = a; o.text = a; agentFilter.appendChild(o); });
@@ -3623,489 +2514,246 @@ document.addEventListener('keydown', e => {
   if (e.key === '4' && !e.metaKey) nav('analytics');
 });
 
-// Sidebar items keyboard support (delegated)
-document.addEventListener('keydown', e => {
-  const item = e.target.closest('.sb-item');
-  if (item && (e.key === 'Enter' || e.key === ' ')) {
-    e.preventDefault();
-    item.click();
-  }
+// Sidebar items keyboard support
+document.querySelectorAll('.sb-item').forEach(item => {
+  item.addEventListener('keydown', e => { if(e.key==='Enter'||e.key===' '){e.preventDefault();item.click();} });
 });
 
 // ════════════════════════════════════════════════════════
-// ASYNC RENDER WRAPPERS — use LiveDB
+// INIT
 // ════════════════════════════════════════════════════════
-const _origRenderApplicants = renderApplicants;
-renderApplicants = async function() {
-  const apps = await LiveDB.getApplicants();
-  // Sync back to DB so existing filter/sort still works
-  DB.applicants = apps;
-  filteredApps = [...apps];
-  _origRenderApplicants();
-};
+renderNotifications();
+renderDashboard();
 
-const _origRenderJobs = renderJobs;
-renderJobs = async function() {
-  DB.jobs = await LiveDB.getJobs();
-  _origRenderJobs();
-};
+/* ════════════════════════════════════════════════════
+   AUTH LAYER
+════════════════════════════════════════════════════ */
+function showLogin() {
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('app').classList.remove('active');
+  const savedUrl = localStorage.getItem('rams_api_url') || '';
+  const urlEl = document.getElementById('login-api-url');
+  if (urlEl) urlEl.value = savedUrl;
+  setTimeout(() => { const el = document.getElementById('login-email'); if(el) el.focus(); }, 80);
+}
 
-const _origRenderExpenses = renderExpenses;
-renderExpenses = async function() {
-  DB.expenses = await LiveDB.getExpenses();
-  _origRenderExpenses();
-};
-
-const _origRenderAudit = renderAudit;
-renderAudit = async function() {
-  DB.auditLog = await LiveDB.getAudit();
-  _origRenderAudit();
-};
-
-const _origRenderNotifications = renderNotifications;
-renderNotifications = async function() {
-  DB.notifications = await LiveDB.getNotifications();
-  _origRenderNotifications();
-};
-
-const _origMarkAllRead = markAllRead;
-markAllRead = async function() {
-  await LiveDB.markAllRead();
-  DB.notifications.forEach(n => n.read = true);
-  _origRenderNotifications();
-  toast('All notifications marked as read', 'success');
-};
-
-const _origRenderDashboard = renderDashboard;
-renderDashboard = async function() {
-  const [apps, jobs, docs, expenses] = await Promise.all([
-    LiveDB.getApplicants(), LiveDB.getJobs(), LiveDB.getDocuments(), LiveDB.getExpenses()
-  ]);
-  DB.applicants = apps; DB.jobs = jobs; DB.documents = docs; DB.expenses = expenses;
-  _origRenderDashboard();
-};
-
-// ════════════════════════════════════════════════════════
-// BOOT
-// ════════════════════════════════════════════════════════
-async function bootApp() {
-  const user = API.getUser();
+function showApp(user) {
+  document.getElementById('login-screen').style.display = 'none';
+  const appEl = document.getElementById('app');
+  appEl.style.display = 'flex';
+  appEl.classList.add('active');
   if (user) {
     const initials = (user.name || user.email || 'U').split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
-    const nameEl = document.getElementById('sb-uname');
-    const roleEl = document.getElementById('sb-urole');
-    const avatarEl = document.getElementById('sb-avatar');
-    const hdrAvatar = document.getElementById('hdr-avatar');
-    if (nameEl)   nameEl.textContent   = user.name || user.email;
-    if (roleEl)   roleEl.textContent   = user.email || user.role;
-    if (avatarEl) avatarEl.textContent = initials;
-    if (hdrAvatar) hdrAvatar.textContent = initials;
+    const n = document.getElementById('sb-uname'); if(n) n.textContent = user.name || user.email;
+    const r = document.getElementById('sb-urole'); if(r) r.textContent = user.email || user.role || '';
+    const a = document.getElementById('sb-avatar'); if(a) a.textContent = initials;
+    const h = document.getElementById('hdr-avatar'); if(h) h.textContent = initials;
   }
-  await Promise.all([renderNotifications(), renderDashboard()]);
+  if (typeof renderDashboard === 'function') renderDashboard();
+  if (typeof renderNotifications === 'function') renderNotifications();
 }
 
-// ════════════════════════════════════════════════════════
-// COMPATIBILITY & ALIAS LAYER — bridges HTML ↔ JS gaps
-// ════════════════════════════════════════════════════════
-
-// 1. go() — sidebar nav with page alias mapping
-const PAGE_ALIAS = {
-  joborders: 'jobs',   // HTML uses 'joborders', nav() uses 'jobs'
-};
-function go(page, el) {
-  nav(PAGE_ALIAS[page] || page);
+function handleLogout() {
+  localStorage.removeItem('rams_token');
+  localStorage.removeItem('rams_user');
+  localStorage.removeItem('rams_api_url');
+  showLogin();
 }
 
-// 2. toggleDark — alias for toggleTheme
-function toggleDark() { toggleTheme(); }
+async function handleLogin() {
+  const email  = (document.getElementById('login-email').value   || '').trim();
+  const pass   = (document.getElementById('login-password').value || '');
+  const apiUrl = (document.getElementById('login-api-url').value  || '').trim();
+  const errEl  = document.getElementById('login-error');
+  const btn    = document.getElementById('login-btn');
+  errEl.style.display = 'none';
 
-// 3. showToast — alias for toast
-function showToast(msg, type) { toast(msg, type || 'info'); }
-
-// 4. sortApp — alias for sortTable
-function sortApp(col) { sortTable(col); }
-
-// 5. clearAppFilters — alias for clearFilters
-function clearAppFilters() { clearFilters(); }
-
-// 6. clearAuditFilters — alias for filterAudit
-function clearAuditFilters() {
-  const s = document.getElementById('audit-search');
-  const f = document.getElementById('audit-type');
-  if (s) s.value = '';
-  if (f) f.value = '';
-  filterAudit();
-}
-
-// 7. clearExpFilters — alias for filterExpenses
-function clearExpFilters() {
-  const s = document.getElementById('exp-search');
-  const c = document.getElementById('exp-cat');
-  if (s) s.value = '';
-  if (c) c.value = '';
-  filterExpenses();
-}
-
-// 8. openModal / closeModal — aliases for openOverlay / closeOverlay
-function openModal(id) { openOverlay(id); }
-function closeModal(id) { closeOverlay(id); }
-
-// 9. submitAddApplicant — alias for saveApplicant
-function submitAddApplicant() { saveApplicant(); }
-
-// 10. submitEdit — alias for saveApplicant (edit mode)
-function submitEdit() { saveApplicant(); }
-
-// 11. submitJob — alias for saveJob
-function submitJob() { saveJob(); }
-
-// 12. submitExpense — alias for saveExpense (and wire to LiveDB)
-function submitExpense() { saveExpense(); }
-
-// 13. submitUpload — alias for saveDoc
-function submitUpload() { saveDoc(); }
-
-// 14. sendMsg — alias for sendChat
-function sendMsg() { sendChat(); }
-
-// 15. submitStatusChange — read modal-status select and update applicant
-function submitStatusChange() {
-  const sel = document.getElementById('modal-status');
-  const nameEl = document.getElementById('modal-status-name');
-  if (!sel || !currentDrawerApplicant) return;
-  const newStatus = sel.value;
-  currentDrawerApplicant.status = newStatus;
-  const idx = DB.applicants.findIndex(a => a.id === currentDrawerApplicant.id);
-  if (idx >= 0) DB.applicants[idx].status = newStatus;
-  addAudit('UPDATE', 'Applicant', `Status → ${newStatus}: ${currentDrawerApplicant.name}`);
-  LiveDB.updateApplicant(currentDrawerApplicant.id, { status: newStatus }).catch(() => {});
-  closeOverlay('overlay-status');
-  closeDrawer();
-  renderApplicants();
-  renderKanban();
-  toast(`Status updated to ${newStatus}`, 'success');
-}
-
-// 16. openChangeStatus — open a status-change overlay for the current drawer applicant
-function openChangeStatus() {
-  if (!currentDrawerApplicant) return;
-  const nameEl = document.getElementById('modal-status-name');
-  if (nameEl) nameEl.textContent = currentDrawerApplicant.name;
-  const sel = document.getElementById('modal-status');
-  if (sel) sel.value = currentDrawerApplicant.status || 'Applied';
-  openOverlay('modal-status');
-}
-
-// 17. openEditFromDrawer — pre-fill applicant modal from drawer
-function openEditFromDrawer() {
-  if (!currentDrawerApplicant) return;
-  editApplicant(currentDrawerApplicant.id);
-}
-
-// 18. deleteCurrentApplicant — delete via LiveDB from drawer
-async function deleteCurrentApplicant() {
-  if (!currentDrawerApplicant) return;
-  if (!confirm(`Delete ${currentDrawerApplicant.name}? This cannot be undone.`)) return;
-  try {
-    await LiveDB.deleteApplicant(currentDrawerApplicant.id);
-    DB.applicants = DB.applicants.filter(a => a.id !== currentDrawerApplicant.id);
-    addAudit('DELETE', 'Applicant', `Deleted: ${currentDrawerApplicant.name}`);
-    closeDrawer();
-    renderApplicants();
-    renderKanban();
-    toast('Applicant deleted', 'success');
-  } catch(e) { toast(e.message || 'Delete failed', 'error'); }
-}
-
-// ── Wire LiveDB into the existing save functions ────────
-// Patch saveApplicant to also call LiveDB
-const _baseSaveApplicant = saveApplicant;
-saveApplicant = async function() {
-  // Call the original sync version first (updates DB.applicants)
-  _baseSaveApplicant();
-  // Then sync to backend
-  const app = DB.applicants[0]; // just added/updated
-  if (app && !API.isDemo()) {
-    try { await LiveDB.createApplicant(app); } catch(e) {}
-  }
-};
-
-// Patch saveJob to also call LiveDB
-const _baseSaveJob = saveJob;
-saveJob = async function() {
-  _baseSaveJob();
-  const job = DB.jobs[0];
-  if (job && !API.isDemo()) {
-    try { await LiveDB.createJob(job); } catch(e) {}
-  }
-};
-
-// Patch saveExpense to also call LiveDB
-const _baseSaveExpense = saveExpense;
-saveExpense = async function() {
-  _baseSaveExpense();
-  const exp = DB.expenses[0];
-  if (exp && !API.isDemo()) {
-    try { await LiveDB.createExpense(exp); } catch(e) {}
-  }
-};
-
-// ── Wire up missing overlay for status change ───────────
-// Ensure modal-status overlay exists dynamically if not in HTML
-(function ensureStatusOverlay() {
-  if (!document.getElementById('overlay-status') && !document.getElementById('modal-status-overlay')) {
-    const div = document.createElement('div');
-    div.className = 'overlay';
-    div.id = 'overlay-status';
-    div.setAttribute('onclick', "closeOverlayIfBg(event,'overlay-status')");
-    div.innerHTML = `
-      <div class="modal" style="max-width:380px">
-        <div class="modal-hdr">
-          <div class="modal-title">Change Status</div>
-          <button class="modal-close" onclick="closeOverlay('overlay-status')" aria-label="Close">✕</button>
-        </div>
-        <div class="modal-body">
-          <p style="font-size:13px;color:var(--muted);margin-bottom:14px">Updating status for: <strong id="modal-status-name"></strong></p>
-          <div class="f-grp">
-            <label class="f-lbl">New Status</label>
-            <select class="f-inp" id="modal-status">
-              <option>Applied</option><option>Screening</option><option>Interview</option>
-              <option>Medical</option><option>Offered</option><option>Deployed</option><option>Rejected</option>
-            </select>
-          </div>
-        </div>
-        <div class="modal-ftr">
-          <button class="btn btn-s" onclick="closeOverlay('overlay-status')">Cancel</button>
-          <button class="btn btn-p" onclick="submitStatusChange()">Update Status</button>
-        </div>
-      </div>`;
-    document.body.appendChild(div);
-  }
-})();
-
-// ── Patch nav() to also handle page-joborders alias ────
-const _baseNav = nav;
-nav = function(page) {
-  const mapped = PAGE_ALIAS[page] || page;
-  // Try both IDs (page-jobs and page-joborders)
-  const target  = document.getElementById('page-' + mapped) || document.getElementById('page-' + page);
-  if (!target) { console.warn('nav: no page for', page, '/', mapped); return; }
-  _baseNav(mapped);
-};
-
-// ── Patch markAllRead to call LiveDB ───────────────────
-const _baseMarkAllRead = markAllRead;
-markAllRead = async function() {
-  _baseMarkAllRead && _baseMarkAllRead();
-  await LiveDB.markAllRead().catch(() => {});
-};
-
-// ── Patch renderDocs to also use LiveDB ────────────────
-const _baseRenderDocs = renderDocs;
-renderDocs = async function() {
-  try {
-    const docs = await LiveDB.getDocuments();
-    if (docs && docs.length > 0) DB.documents = docs;
-  } catch(e) {}
-  _baseRenderDocs();
-};
-
-// ── Patch approveDoc to call LiveDB ───────────────────
-const _baseApproveDoc = approveDoc;
-approveDoc = async function(id) {
-  _baseApproveDoc(id); // local update
-  await LiveDB.reviewDocument(id, 'Approved').catch(() => {});
-};
-
-// ── Add reject doc function ────────────────────────────
-function rejectDoc(id) {
-  const doc = DB.documents.find(d => d.id === id);
-  if (doc) { doc.status = 'Rejected'; addAudit('UPDATE','Document',`Rejected: ${doc.name}`); renderDocs(); }
-  LiveDB.reviewDocument(id, 'Rejected').catch(() => {});
-  toast('Document rejected', 'info');
-}
-
-// ── Patch renderAnalytics to use LiveDB stats ─────────
-const _baseRenderAnalytics = renderAnalytics;
-renderAnalytics = async function() {
-  try {
-    const stats = await LiveDB.getAnalytics();
-    if (stats && stats.statusBreakdown) {
-      stats.statusBreakdown.forEach(r => {
-        const match = DB.applicants.filter(a => a.status === r.status);
-        // Already reflected in DB.applicants
-      });
+  // DEMO MODE
+  if (!apiUrl) {
+    if (email === 'admin@rams.io' && pass === 'password123') {
+      localStorage.setItem('rams_token', 'demo');
+      localStorage.setItem('rams_user', JSON.stringify({ name: 'Admin User', email, role: 'admin' }));
+      localStorage.removeItem('rams_api_url');
+      showApp({ name: 'Admin User', email, role: 'admin' });
+    } else {
+      errEl.textContent = 'Demo credentials: admin@rams.io / password123';
+      errEl.style.display = 'block';
     }
-  } catch(e) {}
-  _baseRenderAnalytics();
-};
+    return;
+  }
 
-// ── Patch renderAccounting to use LiveDB ──────────────
-const _baseRenderAccounting = renderAccounting;
-renderAccounting = async function() {
+  // LIVE MODE
+  if (!email || !pass) {
+    errEl.textContent = 'Email and password are required.';
+    errEl.style.display = 'block';
+    return;
+  }
+
+  btn.textContent = 'Signing in…';
+  btn.disabled = true;
+
   try {
-    const exps = await LiveDB.getExpenses();
-    if (exps && exps.length > 0) DB.expenses = exps;
-  } catch(e) {}
-  _baseRenderAccounting();
-};
-
-// ── Patch renderKanban to use live DB ─────────────────
-const _baseRenderKanban = renderKanban;
-renderKanban = async function() {
-  try {
-    const apps = await LiveDB.getApplicants();
-    if (apps && apps.length > 0) DB.applicants = apps;
-  } catch(e) {}
-  _baseRenderKanban();
-};
-
-// ── Patch renderAudit to use LiveDB ───────────────────
-const _baseRenderAudit = renderAudit;
-renderAudit = async function() {
-  try {
-    const logs = await LiveDB.getAudit();
-    if (logs && logs.length > 0) DB.auditLog = logs;
-  } catch(e) {}
-  _baseRenderAudit();
-};
-
-// ── Patch nav() render calls to use async versions ────
-// Already handled by the _baseNav wrapper — the async render functions
-// will be called via the standard nav() dispatch.
-
-// ── Keyboard: ESC closes any open overlay ─────────────
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') {
-    document.querySelectorAll('.overlay.active').forEach(o => {
-      o.classList.remove('active');
+    // Always clear stale token before login
+    localStorage.removeItem('rams_token');
+    const res  = await fetch(apiUrl.replace(/\/$/, '') + '/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password: pass }),
     });
-    if (document.getElementById('applicant-drawer')?.classList.contains('active')) {
-      closeDrawer();
-    }
-    document.body.style.overflow = '';
-  }
-});
-
-// ── Fix: oninput on search fields → re-filter+render ──
-(function wireSearchFields() {
-  const auditSearch = document.getElementById('audit-search');
-  if (auditSearch && !auditSearch.dataset.wired) {
-    auditSearch.addEventListener('input', filterAudit);
-    auditSearch.dataset.wired = '1';
-  }
-  const expSearch = document.getElementById('exp-search');
-  if (expSearch && !expSearch.dataset.wired) {
-    expSearch.addEventListener('input', filterExpenses);
-    expSearch.dataset.wired = '1';
-  }
-})();
-
-// ── Fix: chat enter key ───────────────────────────────
-(function wireChatInput() {
-  const inp = document.getElementById('chat-input');
-  if (inp && !inp.dataset.wired) {
-    inp.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendChat(); } });
-    inp.dataset.wired = '1';
-  }
-})();
-
-
-// Show auth screen or boot directly if a valid session exists
-// ── INIT — runs immediately, auth screen is default visible ──────────────────
-
-// ════════════════════════════════════════════════════════
-// MOBILE / RESPONSIVE
-// ════════════════════════════════════════════════════════
-
-function toggleMobileSidebar() {
-  if (window.innerWidth > 768) return; // safety guard — desktop only
-  const sidebar = document.getElementById('sidebar');
-  const overlay = document.getElementById('mobile-overlay');
-  const isOpen  = sidebar.classList.contains('mobile-open');
-  if (isOpen) {
-    closeMobileSidebar();
-  } else {
-    sidebar.classList.add('mobile-open');
-    overlay.style.display = 'block'; // explicit show
-    document.body.style.overflow = 'hidden';
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(data.error || 'Login failed');
+    localStorage.setItem('rams_token', data.token);
+    localStorage.setItem('rams_user', JSON.stringify(data.user));
+    localStorage.setItem('rams_api_url', apiUrl);
+    showApp(data.user);
+  } catch(err) {
+    errEl.textContent = err.message || 'Login failed. Check credentials and API URL.';
+    errEl.style.display = 'block';
+    localStorage.removeItem('rams_token');
+  } finally {
+    btn.textContent = 'Sign In';
+    btn.disabled = false;
   }
 }
 
-function closeMobileSidebar() {
-  const sidebar = document.getElementById('sidebar');
-  const overlay = document.getElementById('mobile-overlay');
-  sidebar.classList.remove('mobile-open');
-  overlay.style.display = 'none'; // explicit hide
-  document.body.style.overflow = '';
-}
-
-// Close sidebar when a nav item is tapped on mobile (delegated)
-document.addEventListener('click', e => {
-  if (window.innerWidth <= 768 && e.target.closest('.sb-item')) {
-    closeMobileSidebar();
-  }
-});
-
-// Handle resize — reset mobile sidebar state when going desktop
-window.addEventListener('resize', () => {
-  if (window.innerWidth > 768) {
-    closeMobileSidebar();
-    document.body.style.overflow = '';
-  }
-});
-
-// Swipe to open sidebar from left edge
-(function initSwipeGesture() {
-  let touchStartX = 0;
-  let touchStartY = 0;
-  document.addEventListener('touchstart', e => {
-    touchStartX = e.touches[0].clientX;
-    touchStartY = e.touches[0].clientY;
-  }, { passive: true });
-  document.addEventListener('touchend', e => {
-    if (window.innerWidth > 768) return;
-    const dx = e.changedTouches[0].clientX - touchStartX;
-    const dy = Math.abs(e.changedTouches[0].clientY - touchStartY);
-    // Swipe right from left edge to open
-    if (touchStartX < 30 && dx > 60 && dy < 80) toggleMobileSidebar();
-    // Swipe left to close
-    if (dx < -60 && dy < 80) closeMobileSidebar();
-  }, { passive: true });
-})();
-
+// ── Init ─────────────────────────────────────────────
 (function init() {
   try {
     const token  = localStorage.getItem('rams_token');
-    const user   = localStorage.getItem('rams_user');
-    const apiUrl = localStorage.getItem('rams_api_url');
-
-    // Only restore session if ALL THREE exist AND token is not the demo placeholder
-    const validSession = token && user && apiUrl && token !== 'demo' && token.length > 10;
-
-    if (validSession) {
-      // Confirmed real session — hide auth screen and boot
-      document.getElementById('auth-screen').style.display = 'none';
-      const appEl = document.getElementById('app');
-      appEl.classList.add('session-active');
-      appEl.style.display = 'flex';
-      bootApp();
-    } else {
-      // No valid session — wipe everything and stay on auth screen
-      localStorage.removeItem('rams_token');
-      localStorage.removeItem('rams_user');
-      // Pre-fill the API URL field if previously saved
-      const urlInput = document.getElementById('api-url-input');
-      if (urlInput && apiUrl) urlInput.value = apiUrl;
-      const emailInput = document.getElementById('login-email');
-      if (emailInput) emailInput.focus();
-    }
+    const user   = JSON.parse(localStorage.getItem('rams_user') || 'null');
+    const apiUrl = localStorage.getItem('rams_api_url') || '';
+    const isLive = token && token !== 'demo' && token.length > 10 && user && apiUrl;
+    const isDemo = token === 'demo' && user;
+    if (isLive || isDemo) { showApp(user); }
+    else { localStorage.removeItem('rams_token'); localStorage.removeItem('rams_user'); showLogin(); }
   } catch(e) {
-    // Any error → show auth screen (fail safe)
-    console.error('Init error:', e);
-    localStorage.clear();
+    localStorage.clear(); showLogin();
   }
 })();
+
+
+/* ════════════════════════════════════════════════════
+   AUTH LAYER
+════════════════════════════════════════════════════ */
+function showLogin() {
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('app').classList.remove('active');
+  const savedUrl = localStorage.getItem('rams_api_url') || '';
+  const urlEl = document.getElementById('login-api-url');
+  if (urlEl) urlEl.value = savedUrl;
+  setTimeout(() => { const el = document.getElementById('login-email'); if(el) el.focus(); }, 80);
+}
+
+function showApp(user) {
+  document.getElementById('login-screen').style.display = 'none';
+  const appEl = document.getElementById('app');
+  appEl.style.display = 'flex';
+  appEl.classList.add('active');
+  if (user) {
+    const initials = (user.name || user.email || 'U').split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+    const n = document.getElementById('sb-uname'); if(n) n.textContent = user.name || user.email;
+    const r = document.getElementById('sb-urole'); if(r) r.textContent = user.email || user.role || '';
+    const a = document.getElementById('sb-avatar'); if(a) a.textContent = initials;
+    const h = document.getElementById('hdr-avatar'); if(h) h.textContent = initials;
+  }
+  if (typeof renderDashboard === 'function') renderDashboard();
+  if (typeof renderNotifications === 'function') renderNotifications();
+}
+
+function handleLogout() {
+  localStorage.removeItem('rams_token');
+  localStorage.removeItem('rams_user');
+  localStorage.removeItem('rams_api_url');
+  showLogin();
+}
+
+async function handleLogin() {
+  const email  = (document.getElementById('login-email').value   || '').trim();
+  const pass   = (document.getElementById('login-password').value || '');
+  const apiUrl = (document.getElementById('login-api-url').value  || '').trim();
+  const errEl  = document.getElementById('login-error');
+  const btn    = document.getElementById('login-btn');
+  errEl.style.display = 'none';
+
+  // DEMO MODE
+  if (!apiUrl) {
+    if (email === 'admin@rams.io' && pass === 'password123') {
+      localStorage.setItem('rams_token', 'demo');
+      localStorage.setItem('rams_user', JSON.stringify({ name: 'Admin User', email, role: 'admin' }));
+      localStorage.removeItem('rams_api_url');
+      showApp({ name: 'Admin User', email, role: 'admin' });
+    } else {
+      errEl.textContent = 'Demo credentials: admin@rams.io / password123';
+      errEl.style.display = 'block';
+    }
+    return;
+  }
+
+  // LIVE MODE
+  if (!email || !pass) {
+    errEl.textContent = 'Email and password are required.';
+    errEl.style.display = 'block';
+    return;
+  }
+
+  btn.textContent = 'Signing in…';
+  btn.disabled = true;
+
+  try {
+    localStorage.removeItem('rams_token');
+    const res = await fetch(apiUrl.replace(/\/g, '').replace(/\/$/, '') + '/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password: pass }),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(data.error || 'Login failed');
+    localStorage.setItem('rams_token', data.token);
+    localStorage.setItem('rams_user', JSON.stringify(data.user));
+    localStorage.setItem('rams_api_url', apiUrl);
+    showApp(data.user);
+  } catch(err) {
+    errEl.textContent = err.message || 'Login failed. Check credentials and API URL.';
+    errEl.style.display = 'block';
+    localStorage.removeItem('rams_token');
+  } finally {
+    btn.textContent = 'Sign In';
+    btn.disabled = false;
+  }
+}
+
+// ── Init ──────────────────────────────────────────────
+(function init() {
+  try {
+    const token  = localStorage.getItem('rams_token');
+    const user   = JSON.parse(localStorage.getItem('rams_user') || 'null');
+    const apiUrl = localStorage.getItem('rams_api_url') || '';
+    const isLive = token && token !== 'demo' && token.length > 10 && user && apiUrl;
+    const isDemo = token === 'demo' && user;
+    if (isLive || isDemo) { showApp(user); }
+    else { localStorage.removeItem('rams_token'); localStorage.removeItem('rams_user'); showLogin(); }
+  } catch(e) {
+    localStorage.clear(); showLogin();
+  }
+})();
+
+
+// ── Wire login UI events (after all functions defined) ────────────────
+(function wireLoginEvents() {
+  const btn  = document.getElementById('login-btn');
+  const eml  = document.getElementById('login-email');
+  const pwd  = document.getElementById('login-password');
+  if (btn) btn.addEventListener('click', handleLogin);
+  if (eml) eml.addEventListener('keydown', e => {
+    if (e.key === 'Enter') { e.preventDefault(); const p = document.getElementById('login-password'); if(p) p.focus(); }
+  });
+  if (pwd) pwd.addEventListener('keydown', e => {
+    if (e.key === 'Enter') { e.preventDefault(); handleLogin(); }
+  });
+})();
+
 </script>
 </body>
 </html>
