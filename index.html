@@ -33,7 +33,7 @@ a{text-decoration:none;color:inherit;}
 .app{display:flex;height:100vh;overflow:hidden;}
 .sidebar{width:var(--sw);flex-shrink:0;background:var(--navy);display:flex;flex-direction:column;overflow-y:auto;transition:width .25s;}
 .sidebar.collapsed{width:62px;}
-.sidebar.collapsed .sb-label,.sidebar.collapsed .sb-sec-lbl,.sidebar.collapsed .sb-badge,.sidebar.collapsed .sb-org-text,.sidebar.collapsed .sb-user-text,.sidebar.collapsed .sb-upgrade,.sidebar.collapsed .sb-logo-text{display:none;}
+.sidebar.collapsed .sb-label,.sidebar.collapsed .sb-sec-lbl,.sidebar.collapsed .sb-badge,.sidebar.collapsed .sb-org-text,.sidebar.collapsed .sb-user-text,.sidebar.collapsed .sb-logo-text{display:none;}
 .sidebar.collapsed .sb-item{justify-content:center;padding:10px;}
 .right{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0;}
 .header{height:var(--hh);background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 22px;gap:12px;flex-shrink:0;}
@@ -68,11 +68,11 @@ a{text-decoration:none;color:inherit;}
 .sb-badge{background:rgba(255,255,255,.15);color:#fff;font-size:10px;font-weight:700;padding:1px 6px;border-radius:20px;font-family:'IBM Plex Mono',monospace;flex-shrink:0;}
 .sb-badge.red{background:#EF4444;}.sb-badge.green{background:#16A34A;}.sb-badge.amber{background:#D97706;}
 .sb-footer{margin-top:auto;border-top:1px solid rgba(255,255,255,.06);padding:10px 8px;}
-.sb-upgrade{background:linear-gradient(135deg,rgba(20,71,230,.4),rgba(20,71,230,.15));border:1px solid rgba(20,71,230,.3);border-radius:9px;padding:12px;margin-bottom:10px;}
-.sb-upgrade-title{font-size:12px;font-weight:700;color:#fff;margin-bottom:3px;}
-.sb-upgrade-sub{font-size:11px;color:rgba(255,255,255,.5);margin-bottom:8px;line-height:1.5;}
-.sb-upgrade-btn{width:100%;padding:6px;background:var(--brand);border:none;border-radius:7px;color:#fff;font-size:11.5px;font-weight:700;cursor:pointer;font-family:'Bricolage Grotesque',sans-serif;transition:.15s;}
-.sb-upgrade-btn:hover{background:var(--brand-d);}
+
+
+
+
+
 .sb-user{display:flex;align-items:center;gap:8px;padding:8px 8px;border-radius:7px;cursor:pointer;transition:.15s;}
 .sb-user:hover{background:rgba(255,255,255,.07);}
 .sb-avatar{width:30px;height:30px;border-radius:7px;background:var(--brand);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;flex-shrink:0;}
@@ -251,24 +251,24 @@ tbody tr:hover td{background:var(--s2);}
 .toggle::after{content:'';position:absolute;width:16px;height:16px;border-radius:50%;background:#fff;top:3px;left:3px;transition:.2s;box-shadow:var(--xs);}
 .toggle.on::after{left:21px;}
 /* BILLING */
-.billing-hero{background:linear-gradient(135deg,var(--navy),var(--navy2));border-radius:14px;padding:28px;margin-bottom:20px;position:relative;overflow:hidden;}
-.billing-hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 100% 0%,rgba(20,71,230,.3),transparent);}
-.billing-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;}
-.billing-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:20px;}
-.billing-card-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:14px;}
+
+
+
+
+
 .usage-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
 .usage-lbl{font-size:13px;color:var(--muted);}.usage-val{font-size:13px;font-family:'IBM Plex Mono',monospace;font-weight:600;color:var(--text);}
 .usage-bar-wrap{height:6px;background:var(--s2);border-radius:3px;overflow:hidden;margin-bottom:14px;}
 .usage-bar{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--brand),var(--teal));}
 .invoice-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);}
 .invoice-row:last-child{border-bottom:none;}
-.plan-compare{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
-.plan-c{border:2px solid var(--border);border-radius:12px;padding:22px;transition:.15s;cursor:pointer;}
-.plan-c:hover{border-color:var(--brand);}
-.plan-c.current{border-color:var(--brand);background:var(--brand-l);}
-.plan-c-badge{font-size:10px;font-weight:700;background:var(--brand);color:#fff;padding:2px 8px;border-radius:20px;display:inline-block;margin-bottom:8px;}
-.plan-c-name{font-size:13px;font-weight:700;color:var(--muted);font-family:'IBM Plex Mono',monospace;text-transform:uppercase;margin-bottom:4px;}
-.plan-c-price{font-size:26px;font-weight:800;color:var(--text);letter-spacing:-1px;}
+
+
+
+
+
+
+
 /* ROLES */
 .access-cell-full{width:26px;height:26px;border-radius:6px;background:#F0FDF4;border:1.5px solid #86EFAC;display:flex;align-items:center;justify-content:center;font-size:12px;margin:0 auto;}
 .access-cell-limited{width:26px;height:26px;border-radius:6px;background:#FFFBEB;border:1.5px solid #FDE68A;display:flex;align-items:center;justify-content:center;font-size:12px;margin:0 auto;}
@@ -379,13 +379,15 @@ tbody tr:hover td{background:var(--s2);}
 <aside class="sidebar" id="sidebar">
   <div class="sb-logo">
     <div class="sb-logo-mark">R</div>
-    <div style="min-width:0"><div class="sb-logo-text">RAMS</div><div class="sb-logo-ver">v4.1 · Functional</div></div>
+    <div style="min-width:0"><div class="sb-logo-text">RAMS</div><div class="sb-logo-ver">Recruitment System</div></div>
     <button class="sb-collapse-btn" onclick="toggleSidebar()">◀</button>
   </div>
-  <div class="sb-org">
-    <div class="sb-org-icon">G</div>
-    <div class="sb-org-text"><div class="sb-org-name">Global Manpower Inc.</div><div class="sb-org-plan">Professional · 14d trial</div></div>
-    <span style="color:rgba(255,255,255,.3);font-size:12px">⌄</span>
+  <div class="sb-org" style="cursor:default">
+    <div class="sb-org-icon">RC</div>
+    <div class="sb-org-text">
+      <div class="sb-org-name">Recruitment Company</div>
+      <div class="sb-org-plan" style="color:rgba(255,255,255,.4);font-size:10px">Management System</div>
+    </div>
   </div>
   <div class="sb-section">
     <div class="sb-sec-lbl">Core</div>
@@ -405,16 +407,12 @@ tbody tr:hover td{background:var(--s2);}
     <div class="sb-sec-lbl">Workspace</div>
     <div class="sb-item" onclick="go('chat',this)"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span class="sb-label">Chat</span><span class="sb-badge amber" id="sb-chat-count">5</span></div>
     <div class="sb-item" onclick="go('integrations',this)"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="3"/><circle cx="5" cy="19" r="3"/><circle cx="19" cy="19" r="3"/><line x1="12" y1="8" x2="5" y2="16"/><line x1="12" y1="8" x2="19" y2="16"/></svg><span class="sb-label">Integrations</span></div>
-    <div class="sb-item" onclick="go('billing',this)"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg><span class="sb-label">Billing</span></div>
+
     <div class="sb-item" onclick="go('roles',this)"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg><span class="sb-label">Roles & Permissions</span></div>
     <div class="sb-item" onclick="go('settings',this)"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg><span class="sb-label">Settings</span></div>
   </div>
   <div class="sb-footer">
-    <div class="sb-upgrade">
-      <div class="sb-upgrade-title">⚡ 14 days left in trial</div>
-      <div class="sb-upgrade-sub">Upgrade to keep unlimited applicants and all premium features.</div>
-      <button class="sb-upgrade-btn" onclick="go('billing',null)">Upgrade to Pro →</button>
-    </div>
+
     <div class="role-switcher">
       <button class="role-switch-btn" onclick="toggleRoleDropdown()">
         <div class="role-dot" id="role-dot" style="background:#16A34A"></div>
@@ -471,8 +469,8 @@ tbody tr:hover td{background:var(--s2);}
     <div class="page active content-pad" id="page-dashboard">
       <div class="pg-hdr">
         <div class="pg-hdr-l">
-          <h1>Good morning, Maria 👋</h1>
-          <p>Here's what's happening at GlobalRecruits today.</p>
+          <h1>Good morning 👋</h1>
+          <p>Here's what's happening at My Recruitment Company today.</p>
         </div>
         <div class="pg-hdr-r">
           <button class="btn btn-s btn-sm" onclick="exportData('dashboard')">
@@ -827,33 +825,7 @@ tbody tr:hover td{background:var(--s2);}
     <!-- ══════════════════════════════════════
          BILLING
     ══════════════════════════════════════ -->
-    <div class="page content-pad" id="page-billing">
-      <div class="pg-hdr">
-        <div class="pg-hdr-l"><h1>Billing & Plans</h1><p>Manage your subscription, invoices, and payment methods.</p></div>
-      </div>
-      <div class="billing-grid" id="billing-plans"></div>
-      <div class="card cp" style="margin-bottom:18px">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
-          <div style="font-size:14px;font-weight:800">Invoice History</div>
-          <button class="btn btn-s btn-sm" onclick="exportData('billing')">Export All</button>
-        </div>
-        <table style="width:100%;border-collapse:collapse" role="grid">
-          <thead><tr><th>Invoice</th><th>Date</th><th>Amount</th><th>Status</th><th style="text-align:right">Actions</th></tr></thead>
-          <tbody id="invoice-tbody"></tbody>
-        </table>
-      </div>
-      <div class="card cp">
-        <div style="font-size:14px;font-weight:800;margin-bottom:14px">Payment Method</div>
-        <div style="display:flex;align-items:center;gap:14px;padding:14px;background:var(--s2);border:1px solid var(--border);border-radius:9px">
-          <div style="font-size:28px">💳</div>
-          <div>
-            <div style="font-weight:800;font-size:13px">Visa ending in 4242</div>
-            <div style="font-size:12px;color:var(--muted)">Expires 03/2027 · Auto-renews monthly</div>
-          </div>
-          <button class="btn btn-s btn-sm" style="margin-left:auto" onclick="toast('Payment method update coming soon','info')">Update</button>
-        </div>
-      </div>
-    </div>
+    
 
     <!-- ══════════════════════════════════════
          SETTINGS
@@ -868,7 +840,7 @@ tbody tr:hover td{background:var(--s2);}
       <div class="settings-layout">
         <nav class="settings-nav" aria-label="Settings sections">
           <div class="settings-nav-item active" onclick="switchSettings('general',this)">General</div>
-          <div class="settings-nav-item" onclick="switchSettings('agency',this)">Agency Profile</div>
+          <div class="settings-nav-item" onclick="switchSettings('agency',this)">Company Profile</div>
           <div class="settings-nav-item" onclick="switchSettings('notifications',this)">Notifications</div>
           <div class="settings-nav-item" onclick="switchSettings('security',this)">Security</div>
           <div class="settings-nav-item" onclick="switchSettings('users',this)">Team & Users</div>
@@ -1271,7 +1243,7 @@ let currentSettingsSection = 'general';
 const PAGE_TITLES = {
   dashboard:'Dashboard', pipeline:'Pipeline', applicants:'Applicants',
   documents:'Documents', jobs:'Job Orders', analytics:'Analytics',
-  accounting:'Accounting', billing:'Billing & Plans', audit:'Audit Trail',
+  accounting:'Accounting', audit:'Audit Trail',
   chat:'Team Chat', integrations:'Integrations', settings:'Settings', roles:'Roles & Permissions'
 };
 
@@ -1295,7 +1267,6 @@ function nav(page) {
   if (page === 'audit') renderAudit();
   if (page === 'chat') renderChat();
   if (page === 'integrations') renderIntegrations();
-  if (page === 'billing') renderBilling();
   if (page === 'settings') renderSettings();
   if (page === 'roles') renderRoles();
 }
@@ -2270,81 +2241,6 @@ function toggleInteg(id) {
 // ════════════════════════════════════════════════════════
 // BILLING
 // ════════════════════════════════════════════════════════
-function renderBilling() {
-  document.getElementById('billing-plans').innerHTML=[
-    {name:'Starter',price:'₱2,500',period:'/mo',features:['Up to 50 applicants','5 user accounts','Basic reporting','Email support'],current:false},
-    {name:'Professional',price:'₱6,500',period:'/mo',features:['Up to 500 applicants','Unlimited users','Advanced analytics','Integrations','Priority support'],current:true},
-    {name:'Enterprise',price:'Custom',period:'',features:['Unlimited applicants','Custom integrations','Dedicated account manager','SLA guarantee','API access'],current:false},
-  ].map(p=>`
-    <div class="plan-card ${p.current?'current':''}">
-      ${p.current?'<span class="plan-badge">CURRENT</span>':''}
-      <div class="plan-name">${p.name}</div>
-      <div class="plan-price">${p.price}<span>${p.period}</span></div>
-      <div style="border-top:1px solid var(--border);margin:14px 0;padding-top:14px">
-        ${p.features.map(f=>`<div class="plan-feature"><span class="plan-feature-ico">✓</span>${f}</div>`).join('')}
-      </div>
-      <button class="btn ${p.current?'btn-s':'btn-p'}" style="width:100%" onclick="toast('${p.current?'Already on this plan':'Contact sales to upgrade'}','info')">${p.current?'Current Plan':'${p.name==="Enterprise"?"Contact Sales":"Upgrade"}'}</button>
-    </div>
-  `).join('');
-
-  const invoices=[
-    {id:'INV-2024-003',date:'2024-03-01',amount:'₱6,500',status:'Paid'},
-    {id:'INV-2024-002',date:'2024-02-01',amount:'₱6,500',status:'Paid'},
-    {id:'INV-2024-001',date:'2024-01-01',amount:'₱6,500',status:'Paid'},
-    {id:'INV-2023-012',date:'2023-12-01',amount:'₱6,500',status:'Paid'},
-  ];
-  document.getElementById('invoice-tbody').innerHTML=invoices.map(i=>`
-    <tr>
-      <td style="font-family:'IBM Plex Mono',monospace;font-size:12px">${i.id}</td>
-      <td style="font-size:12.5px">${i.date}</td>
-      <td style="font-weight:800;font-family:'IBM Plex Mono',monospace">${i.amount}</td>
-      <td>${pillHtml(i.status)}</td>
-      <td style="text-align:right"><button class="btn btn-ghost btn-xs" onclick="toast('Invoice download','info')">Download PDF</button></td>
-    </tr>
-  `).join('');
-}
-
-// ════════════════════════════════════════════════════════
-// SETTINGS
-// ════════════════════════════════════════════════════════
-const SETTINGS_SECTIONS={
-  general:{title:'General Settings',fields:[
-    {lbl:'System Language',sub:'Choose the display language for the application',type:'select',opts:['English (US)','Filipino','Español']},
-    {lbl:'Time Zone',sub:'Set your local time zone for scheduling',type:'select',opts:['Asia/Manila (UTC+8)','UTC','America/New_York']},
-    {lbl:'Date Format',sub:'Choose how dates are displayed throughout RAMS',type:'select',opts:['MM/DD/YYYY','DD/MM/YYYY','YYYY-MM-DD']},
-    {lbl:'Auto-save',sub:'Automatically save changes every 5 minutes',type:'toggle',value:true},
-    {lbl:'Compact Mode',sub:'Use more compact spacing in tables and lists',type:'toggle',value:false},
-  ]},
-  agency:{title:'Agency Profile',fields:[
-    {lbl:'Agency Name',sub:'Your registered agency name',type:'input',value:'GlobalRecruits PH'},
-    {lbl:'POEA License No.',sub:'Your POEA license number for compliance',type:'input',value:'POEA-123-456-789'},
-    {lbl:'Contact Email',sub:'Primary contact email for official communications',type:'input',value:'admin@globalrecruits.ph'},
-    {lbl:'Phone Number',sub:'Agency main phone number',type:'input',value:'+63 2 8123 4567'},
-    {lbl:'Address',sub:'Registered business address',type:'input',value:'123 Ayala Ave, Makati City'},
-  ]},
-  notifications:{title:'Notifications',fields:[
-    {lbl:'Email Alerts',sub:'Receive email notifications for critical updates',type:'toggle',value:true},
-    {lbl:'New Applicant Alerts',sub:'Notify when a new applicant is registered',type:'toggle',value:true},
-    {lbl:'Document Reminders',sub:'Weekly reminders for pending document reviews',type:'toggle',value:false},
-    {lbl:'Job Deadline Alerts',sub:'Alerts 7 days before job order deadlines',type:'toggle',value:true},
-    {lbl:'Deployment Confirmations',sub:'Email confirmation when applicant is deployed',type:'toggle',value:true},
-  ]},
-  security:{title:'Security',fields:[
-    {lbl:'Two-Factor Authentication',sub:'Require 2FA for all admin accounts',type:'toggle',value:true},
-    {lbl:'Session Timeout',sub:'Auto-logout after period of inactivity',type:'select',opts:['30 minutes','1 hour','4 hours','Never']},
-    {lbl:'Password Policy',sub:'Require strong passwords for all users',type:'toggle',value:true},
-    {lbl:'Audit Logging',sub:'Record all user actions in the audit trail',type:'toggle',value:true},
-    {lbl:'IP Allowlist',sub:'Restrict access to specific IP addresses',type:'toggle',value:false},
-  ]},
-  users:{title:'Team & Users',fields:[]},
-  data:{title:'Data & Privacy',fields:[
-    {lbl:'Data Retention',sub:'How long to keep applicant records',type:'select',opts:['1 year','3 years','5 years','Indefinitely']},
-    {lbl:'Export Personal Data',sub:'Download a copy of all stored personal data',type:'button',lbl2:'Export Data'},
-    {lbl:'Delete Account Data',sub:'Permanently delete all agency data',type:'button',lbl2:'Request Deletion',danger:true},
-    {lbl:'GDPR Compliance Mode',sub:'Enable strict data protection measures',type:'toggle',value:false},
-    {lbl:'Anonymize Rejected',sub:'Automatically anonymize rejected applicant data',type:'toggle',value:false},
-  ]},
-};
 function switchSettings(section, el) {
   currentSettingsSection = section;
   document.querySelectorAll('.settings-nav-item').forEach(i=>i.classList.remove('active'));
@@ -2394,7 +2290,7 @@ const ROLES_CONFIG=[
   {name:'Recruiter',color:'#1447E6',desc:'Manage applicants and pipeline',users:2},
   {name:'Manager',color:'#7C3AED',desc:'View reports and approve actions',users:1},
   {name:'Compliance',color:'#D97706',desc:'Document review and audit',users:1},
-  {name:'Finance',color:'#0891B2',desc:'Accounting and billing access',users:1},
+  {name:'Finance',color:'#0891B2',desc:'Accounting and expenses access',users:1},
   {name:'Viewer',color:'#8FA0BE',desc:'Read-only access to data',users:0},
 ];
 const PERMISSIONS=[
@@ -2414,7 +2310,7 @@ const PERMISSIONS=[
   ['Manage Roles',true,false,false,false,false,false],
   ['View Audit Log',true,false,true,true,false,false],
   ['Manage Integrations',true,false,false,false,false,false],
-  ['Manage Billing',true,false,false,false,false,false],
+  ['Manage Expenses',true,false,false,false,false,false],
   ['System Settings',true,false,false,false,false,false],
   ['Send Chat Messages',true,true,true,true,true,false],
   ['View Dashboard',true,true,true,true,true,true],
@@ -2450,7 +2346,7 @@ function exportCSV(rows, name) {
   toast(`Exported ${rows.length} records to CSV`, 'success');
 }
 function exportData(type) {
-  const map = {applicants:()=>exportCSV(DB.applicants,'applicants'), accounting:()=>exportCSV(DB.expenses,'expenses'), audit:()=>exportCSV(DB.auditLog,'audit_log'), jobs:()=>exportCSV(DB.jobs,'job_orders'), roles:()=>exportCSV(DB.auditLog,'roles'), billing:()=>toast('Invoice export initiated','info'), analytics:()=>toast('Analytics PDF export initiated','info'), dashboard:()=>exportCSV(DB.applicants,'dashboard_report'), pipeline:()=>exportCSV(DB.applicants,'pipeline'), docs:()=>exportCSV(DB.documents,'documents')};
+  const map = {applicants:()=>exportCSV(DB.applicants,'applicants'), accounting:()=>exportCSV(DB.expenses,'expenses'), audit:()=>exportCSV(DB.auditLog,'audit_log'), jobs:()=>exportCSV(DB.jobs,'job_orders'), roles:()=>exportCSV(DB.auditLog,'roles'),  analytics:()=>toast('Analytics PDF export initiated','info'), dashboard:()=>exportCSV(DB.applicants,'dashboard_report'), pipeline:()=>exportCSV(DB.applicants,'pipeline'), docs:()=>exportCSV(DB.documents,'documents')};
   if (map[type]) map[type](); else toast('Export initiated','info');
 }
 
