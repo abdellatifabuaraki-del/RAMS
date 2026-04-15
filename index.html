@@ -425,8 +425,16 @@ tbody tr:hover td{background:var(--s2);}
       <div class="sb-avatar" id="sb-avatar">SA</div>
       <div style="flex:1;min-width:0">
         <div class="sb-uname" id="sb-uname">Super Admin</div>
-        <div class="sb-urole" id="sb-urole">admin@globalmanpower.ph</div>
+        <div class="sb-urole" id="sb-urole">admin@rams.io</div>
       </div>
+      <button onclick="handleLogout()" title="Sign out" aria-label="Sign out"
+        style="background:none;border:none;cursor:pointer;padding:6px;border-radius:6px;
+               color:rgba(255,255,255,.4);font-size:16px;line-height:1;flex-shrink:0;
+               transition:color .15s,background .15s;"
+        onmouseover="this.style.color='#fff';this.style.background='rgba(220,38,38,.25)'"
+        onmouseout="this.style.color='rgba(255,255,255,.4)';this.style.background='none'">
+        ⏻
+      </button>
     </div>
   </div>
 </aside>
@@ -2288,7 +2296,7 @@ const SETTINGS_SECTIONS = {
       { lbl: 'Session Timeout',    sub: 'Auto-logout after inactivity',                   type: 'select', opts: ['30 minutes','1 hour','4 hours','Never'] },
       { lbl: 'Password Policy',    sub: 'Enforce strong password requirements',            type: 'toggle', value: true },
       { lbl: 'Login Audit Log',    sub: 'Track all login attempts',                       type: 'toggle', value: true },
-      { lbl: 'Change Password',    sub: 'Update your account password',                   type: 'button', lbl2: 'Change Password', danger: false },
+      { lbl: 'Change Password',    sub: 'Update your account password',                   type: 'button', lbl2: 'Change Password', danger: false, action: 'openChangePassword' },
     ]
   },
   users: {
@@ -2333,7 +2341,7 @@ function renderSettings() {
         ${f.type==='toggle'?`<button class="toggle ${f.value?'on':''}" onclick="this.classList.toggle('on')" aria-label="${f.lbl}" aria-pressed="${f.value}"></button>`:''}
         ${f.type==='select'?`<select class="filter-select" style="min-width:160px"><option>${f.opts.join('</option><option>')}</option></select>`:''}
         ${f.type==='input'?`<input type="text" class="form-input" value="${f.value}" style="max-width:280px">`:''}
-        ${f.type==='button'?`<button class="btn ${f.danger?'btn-danger':'btn-s'} btn-sm" onclick="toast('${f.lbl2} initiated','${f.danger?'error':'info'}')">${f.lbl2}</button>`:''}
+        ${f.type==='button'?`<button class="btn ${f.danger?'btn-danger':'btn-s'} btn-sm" onclick="${f.action?f.action+'()':"toast('"+(f.lbl2||f.lbl)+" initiated','"+(f.danger?'error':'info')+"')"  }">${f.lbl2||f.lbl}</button>`:''}
       </div>
     `).join('');
   }
@@ -2535,6 +2543,272 @@ function go(page, el) {
   }catch(e){ localStorage.clear(); _showLogin(); }
 })();
 
+
+// ════════════════════════════════════════════════════════
+// CHANGE PASSWORD
+// ════════════════════════════════════════════════════════
+function openChangePassword() {
+  document.getElementById('cp-current').value = '';
+  document.getElementById('cp-new').value = '';
+  document.getElementById('cp-confirm').value = '';
+  document.getElementById('cp-error').style.display = 'none';
+  openOverlay('overlay-change-password');
+  setTimeout(function(){ document.getElementById('cp-current').focus(); }, 100);
+}
+
+function submitChangePassword() {
+  var current = document.getElementById('cp-current').value.trim();
+  var newPwd  = document.getElementById('cp-new').value.trim();
+  var confirm = document.getElementById('cp-confirm').value.trim();
+  var errEl   = document.getElementById('cp-error');
+  errEl.style.display = 'none';
+
+  if (!current || !newPwd || !confirm) {
+    errEl.textContent = 'All fields are required.';
+    errEl.style.display = 'block'; return;
+  }
+  if (newPwd.length < 8) {
+    errEl.textContent = 'New password must be at least 8 characters.';
+    errEl.style.display = 'block'; return;
+  }
+  if (newPwd !== confirm) {
+    errEl.textContent = 'New passwords do not match.';
+    errEl.style.display = 'block'; return;
+  }
+
+  var apiUrl = localStorage.getItem('rams_api_url') || '';
+  var token  = localStorage.getItem('rams_token') || '';
+
+  // Demo mode — simulate success
+  if (!apiUrl || token === 'demo') {
+    closeOverlay('overlay-change-password');
+    toast('Password updated successfully', 'success');
+    return;
+  }
+
+  // Live mode — call backend
+  fetch(apiUrl.replace(/\/+$/, '') + '/api/auth/password', {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + token,
+    },
+    body: JSON.stringify({ current_password: current, new_password: newPwd }),
+  }).then(function(res) {
+    return res.json().then(function(d) { return { ok: res.ok, data: d }; });
+  }).then(function(r) {
+    if (!r.ok) throw new Error(r.data.error || 'Password change failed');
+    closeOverlay('overlay-change-password');
+    toast('Password updated successfully', 'success');
+  }).catch(function(err) {
+    errEl.textContent = err.message || 'Failed to update password.';
+    errEl.style.display = 'block';
+  });
+}
+
+// ════════════════════════════════════════════════════════
+// CUSTOM ROLES
+// ════════════════════════════════════════════════════════
+var selectedRoleColor = '#1447E6';
+var editingRoleIdx    = -1;
+
+function selectRoleColor(color, el) {
+  selectedRoleColor = color;
+  document.getElementById('role-color-value').value = color;
+  document.querySelectorAll('#role-color-picker > div').forEach(function(d) {
+    d.style.borderColor = 'transparent';
+    d.style.transform = 'scale(1)';
+  });
+  if (el) { el.style.borderColor = '#fff'; el.style.transform = 'scale(1.2)'; }
+}
+
+function openAddRole() {
+  editingRoleIdx = -1;
+  document.getElementById('role-modal-title').textContent = 'Add Custom Role';
+  document.getElementById('role-name-input').value = '';
+  document.getElementById('role-desc-input').value = '';
+  selectRoleColor('#1447E6', document.querySelector('#role-color-picker > div'));
+  openOverlay('overlay-role');
+  setTimeout(function(){ document.getElementById('role-name-input').focus(); }, 100);
+}
+
+function editRole(idx) {
+  var r = ROLES_CONFIG[idx];
+  if (!r) return;
+  editingRoleIdx = idx;
+  document.getElementById('role-modal-title').textContent = 'Edit Role';
+  document.getElementById('role-name-input').value = r.name;
+  document.getElementById('role-desc-input').value = r.desc;
+  // Highlight matching color
+  document.querySelectorAll('#role-color-picker > div').forEach(function(d) {
+    d.style.borderColor = 'transparent';
+    d.style.transform = 'scale(1)';
+    if (d.getAttribute('data-color') === r.color) {
+      d.style.borderColor = '#fff';
+      d.style.transform = 'scale(1.2)';
+    }
+  });
+  selectedRoleColor = r.color;
+  document.getElementById('role-color-value').value = r.color;
+  openOverlay('overlay-role');
+}
+
+function deleteRole(idx) {
+  var r = ROLES_CONFIG[idx];
+  if (!r) return;
+  if (!confirm('Delete role "' + r.name + '"? This cannot be undone.')) return;
+  ROLES_CONFIG.splice(idx, 1);
+  addAudit('DELETE', 'Role', 'Deleted role: ' + r.name);
+  renderRoles();
+  toast('Role deleted', 'success');
+}
+
+function submitRole() {
+  var name  = document.getElementById('role-name-input').value.trim();
+  var desc  = document.getElementById('role-desc-input').value.trim();
+  var color = document.getElementById('role-color-value').value || '#1447E6';
+
+  if (!name) { toast('Role name is required', 'error'); return; }
+  if (editingRoleIdx >= 0) {
+    ROLES_CONFIG[editingRoleIdx].name  = name;
+    ROLES_CONFIG[editingRoleIdx].desc  = desc || 'Custom role';
+    ROLES_CONFIG[editingRoleIdx].color = color;
+    addAudit('UPDATE', 'Role', 'Updated role: ' + name);
+    toast('Role updated', 'success');
+  } else {
+    ROLES_CONFIG.push({ name: name, color: color, desc: desc || 'Custom role', users: 0 });
+    addAudit('CREATE', 'Role', 'Created role: ' + name);
+    toast('Role created', 'success');
+  }
+  closeOverlay('overlay-role');
+  renderRoles();
+}
+
+// ════════════════════════════════════════════════════════
+// PATCH: renderRoles — add Edit/Delete buttons + Add Role button
+// ════════════════════════════════════════════════════════
+var _baseRenderRoles = renderRoles;
+renderRoles = function() {
+  _baseRenderRoles();
+  // Add Edit/Delete buttons to each card
+  var cards = document.querySelectorAll('#role-cards .card');
+  cards.forEach(function(card, idx) {
+    if (card.querySelector('.role-actions')) return; // already added
+    var actions = document.createElement('div');
+    actions.className = 'role-actions';
+    actions.style.cssText = 'display:flex;gap:6px;margin-top:10px;border-top:1px solid var(--border);padding-top:10px;';
+    actions.innerHTML =
+      '<button class="btn btn-s btn-sm" style="flex:1" onclick="editRole(' + idx + ')">✏ Edit</button>' +
+      '<button class="btn btn-danger btn-sm" onclick="deleteRole(' + idx + ')">✕</button>';
+    card.appendChild(actions);
+  });
+  // Add "Add Role" button if not already there
+  var rolesPage = document.getElementById('page-roles');
+  if (rolesPage && !rolesPage.querySelector('.add-role-btn')) {
+    var addBtn = document.createElement('button');
+    addBtn.className = 'btn btn-p btn-sm add-role-btn';
+    addBtn.style.cssText = 'margin-top:16px;';
+    addBtn.textContent = '+ Add Custom Role';
+    addBtn.onclick = openAddRole;
+    rolesPage.appendChild(addBtn);
+  }
+};
+
+// ════════════════════════════════════════════════════════
+// PATCH: Settings security — wire Change Password button
+// ════════════════════════════════════════════════════════
+var _baseRenderSettings = renderSettings;
+renderSettings = function() {
+  _baseRenderSettings();
+  // Wire Change Password button in security section
+  if (currentSettingsSection === 'security') {
+    var btns = document.querySelectorAll('#settings-content button');
+    btns.forEach(function(btn) {
+      if (btn.textContent.trim() === 'Change Password') {
+        btn.onclick = openChangePassword;
+      }
+    });
+  }
+};
+
+// ════════════════════════════════════════════════════════
+// PATCH: Delete button — ensure confirm-delete-btn works
+// ════════════════════════════════════════════════════════
+// The confirm overlay's delete button gets its onclick set dynamically
+// by confirmDelete(). Ensure the button exists and is clickable.
+document.addEventListener('DOMContentLoaded', function() {
+  var btn = document.getElementById('confirm-delete-btn');
+  if (btn && !btn.dataset.wired) {
+    btn.dataset.wired = '1';
+    // onclick is set dynamically by confirmDelete() — no extra wiring needed
+  }
+});
+
 </script>
+
+<!-- Change Password Modal -->
+<div class="overlay" id="overlay-change-password" onclick="closeOverlayIfBg(event,'overlay-change-password')" role="dialog" aria-modal="true">
+  <div class="modal modal-sm">
+    <div class="modal-hdr">
+      <div><h2>Change Password</h2><p>Update your account password</p></div>
+      <button class="close-btn" onclick="closeOverlay('overlay-change-password')" aria-label="Close">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="f-grp">
+        <label class="f-lbl">Current Password</label>
+        <input class="f-inp" type="password" id="cp-current" placeholder="••••••••" autocomplete="current-password">
+      </div>
+      <div class="f-grp">
+        <label class="f-lbl">New Password</label>
+        <input class="f-inp" type="password" id="cp-new" placeholder="••••••••" autocomplete="new-password">
+      </div>
+      <div class="f-grp">
+        <label class="f-lbl">Confirm New Password</label>
+        <input class="f-inp" type="password" id="cp-confirm" placeholder="••••••••" autocomplete="new-password">
+      </div>
+      <div id="cp-error" style="display:none;color:var(--red);font-size:12.5px;margin-top:8px;padding:8px 12px;background:var(--rbg);border-radius:7px;border:1px solid var(--red);"></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeOverlay('overlay-change-password')">Cancel</button>
+      <button class="btn btn-p" onclick="submitChangePassword()">Update Password</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add / Edit Role Modal -->
+<div class="overlay" id="overlay-role" onclick="closeOverlayIfBg(event,'overlay-role')" role="dialog" aria-modal="true">
+  <div class="modal modal-sm">
+    <div class="modal-hdr">
+      <div><h2 id="role-modal-title">Add Custom Role</h2><p>Define permissions for this role</p></div>
+      <button class="close-btn" onclick="closeOverlay('overlay-role')" aria-label="Close">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="f-grp">
+        <label class="f-lbl">Role Name <span class="req">*</span></label>
+        <input class="f-inp" type="text" id="role-name-input" placeholder="e.g. Senior Recruiter">
+      </div>
+      <div class="f-grp">
+        <label class="f-lbl">Description</label>
+        <input class="f-inp" type="text" id="role-desc-input" placeholder="Brief description of this role">
+      </div>
+      <div class="f-grp">
+        <label class="f-lbl">Color</label>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px" id="role-color-picker">
+          <div onclick="selectRoleColor('#1447E6',this)" style="width:28px;height:28px;border-radius:6px;background:#1447E6;cursor:pointer;border:2px solid transparent" data-color="#1447E6"></div>
+          <div onclick="selectRoleColor('#16A34A',this)" style="width:28px;height:28px;border-radius:6px;background:#16A34A;cursor:pointer;border:2px solid transparent" data-color="#16A34A"></div>
+          <div onclick="selectRoleColor('#7C3AED',this)" style="width:28px;height:28px;border-radius:6px;background:#7C3AED;cursor:pointer;border:2px solid transparent" data-color="#7C3AED"></div>
+          <div onclick="selectRoleColor('#D97706',this)" style="width:28px;height:28px;border-radius:6px;background:#D97706;cursor:pointer;border:2px solid transparent" data-color="#D97706"></div>
+          <div onclick="selectRoleColor('#DC2626',this)" style="width:28px;height:28px;border-radius:6px;background:#DC2626;cursor:pointer;border:2px solid transparent" data-color="#DC2626"></div>
+          <div onclick="selectRoleColor('#0891B2',this)" style="width:28px;height:28px;border-radius:6px;background:#0891B2;cursor:pointer;border:2px solid transparent" data-color="#0891B2"></div>
+        </div>
+        <input type="hidden" id="role-color-value" value="#1447E6">
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeOverlay('overlay-role')">Cancel</button>
+      <button class="btn btn-p" onclick="submitRole()">Save Role</button>
+    </div>
+  </div>
+</div>
 </body>
 </html>
