@@ -715,6 +715,158 @@ tr:hover td{background:var(--s2);}
 @keyframes slideIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
 @keyframes scaleIn{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
 @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── Agent Accounting System ─────────────────────────────────────── */
+.acc-tabs{display:flex;gap:2px;margin-bottom:20px;background:var(--s2);border-radius:10px;padding:4px;border:1px solid var(--border);overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.acc-tab{flex:0 0 auto;padding:8px 13px;font-size:12.5px;font-weight:700;color:var(--muted);background:none;border:none;cursor:pointer;border-radius:7px;transition:all .15s;white-space:nowrap;}
+.acc-tab:hover{color:var(--text);}
+.acc-tab.active{background:var(--surface);color:var(--brand);box-shadow:0 1px 4px rgba(0,0,0,.1);}
+.acc-section{display:none;}
+.acc-section.active{display:block;}
+
+/* Agent cards */
+.agent-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px;}
+.agent-card{background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:18px;cursor:pointer;transition:all .15s;position:relative;}
+.agent-card:hover{border-color:var(--brand);box-shadow:0 4px 16px rgba(20,71,230,.1);}
+.agent-card.alert{border-color:var(--red);}
+.agent-card.warning{border-color:var(--amber);}
+.agent-card-hdr{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.agent-avatar{width:40px;height:40px;border-radius:10px;background:var(--brand);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;flex-shrink:0;}
+.agent-name{font-size:14px;font-weight:800;color:var(--text);}
+.agent-sub{font-size:11.5px;color:var(--muted);}
+.agent-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.agent-stat{background:var(--s2);border-radius:8px;padding:8px 10px;}
+.agent-stat-val{font-size:15px;font-weight:800;font-family:'IBM Plex Mono',monospace;}
+.agent-stat-lbl{font-size:10.5px;color:var(--muted);margin-top:2px;}
+.agent-badge{position:absolute;top:12px;right:12px;font-size:10px;padding:2px 8px;border-radius:20px;}
+
+/* Ledger table */
+.ledger-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;gap:12px;flex-wrap:wrap;}
+.ledger-agent-info{display:flex;align-items:center;gap:12px;}
+.ledger-balance{text-align:right;}
+.ledger-balance-val{font-size:22px;font-weight:800;font-family:'IBM Plex Mono',monospace;}
+.ledger-balance-lbl{font-size:11px;color:var(--muted);}
+.ledger-entry-credit{color:var(--green);}
+.ledger-entry-debit{color:var(--red);}
+.ledger-entry-neutral{color:var(--muted);}
+.ledger-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px;}
+.ledger-sum-card{background:var(--s2);border-radius:10px;padding:14px;border:1px solid var(--border);}
+.ledger-sum-val{font-size:18px;font-weight:800;font-family:'IBM Plex Mono',monospace;}
+.ledger-sum-lbl{font-size:11px;color:var(--muted);margin-top:3px;}
+
+/* Country rules */
+.rules-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+.rule-card{background:var(--surface);border:1.5px solid var(--border);border-radius:11px;padding:16px;transition:border-color .15s;}
+.rule-card:hover{border-color:var(--brand);}
+.rule-country{font-size:14px;font-weight:800;margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+.rule-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--border);font-size:12.5px;}
+.rule-row:last-child{border-bottom:none;}
+.rule-val{font-weight:700;font-family:'IBM Plex Mono',monospace;color:var(--brand);}
+
+/* Report tables */
+.report-metric{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);}
+.report-metric:last-child{border-bottom:none;}
+.report-bar-wrap{display:flex;align-items:center;gap:10px;flex:1;margin:0 16px;}
+.report-bar{height:8px;border-radius:4px;background:var(--brand);min-width:4px;transition:width .6s;}
+
+/* Overview alerts */
+.alert-card{background:var(--surface);border:1.5px solid var(--amber);border-radius:10px;padding:14px 16px;display:flex;align-items:flex-start;gap:12px;margin-bottom:8px;}
+.alert-card.danger{border-color:var(--red);background:var(--rbg);}
+.alert-icon{font-size:20px;flex-shrink:0;margin-top:1px;}
+.alert-body{flex:1;}
+.alert-title{font-size:13px;font-weight:700;color:var(--text);}
+.alert-sub{font-size:12px;color:var(--muted);margin-top:2px;}
+.alert-action{font-size:11.5px;font-weight:700;color:var(--brand);cursor:pointer;background:none;border:none;padding:0;margin-top:6px;display:inline-block;}
+.alert-action:hover{text-decoration:underline;}
+.risk-badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:700;}
+.risk-high{background:var(--rbg);color:var(--red);}
+.risk-med{background:var(--abg);color:var(--amber);}
+.risk-low{background:var(--gbg);color:var(--green);}
+
+/* Commission config */
+.comm-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);}
+.comm-row:last-child{border-bottom:none;}
+.comm-country{flex:1;font-size:13px;font-weight:700;}
+.comm-inp{width:80px;padding:6px 10px;border:1.5px solid var(--border);border-radius:7px;font-size:13px;font-family:'IBM Plex Mono',monospace;text-align:right;background:var(--s2);color:var(--text);outline:none;}
+.comm-inp:focus{border-color:var(--brand);}
+
+/* ── Office Expense Management ──────────────────────────────────── */
+
+/* Cash balance cards */
+.cash-cards{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:22px;}
+.cash-card{background:var(--surface);border:1.5px solid var(--border);border-radius:14px;padding:22px;position:relative;overflow:hidden;transition:box-shadow .15s;}
+.cash-card::before{content:'';position:absolute;inset:0;opacity:.04;pointer-events:none;}
+.cash-card-php::before{background:var(--brand);}
+.cash-card-usd::before{background:var(--green);}
+.cash-card:hover{box-shadow:var(--md);}
+.cash-card-flag{font-size:28px;margin-bottom:10px;}
+.cash-card-currency{font-size:11.5px;font-weight:700;color:var(--muted);font-family:'IBM Plex Mono',monospace;letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px;}
+.cash-card-balance{font-size:32px;font-weight:800;letter-spacing:-1.5px;line-height:1;margin-bottom:6px;}
+.cash-card-sub{font-size:11.5px;color:var(--muted);display:flex;gap:12px;flex-wrap:wrap;}
+.cash-card-sub span{display:flex;align-items:center;gap:4px;}
+.cash-card-actions{position:absolute;top:16px;right:16px;display:flex;gap:6px;}
+.cash-balance-positive{color:var(--green);}
+.cash-balance-negative{color:var(--red);}
+.cash-balance-warning{color:var(--amber);}
+
+/* Exchange rate banner */
+.fx-banner{background:var(--s2);border:1px solid var(--border);border-radius:10px;padding:12px 16px;display:flex;align-items:center;gap:12px;margin-bottom:18px;flex-wrap:wrap;}
+.fx-banner-label{font-size:12.5px;font-weight:700;color:var(--text);flex:1;}
+.fx-input{width:90px;padding:6px 10px;border:1.5px solid var(--border);border-radius:7px;font-size:13px;font-family:'IBM Plex Mono',monospace;text-align:right;background:var(--surface);color:var(--text);outline:none;}
+.fx-input:focus{border-color:var(--brand);}
+
+/* Office ledger */
+.office-ledger-hdr{display:flex;align-items:center;gap:10px;padding:14px 18px;border-bottom:1px solid var(--border);flex-wrap:wrap;}
+.office-ledger-title{font-size:14px;font-weight:800;flex:1;}
+.ledger-type-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700;}
+.lt-allocation{background:#DBEAFE;color:#1D4ED8;}
+.lt-refund{background:var(--gbg);color:var(--green);}
+.lt-expense{background:var(--rbg);color:var(--red);}
+.lt-adjustment{background:var(--abg);color:var(--amber);}
+.lt-override{background:var(--pbg);color:var(--purple);}
+
+/* Office expense category chips */
+.cat-grid{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;}
+.cat-chip{padding:5px 12px;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer;border:1.5px solid var(--border);background:var(--s2);color:var(--muted);transition:all .15s;}
+.cat-chip.active{border-color:var(--brand);background:var(--brand-l);color:var(--brand);}
+
+/* Alert for low balance */
+.balance-alert{background:var(--rbg);border:1.5px solid var(--red);border-radius:10px;padding:12px 16px;display:flex;align-items:center;gap:10px;margin-bottom:14px;font-size:13px;font-weight:600;color:var(--red);}
+
+/* Report trend bar */
+.trend-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);}
+.trend-row:last-child{border-bottom:none;}
+.trend-label{font-size:12.5px;font-weight:700;min-width:110px;}
+.trend-bar-wrap{flex:1;height:8px;background:var(--border);border-radius:4px;overflow:hidden;}
+.trend-bar-fill{height:100%;border-radius:4px;transition:width .6s ease;}
+.trend-val{font-size:12px;font-weight:800;font-family:'IBM Plex Mono',monospace;min-width:80px;text-align:right;}
+
+/* Fund flow summary row */
+.flow-row{display:flex;align-items:center;gap:0;margin-bottom:18px;background:var(--s2);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
+.flow-item{flex:1;padding:16px;text-align:center;border-right:1px solid var(--border);}
+.flow-item:last-child{border-right:none;}
+.flow-arrow{color:var(--muted);font-size:18px;display:flex;align-items:center;justify-content:center;padding:0 4px;}
+.flow-val{font-size:18px;font-weight:800;font-family:'IBM Plex Mono',monospace;}
+.flow-lbl{font-size:11px;color:var(--muted);margin-top:3px;}
+
+/* Insufficient balance warning in form */
+.balance-warn{display:none;background:var(--rbg);border:1px solid var(--red);border-radius:7px;padding:8px 12px;font-size:12px;font-weight:700;color:var(--red);margin-top:6px;}
+
+/* Office trend & flow CSS */
+.office-trend{display:flex;align-items:flex-end;gap:3px;height:80px;padding:4px 0;}
+.office-trend-bar{flex:1;border-radius:3px 3px 0 0;background:var(--brand);opacity:.65;min-height:3px;transition:height .5s;cursor:pointer;}
+.office-trend-bar:hover{opacity:1;}
+.office-report-row{display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid var(--border);}
+.office-report-row:last-child{border-bottom:none;}
+.office-cat-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.flow-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 18px;display:flex;align-items:center;gap:12px;}
+.flow-icon{width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.flow-val{font-size:18px;font-weight:800;font-family:'IBM Plex Mono',monospace;}
+.flow-lbl{font-size:11.5px;color:var(--muted);margin-top:2px;}
+.refund-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);}
+.refund-row:last-child{border-bottom:none;}
+.funds-preview{background:var(--s2);border:1px solid var(--border);border-radius:8px;padding:10px 14px;margin-top:6px;}
+.funds-preview-val{font-size:16px;font-weight:800;font-family:'IBM Plex Mono',monospace;}
 </style>
 </head>
 <body>
@@ -1089,39 +1241,322 @@ tr:hover td{background:var(--s2);}
          ACCOUNTING
     ══════════════════════════════════════ -->
     <div class="page content-pad" id="page-accounting">
-      <div class="pg-hdr">
-        <div class="pg-hdr-l"><h1>Accounting</h1><p>Track expenses, fees, and financial records.</p></div>
-        <div class="pg-hdr-r">
-          <button class="btn btn-s btn-sm" onclick="exportData('accounting')">Export CSV</button>
-          <button class="btn btn-p btn-sm" onclick="openAddExpense()">+ Record Expense</button>
-        </div>
+  <!-- Header -->
+  <div class="pg-hdr">
+    <div class="pg-hdr-l">
+      <h1>Accounting</h1>
+      <p>Agent financial management, ledgers, commissions and expense tracking.</p>
+    </div>
+    <div class="pg-hdr-r" id="acc-hdr-actions">
+      <button class="btn btn-s btn-sm" onclick="exportAccountingReport()">⬇ Export</button>
+      <button class="btn btn-p btn-sm" onclick="openAddExpense()">+ Record Expense</button>
+    </div>
+  </div>
+
+  <!-- Tab Navigation -->
+  <div class="acc-tabs" role="tablist">
+    <button class="acc-tab active" onclick="switchAccTab('overview',this)" role="tab">📊 Overview</button>
+    <button class="acc-tab" onclick="switchAccTab('agents',this)" role="tab">👥 Agents</button>
+    <button class="acc-tab" onclick="switchAccTab('ledger',this)" role="tab">📒 Ledger</button>
+    <button class="acc-tab" onclick="switchAccTab('expenses',this)" role="tab">💸 Expenses</button>
+    <button class="acc-tab" onclick="switchAccTab('commissions',this)" role="tab">🏆 Commissions</button>
+    <button class="acc-tab" onclick="switchAccTab('rules',this)" role="tab">⚙ Country Rules</button>
+    <button class="acc-tab" onclick="switchAccTab('reports',this)" role="tab">📈 Reports</button>
+    <button class="acc-tab" onclick="switchAccTab('office',this)" role="tab">🏢 Office Funds</button>
+  </div>
+
+  <!-- OVERVIEW TAB -->
+  <div class="acc-section active" id="acc-overview">
+    <div class="stat-grid" id="accounting-stats"></div>
+    <div style="display:grid;grid-template-columns:2fr 1fr;gap:16px">
+      <div>
+        <div style="font-size:14px;font-weight:800;margin-bottom:12px">⚠ Active Alerts</div>
+        <div id="acc-alerts"></div>
       </div>
-      <div class="stat-grid" id="accounting-stats"></div>
-      <div class="card">
-        <div style="padding:16px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between">
-          <div style="font-size:14px;font-weight:800">Transaction Ledger</div>
-          <div class="filter-search" style="width:220px;flex:none">
+      <div>
+        <div style="font-size:14px;font-weight:800;margin-bottom:12px">Top Agents by Balance</div>
+        <div id="acc-top-agents"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AGENTS TAB -->
+  <div class="acc-section" id="acc-agents">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+      <div>
+        <div style="font-size:15px;font-weight:800">External Agents</div>
+        <div style="font-size:12px;color:var(--muted)" id="agent-count-lbl"></div>
+      </div>
+      <div style="display:flex;gap:8px">
+        <div class="filter-search" style="width:200px">
+          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" placeholder="Search agents…" oninput="filterAgents(this.value)">
+        </div>
+        <button class="btn btn-p btn-sm" onclick="openAddAgent()">+ Add Agent</button>
+      </div>
+    </div>
+    <div class="agent-grid" id="agent-grid"></div>
+  </div>
+
+  <!-- LEDGER TAB -->
+  <div class="acc-section" id="acc-ledger">
+    <div class="ledger-hdr">
+      <div style="display:flex;align-items:center;gap:12px">
+        <select class="f-inp" id="ledger-agent-select" onchange="renderLedger()" style="width:220px">
+          <option value="">— Select Agent —</option>
+        </select>
+        <input type="date" class="f-inp" id="ledger-date-from" style="width:150px" onchange="renderLedger()">
+        <span style="color:var(--muted);font-size:12px">to</span>
+        <input type="date" class="f-inp" id="ledger-date-to" style="width:150px" onchange="renderLedger()">
+        <button class="btn btn-ghost btn-sm" onclick="clearLedgerFilters()">Clear</button>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-s btn-sm" onclick="exportLedger()">⬇ Export</button>
+        <button class="btn btn-p btn-sm" onclick="openManualAdjustment()">+ Adjustment</button>
+      </div>
+    </div>
+    <div class="ledger-summary" id="ledger-summary"></div>
+    <div class="card" style="overflow:hidden">
+      <table style="width:100%;border-collapse:collapse" id="ledger-table">
+        <thead>
+          <tr>
+            <th>Date</th><th>Applicant</th><th>Type</th>
+            <th>Description</th><th style="text-align:right">Amount</th>
+            <th style="text-align:right">Balance</th>
+          </tr>
+        </thead>
+        <tbody id="ledger-tbody"></tbody>
+      </table>
+    </div>
+    <div id="ledger-empty" style="display:none">
+      <div class="empty-state"><div class="empty-icon">📒</div>
+        <div class="empty-title">Select an agent</div>
+        <div class="empty-sub">Choose an agent above to view their full ledger.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXPENSES TAB -->
+  <div class="acc-section" id="acc-expenses">
+    <div class="stat-grid" id="expense-kpis"></div>
+    <div class="card">
+      <div style="padding:16px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+        <div style="font-size:14px;font-weight:800">All Expenses</div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <select class="f-inp" id="exp-agent-filter" onchange="renderExpensesTab()" style="width:160px">
+            <option value="">All Agents</option>
+          </select>
+          <select class="f-inp" id="exp-status-filter" onchange="renderExpensesTab()" style="width:140px">
+            <option value="">All Status</option>
+            <option>Agency</option><option>Charged</option><option>Paid</option><option>Pending</option>
+          </select>
+          <div class="filter-search" style="width:200px">
             <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-            <input type="text" placeholder="Search transactions…" oninput="filterExpenses(this.value)" aria-label="Search transactions">
+            <input type="text" placeholder="Search…" oninput="renderExpensesTab(this.value)">
           </div>
         </div>
-        <table style="width:100%;border-collapse:collapse" role="grid" aria-label="Expenses table">
-          <thead>
-            <tr>
-              <th>Date</th><th>Description</th><th>Applicant</th>
-              <th>Category</th><th>Amount</th><th>Status</th>
-              <th style="text-align:right">Actions</th>
-            </tr>
-          </thead>
-          <tbody id="expense-tbody"></tbody>
-        </table>
+      </div>
+      <table style="width:100%;border-collapse:collapse">
+        <thead>
+          <tr><th>Date</th><th>Applicant</th><th>Agent</th><th>Category</th>
+              <th>Description</th><th style="text-align:right">Amount</th>
+              <th>Status</th><th style="text-align:right">Actions</th></tr>
+        </thead>
+        <tbody id="expense-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- COMMISSIONS TAB -->
+  <div class="acc-section" id="acc-commissions">
+    <div class="stat-grid" id="commission-kpis"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+      <div class="card cp">
+        <div style="font-size:14px;font-weight:800;margin-bottom:4px">Commission Rates by Country</div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:16px">Configure the fee agents earn per successful deployment</div>
+        <div id="commission-rates"></div>
+        <button class="btn btn-p btn-sm" style="margin-top:14px;width:100%" onclick="saveCommissionRates()">Save Rates</button>
+      </div>
+      <div class="card cp">
+        <div style="font-size:14px;font-weight:800;margin-bottom:4px">Pending Commissions</div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:16px">Commissions awaiting release or in guarantee period</div>
+        <div id="pending-commissions"></div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:16px">
+      <div style="padding:16px 18px;border-bottom:1px solid var(--border);font-size:14px;font-weight:800">Commission History</div>
+      <table style="width:100%;border-collapse:collapse">
+        <thead>
+          <tr><th>Date</th><th>Agent</th><th>Applicant</th><th>Country</th>
+              <th style="text-align:right">Commission</th><th>Status</th><th style="text-align:right">Actions</th></tr>
+        </thead>
+        <tbody id="commission-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- COUNTRY RULES TAB -->
+  <div class="acc-section" id="acc-rules">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+      <div>
+        <div style="font-size:15px;font-weight:800">Country Rules Engine</div>
+        <div style="font-size:12px;color:var(--muted)">Configure guarantee periods, commission rates and expense policies per destination</div>
+      </div>
+      <button class="btn btn-p btn-sm" onclick="openAddCountryRule()">+ Add Country</button>
+    </div>
+    <div class="rules-grid" id="rules-grid"></div>
+  </div>
+
+  <!-- REPORTS TAB -->
+  <div class="acc-section" id="acc-reports">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+      <div class="card cp">
+        <div style="font-size:14px;font-weight:800;margin-bottom:14px">Agent Profitability</div>
+        <div id="report-profitability"></div>
+      </div>
+      <div class="card cp">
+        <div style="font-size:14px;font-weight:800;margin-bottom:14px">Outstanding Balances</div>
+        <div id="report-outstanding"></div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+      <div class="card cp">
+        <div style="font-size:14px;font-weight:800;margin-bottom:14px">Repatriation Rate by Agent</div>
+        <div id="report-repatriation"></div>
+      </div>
+      <div class="card cp">
+        <div style="font-size:14px;font-weight:800;margin-bottom:14px">Cost per Deployment</div>
+        <div id="report-cost-deploy"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <!-- OFFICE FUNDS TAB -->
+  <div class="acc-section" id="acc-office">
+
+    <!-- Exchange rate banner -->
+    <div class="fx-banner">
+      <span class="fx-banner-label">🔄 Exchange Rate</span>
+      <span style="font-size:12px;color:var(--muted)">1 USD =</span>
+      <input class="fx-input" id="fx-rate" type="number" step="0.01" value="57.50" min="1">
+      <span style="font-size:12px;color:var(--muted)">PHP</span>
+      <button class="btn btn-s btn-sm" onclick="updateFxRate()">Update Rate</button>
+      <span style="font-size:11px;color:var(--dim);margin-left:4px" id="fx-updated">Updated today</span>
+    </div>
+
+    <!-- Cash-on-Hand Balance Cards -->
+    <div class="cash-cards">
+      <div class="cash-card cash-card-php">
+        <div class="cash-card-actions">
+          <button class="btn btn-s btn-sm" onclick="openAddFunds('PHP')">+ Add Funds</button>
+          <button class="btn btn-ghost btn-sm" onclick="openOfficeExpense('PHP')">− Expense</button>
+        </div>
+        <div class="cash-card-flag">🇵🇭</div>
+        <div class="cash-card-currency">Philippine Peso · PHP</div>
+        <div class="cash-card-balance" id="cash-php-balance">₱0.00</div>
+        <div class="cash-card-sub">
+          <span>📥 <span id="cash-php-in">₱0</span> in</span>
+          <span>📤 <span id="cash-php-out">₱0</span> out</span>
+          <span>📋 <span id="cash-php-count">0</span> transactions</span>
+        </div>
+      </div>
+      <div class="cash-card cash-card-usd">
+        <div class="cash-card-actions">
+          <button class="btn btn-s btn-sm" onclick="openAddFunds('USD')">+ Add Funds</button>
+          <button class="btn btn-ghost btn-sm" onclick="openOfficeExpense('USD')">− Expense</button>
+        </div>
+        <div class="cash-card-flag">🇺🇸</div>
+        <div class="cash-card-currency">US Dollar · USD</div>
+        <div class="cash-card-balance" id="cash-usd-balance">$0.00</div>
+        <div class="cash-card-sub">
+          <span>📥 <span id="cash-usd-in">$0</span> in</span>
+          <span>📤 <span id="cash-usd-out">$0</span> out</span>
+          <span>📋 <span id="cash-usd-count">0</span> transactions</span>
+        </div>
       </div>
     </div>
 
-    <!-- ══════════════════════════════════════
-         AUDIT
-    ══════════════════════════════════════ -->
-    <div class="page content-pad" id="page-audit">
+    <!-- Combined balance row -->
+    <div class="flow-row" id="office-flow-row"></div>
+
+    <!-- Balance alert (low funds) -->
+    <div class="balance-alert" id="office-balance-alert" style="display:none">
+      ⚠ Low Balance Warning — one or more currency accounts are critically low.
+    </div>
+
+    <!-- Content grid -->
+    <div style="display:grid;grid-template-columns:3fr 2fr;gap:16px;margin-bottom:16px">
+
+      <!-- Office Ledger -->
+      <div class="card" style="overflow:hidden">
+        <div class="office-ledger-hdr">
+          <div class="office-ledger-title">📒 Office Ledger</div>
+          <select class="f-inp" id="office-ledger-currency" onchange="renderOfficeLedger()" style="width:100px">
+            <option value="all">All</option>
+            <option value="PHP">PHP</option>
+            <option value="USD">USD</option>
+          </select>
+          <select class="f-inp" id="office-ledger-type" onchange="renderOfficeLedger()" style="width:120px">
+            <option value="all">All Types</option>
+            <option value="allocation">Allocation</option>
+            <option value="refund">Refund</option>
+            <option value="expense">Expense</option>
+            <option value="adjustment">Adjustment</option>
+          </select>
+          <button class="btn btn-s btn-sm" onclick="exportOfficeLedger()">⬇</button>
+        </div>
+        <table style="width:100%;border-collapse:collapse">
+          <thead>
+            <tr>
+              <th>Date</th><th>Type</th><th>Description</th>
+              <th>Cat.</th><th style="text-align:right">Amount</th>
+              <th style="text-align:right">Balance</th>
+            </tr>
+          </thead>
+          <tbody id="office-ledger-tbody"></tbody>
+        </table>
+      </div>
+
+      <!-- Side panel: expense breakdown + refunds -->
+      <div style="display:flex;flex-direction:column;gap:14px">
+
+        <!-- Expense by category -->
+        <div class="card cp">
+          <div style="font-size:14px;font-weight:800;margin-bottom:6px">Expenses by Category</div>
+          <div style="font-size:11.5px;color:var(--muted);margin-bottom:12px">Current month</div>
+          <div class="cat-grid" id="office-cat-filter"></div>
+          <div id="office-cat-breakdown"></div>
+        </div>
+
+        <!-- Recent refunds -->
+        <div class="card cp">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+            <div style="font-size:14px;font-weight:800">Recent Refunds</div>
+            <button class="btn btn-s btn-sm" onclick="openRefund()">+ Refund</button>
+          </div>
+          <div id="office-refunds"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Report section -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+      <div class="card cp">
+        <div style="font-size:14px;font-weight:800;margin-bottom:4px">Monthly Expense Trend</div>
+        <div style="font-size:11.5px;color:var(--muted);margin-bottom:14px">Last 6 months</div>
+        <div id="office-trend"></div>
+      </div>
+      <div class="card cp">
+        <div style="font-size:14px;font-weight:800;margin-bottom:4px">Top Expense Categories</div>
+        <div style="font-size:11.5px;color:var(--muted);margin-bottom:14px">All time</div>
+        <div id="office-top-cats"></div>
+      </div>
+    </div>
+  </div>
+
+
+<div class="page content-pad" id="page-audit">
       <div class="pg-hdr">
         <div class="pg-hdr-l"><h1>Audit Trail</h1><p>Complete log of system actions and changes.</p></div>
         <div class="pg-hdr-r">
@@ -3366,6 +3801,1559 @@ filterExpenses = function(q) {
   }
 };
 
+
+// ╔══════════════════════════════════════════════════════════════════╗
+// ║          AGENT ACCOUNTING SYSTEM — FULL IMPLEMENTATION          ║
+// ╚══════════════════════════════════════════════════════════════════╝
+
+// ── DATA MODEL ──────────────────────────────────────────────────────
+DB.agents = [
+  { id:'AGT-001', code:'JR-001', name:'Juan Reyes',    phone:'+63 917 123 4567', email:'juan.reyes@email.com',    country:'Saudi Arabia', commissionRate:5,   address:'Quezon City', status:'Active',   balance:28500,  totalCommission:85000, totalExpenses:56500, totalDeployed:14, backouts:1, repatriations:0, notes:'Top performer' },
+  { id:'AGT-002', code:'AL-002', name:'Ana Lim',       phone:'+63 918 234 5678', email:'ana.lim@email.com',       country:'UAE',          commissionRate:4.5, address:'Makati',      status:'Active',   balance:-8200,  totalCommission:42000, totalExpenses:50200, totalDeployed:8,  backouts:3, repatriations:1, notes:'' },
+  { id:'AGT-003', code:'MC-003', name:'Miguel Cruz',   phone:'+63 919 345 6789', email:'miguel.cruz@email.com',   country:'Qatar',        commissionRate:5.5, address:'Pasig',       status:'Active',   balance:45200,  totalCommission:95000, totalExpenses:49800, totalDeployed:18, backouts:0, repatriations:0, notes:'Excellent track record' },
+  { id:'AGT-004', code:'LG-004', name:'Lisa Garcia',   phone:'+63 920 456 7890', email:'lisa.garcia@email.com',   country:'Hong Kong',    commissionRate:4,   address:'Manila',      status:'Active',   balance:12800,  totalCommission:38000, totalExpenses:25200, totalDeployed:9,  backouts:2, repatriations:1, notes:'' },
+  { id:'AGT-005', code:'RS-005', name:'Rico Santos',   phone:'+63 921 567 8901', email:'rico.santos@email.com',   country:'Singapore',    commissionRate:6,   address:'Cebu City',   status:'Inactive', balance:-15400, totalCommission:28000, totalExpenses:43400, totalDeployed:5,  backouts:4, repatriations:2, notes:'High risk — under review' },
+];
+
+DB.agentLedger = [
+  { id:'LDG-001', agentId:'AGT-001', applicantId:'#2481', type:'commission', desc:'Commission — Maria Santos deployed (Saudi Arabia)', amount:15000, date:'2026-03-31', runningBalance:85000 },
+  { id:'LDG-002', agentId:'AGT-001', applicantId:'#2472', type:'commission', desc:'Commission — Rico Fernandez deployed (Qatar)',         amount:18000, date:'2026-03-25', runningBalance:70000 },
+  { id:'LDG-003', agentId:'AGT-001', applicantId:'#2478', type:'expense',    desc:'Medical exam charged — Pedro Gutierrez (Processing)',  amount:-4500, date:'2026-03-29', runningBalance:52000 },
+  { id:'LDG-004', agentId:'AGT-001', applicantId:'#2474', type:'expense',    desc:'Documentation — Ben Torres (For Selection)',           amount:-3200, date:'2026-03-27', runningBalance:56500 },
+  { id:'LDG-005', agentId:'AGT-001', applicantId:null,    type:'adjustment', desc:'Agency adjustment — Q1 reconciliation',               amount:-800,  date:'2026-03-15', runningBalance:59700 },
+  { id:'LDG-006', agentId:'AGT-002', applicantId:'#2479', type:'expense',    desc:'Visa processing charged — Ana Reyes (Medical/Unfit)', amount:-8200, date:'2026-03-30', runningBalance:-8200 },
+  { id:'LDG-007', agentId:'AGT-002', applicantId:null,    type:'commission', desc:'Commission — Juanita Dela Cruz deployed (UAE)',        amount:12000, date:'2026-02-15', runningBalance:12000 },
+  { id:'LDG-008', agentId:'AGT-002', applicantId:null,    type:'reversal',   desc:'Commission reversal — early repatriation within guarantee', amount:-12000, date:'2026-03-01', runningBalance:0 },
+  { id:'LDG-009', agentId:'AGT-003', applicantId:null,    type:'commission', desc:'Commission — 3 workers deployed (Qatar batch)',       amount:45000, date:'2026-03-20', runningBalance:45200 },
+  { id:'LDG-010', agentId:'AGT-004', applicantId:null,    type:'commission', desc:'Commission — Caregiver batch (Hong Kong)',             amount:16000, date:'2026-03-18', runningBalance:12800 },
+  { id:'LDG-011', agentId:'AGT-004', applicantId:null,    type:'expense',    desc:'Medical charged — backout applicant',                 amount:-3200, date:'2026-03-10', runningBalance:-3200 },
+  { id:'LDG-012', agentId:'AGT-005', applicantId:null,    type:'penalty',    desc:'Penalty — 2 repatriations within 3 months',           amount:-8000, date:'2026-03-05', runningBalance:-15400 },
+];
+
+DB.countryRules = [
+  { id:'CR-001', country:'Saudi Arabia', flag:'🇸🇦', guaranteePeriod:6,  commissionRate:5,   withholdPct:20, currency:'SAR', expenseRule:'full',    active:true  },
+  { id:'CR-002', country:'UAE',          flag:'🇦🇪', guaranteePeriod:6,  commissionRate:4.5, withholdPct:20, currency:'AED', expenseRule:'full',    active:true  },
+  { id:'CR-003', country:'Qatar',        flag:'🇶🇦', guaranteePeriod:6,  commissionRate:5.5, withholdPct:25, currency:'QAR', expenseRule:'full',    active:true  },
+  { id:'CR-004', country:'Kuwait',       flag:'🇰🇼', guaranteePeriod:6,  commissionRate:5,   withholdPct:20, currency:'KWD', expenseRule:'full',    active:true  },
+  { id:'CR-005', country:'Hong Kong',    flag:'🇭🇰', guaranteePeriod:3,  commissionRate:4,   withholdPct:15, currency:'HKD', expenseRule:'medical', active:true  },
+  { id:'CR-006', country:'Singapore',    flag:'🇸🇬', guaranteePeriod:3,  commissionRate:6,   withholdPct:15, currency:'SGD', expenseRule:'medical', active:true  },
+  { id:'CR-007', country:'Japan',        flag:'🇯🇵', guaranteePeriod:9,  commissionRate:7,   withholdPct:30, currency:'JPY', expenseRule:'partial', active:true  },
+  { id:'CR-008', country:'South Korea',  flag:'🇰🇷', guaranteePeriod:9,  commissionRate:7,   withholdPct:30, currency:'KRW', expenseRule:'partial', active:true  },
+  { id:'CR-009', country:'Canada',       flag:'🇨🇦', guaranteePeriod:9,  commissionRate:8,   withholdPct:30, currency:'CAD', expenseRule:'partial', active:true  },
+  { id:'CR-010', country:'Germany',      flag:'🇩🇪', guaranteePeriod:9,  commissionRate:8,   withholdPct:30, currency:'EUR', expenseRule:'partial', active:true  },
+];
+
+DB.commissions = [
+  { id:'COM-001', agentId:'AGT-001', applicantId:'#2481', applicantName:'Maria Santos',  country:'Saudi Arabia', amount:15000, status:'Released',    releaseDate:'2026-03-31', guaranteeEnd:'2026-09-30', deployDate:'2026-03-31' },
+  { id:'COM-002', agentId:'AGT-001', applicantId:'#2472', applicantName:'Rico Fernandez',country:'Qatar',        amount:18000, status:'In Guarantee', releaseDate:null,         guaranteeEnd:'2026-09-25', deployDate:'2026-03-25' },
+  { id:'COM-003', agentId:'AGT-002', applicantId:null,    applicantName:'Juanita DC',    country:'UAE',          amount:12000, status:'Reversed',     releaseDate:'2026-02-15', guaranteeEnd:'2026-08-15', deployDate:'2026-02-15' },
+  { id:'COM-004', agentId:'AGT-003', applicantId:null,    applicantName:'Batch Q1',      country:'Qatar',        amount:45000, status:'Released',     releaseDate:'2026-03-20', guaranteeEnd:'2026-09-20', deployDate:'2026-03-20' },
+  { id:'COM-005', agentId:'AGT-004', applicantId:null,    applicantName:'HK Batch',      country:'Hong Kong',    amount:16000, status:'In Guarantee', releaseDate:null,         guaranteeEnd:'2026-06-18', deployDate:'2026-03-18' },
+];
+
+// ── STATE ────────────────────────────────────────────────────────────
+var currentAccTab         = 'overview';
+var currentLedgerAgent    = null;
+var editingAgentIdx       = -1;
+var editingRuleIdx        = -1;
+
+// ── ACCOUNTING TAB SWITCH ────────────────────────────────────────────
+function switchAccTab(tab, el) {
+  currentAccTab = tab;
+  document.querySelectorAll('.acc-tab').forEach(function(t){ t.classList.remove('active'); });
+  document.querySelectorAll('.acc-section').forEach(function(s){ s.classList.remove('active'); });
+  if (el) el.classList.add('active');
+  var sec = document.getElementById('acc-' + tab);
+  if (sec) sec.classList.add('active');
+
+  // Update header actions based on tab
+  var hdra = document.getElementById('acc-hdr-actions');
+  if (hdra) {
+    if (tab === 'agents')      hdra.innerHTML = '<button class="btn btn-p btn-sm" onclick="openAddAgent()">+ Add Agent</button>';
+    else if (tab === 'ledger') hdra.innerHTML = '<button class="btn btn-s btn-sm" onclick="exportLedger()">⬇ Export Ledger</button><button class="btn btn-p btn-sm" onclick="openManualAdjustment()">+ Adjustment</button>';
+    else if (tab === 'rules')  hdra.innerHTML = '<button class="btn btn-p btn-sm" onclick="openAddCountryRule()">+ Add Country</button>';
+    else if (tab === 'office') hdra.innerHTML = '<button class="btn btn-s btn-sm" onclick="exportOfficeLedger()">⬇ Export</button><button class="btn btn-s btn-sm" onclick="openAddFunds(\"PHP\")">+ Add Funds</button><button class="btn btn-p btn-sm" onclick="openOfficeExpense(\"PHP\")">− Expense</button>';
+    else hdra.innerHTML = '<button class="btn btn-s btn-sm" onclick="exportAccountingReport()">⬇ Export</button><button class="btn btn-p btn-sm" onclick="openAddExpense()">+ Record Expense</button>';
+  }
+
+  if (tab === 'overview')     renderAccOverview();
+  if (tab === 'agents')       renderAgentGrid();
+  if (tab === 'ledger')       initLedgerTab();
+  if (tab === 'expenses')     renderExpensesTab();
+  if (tab === 'commissions')  renderCommissions();
+  if (tab === 'rules')        renderCountryRules();
+  if (tab === 'reports')      renderReports();
+  if (tab === 'office')       renderOffice();
+}
+
+// ── RENDER ACCOUNTING (main entry) ───────────────────────────────────
+function renderAccounting() {
+  // Update main KPIs
+  var totalExp  = DB.expenses.reduce(function(s,e){ return s+e.amount; }, 0);
+  var paid      = DB.expenses.filter(function(e){ return e.status==='Paid'; }).reduce(function(s,e){ return s+e.amount; }, 0);
+  var pendingBal= DB.agents.reduce(function(s,a){ return s + (a.balance<0?Math.abs(a.balance):0); }, 0);
+  var totalComm = DB.agents.reduce(function(s,a){ return s+a.totalCommission; }, 0);
+
+  var statsEl = document.getElementById('accounting-stats');
+  if (statsEl) statsEl.innerHTML = [
+    { label:'Total Commissions',  val:'₱'+totalComm.toLocaleString(),   icon:'🏆', bg:'var(--gbg)',     c:'var(--green)'  },
+    { label:'Total Expenses',     val:'₱'+totalExp.toLocaleString(),    icon:'📊', bg:'var(--brand-l)', c:'var(--brand)'  },
+    { label:'Outstanding Debt',   val:'₱'+pendingBal.toLocaleString(),  icon:'⚠',  bg:'var(--rbg)',     c:'var(--red)'    },
+    { label:'Active Agents',      val:DB.agents.filter(function(a){ return a.status==='Active'; }).length, icon:'👥', bg:'var(--pbg)', c:'var(--purple)' },
+  ].map(function(s) {
+    return '<div class="stat-card"><div class="stat-top"><div class="stat-icon" style="background:'+s.bg+';color:'+s.c+'">'+s.icon+'</div></div><div class="stat-val">'+s.val+'</div><div class="stat-lbl">'+s.label+'</div></div>';
+  }).join('');
+
+  renderAccOverview();
+  if (typeof recalcOfficeLedgerBalances === 'function') recalcOfficeLedgerBalances();
+}
+
+// ── OVERVIEW ─────────────────────────────────────────────────────────
+function renderAccOverview() {
+  // Alerts
+  var alerts = [];
+  var today = new Date();
+
+  // Negative balance agents
+  DB.agents.forEach(function(a) {
+    if (a.balance < 0) {
+      alerts.push({ icon:'🔴', type:'danger', title:'Negative Balance: '+a.name, sub:'Outstanding debt of ₱'+Math.abs(a.balance).toLocaleString()+' — collection required.', action:'viewLedger', agentId:a.id });
+    }
+  });
+
+  // High risk agents (frequent backouts)
+  DB.agents.forEach(function(a) {
+    if (a.backouts >= 3 || a.repatriations >= 2) {
+      alerts.push({ icon:'⚠', type:'warning', title:'High-Risk Agent: '+a.name, sub:a.backouts+' backouts, '+a.repatriations+' repatriations. Consider review.', action:'viewAgent', agentId:a.id });
+    }
+  });
+
+  // Commissions approaching guarantee end (within 30 days)
+  DB.commissions.forEach(function(c) {
+    if (c.guaranteeEnd && c.status==='In Guarantee') {
+      var end = new Date(c.guaranteeEnd);
+      var daysLeft = Math.ceil((end - today) / (1000*60*60*24));
+      if (daysLeft > 0 && daysLeft <= 30) {
+        var agent = DB.agents.find(function(a){ return a.id===c.agentId; });
+        alerts.push({ icon:'⏰', type:'warning', title:'Guarantee Ending Soon: '+c.applicantName, sub:(agent?agent.name:'Agent')+' — '+daysLeft+' days until guarantee expires. Commission: ₱'+c.amount.toLocaleString(), action:'viewCommission', commId:c.id });
+      }
+    }
+  });
+
+  var alertsEl = document.getElementById('acc-alerts');
+  if (alertsEl) {
+    alertsEl.innerHTML = alerts.length ? alerts.map(function(a) {
+      return '<div class="alert-card '+(a.type==='danger'?'danger':'')+'" style="margin-bottom:8px">'+
+        '<div class="alert-icon">'+a.icon+'</div>'+
+        '<div class="alert-body">'+
+          '<div class="alert-title">'+a.title+'</div>'+
+          '<div class="alert-sub">'+a.sub+'</div>'+
+          (a.action==='viewLedger'?'<button class="alert-action" onclick="viewAgentLedger(\''+a.agentId+'\')">View Ledger →</button>':
+           a.action==='viewAgent'?'<button class="alert-action" onclick="switchAccTab(\'agents\',document.querySelectorAll(\'.acc-tab\')[1])">View Agent →</button>':
+           '<button class="alert-action" onclick="switchAccTab(\'commissions\',document.querySelectorAll(\'.acc-tab\')[4])">View Commissions →</button>')+
+        '</div></div>';
+    }).join('') : '<div class="empty-state" style="padding:24px"><div class="empty-icon">✅</div><div class="empty-title">No Alerts</div><div class="empty-sub">All agent accounts are in good standing.</div></div>';
+  }
+
+  // Top agents
+  var topEl = document.getElementById('acc-top-agents');
+  if (topEl) {
+    var sorted = DB.agents.slice().sort(function(a,b){ return b.balance - a.balance; }).slice(0,5);
+    topEl.innerHTML = sorted.map(function(a) {
+      var risk = (a.backouts>=3||a.repatriations>=2)?'high':a.backouts>=1?'med':'low';
+      return '<div class="report-metric" style="padding:10px 0;border-bottom:1px solid var(--border)">'+
+        '<div style="display:flex;align-items:center;gap:10px;flex:1">'+
+          '<div class="agent-avatar" style="width:32px;height:32px;font-size:11px">'+a.name.split(' ').map(function(n){return n[0];}).join('')+'</div>'+
+          '<div><div style="font-size:13px;font-weight:700">'+a.name+'</div>'+
+          '<span class="risk-badge risk-'+risk+'">'+(risk==='high'?'High Risk':risk==='med'?'Watch':'Good')+'</span></div>'+
+        '</div>'+
+        '<div style="text-align:right">'+
+          '<div style="font-size:14px;font-weight:800;font-family:\'IBM Plex Mono\',monospace;color:'+(a.balance>=0?'var(--green)':'var(--red)')+'">'+
+            (a.balance>=0?'₱':'−₱')+Math.abs(a.balance).toLocaleString()+
+          '</div>'+
+          '<div style="font-size:10.5px;color:var(--muted)">'+(a.balance>=0?'Receivable':'Payable')+'</div>'+
+        '</div>'+
+      '</div>';
+    }).join('');
+  }
+}
+
+// ── AGENT GRID ────────────────────────────────────────────────────────
+function renderAgentGrid(query) {
+  var agents = DB.agents;
+  if (query) {
+    var q = query.toLowerCase();
+    agents = agents.filter(function(a){
+      return a.name.toLowerCase().includes(q) || a.country.toLowerCase().includes(q) || a.code.toLowerCase().includes(q);
+    });
+  }
+  var countEl = document.getElementById('agent-count-lbl');
+  if (countEl) countEl.textContent = agents.length + ' agent' + (agents.length!==1?'s':'');
+
+  var grid = document.getElementById('agent-grid');
+  if (!grid) return;
+  if (!agents.length) {
+    grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">👥</div><div class="empty-title">No agents found</div></div>';
+    return;
+  }
+
+  grid.innerHTML = agents.map(function(a, idx) {
+    var risk = (a.backouts>=3||a.repatriations>=2)?'alert':(a.balance<0?'warning':'');
+    var riskBadge = (a.backouts>=3||a.repatriations>=2)?'<span class="risk-badge risk-high" style="position:absolute;top:12px;right:12px">High Risk</span>':
+                    a.balance<0?'<span class="risk-badge risk-med" style="position:absolute;top:12px;right:12px">In Debt</span>':'';
+    return '<div class="agent-card '+risk+'" onclick="viewAgentLedger(\''+a.id+'\')">'+
+      riskBadge+
+      '<div class="agent-card-hdr">'+
+        '<div class="agent-avatar">'+a.name.split(' ').map(function(n){return n[0];}).join('')+'</div>'+
+        '<div>'+
+          '<div class="agent-name">'+a.name+'</div>'+
+          '<div class="agent-sub">'+a.code+' · '+a.country+'</div>'+
+          '<div class="agent-sub">'+a.phone+'</div>'+
+        '</div>'+
+      '</div>'+
+      '<div class="agent-stats">'+
+        '<div class="agent-stat">'+
+          '<div class="agent-stat-val" style="color:'+(a.balance>=0?'var(--green)':'var(--red)')+'">'+
+            (a.balance>=0?'₱':'−₱')+Math.abs(a.balance).toLocaleString()+
+          '</div>'+
+          '<div class="agent-stat-lbl">Net Balance</div>'+
+        '</div>'+
+        '<div class="agent-stat">'+
+          '<div class="agent-stat-val" style="color:var(--brand)">'+a.totalDeployed+'</div>'+
+          '<div class="agent-stat-lbl">Deployed</div>'+
+        '</div>'+
+        '<div class="agent-stat">'+
+          '<div class="agent-stat-val">₱'+a.totalCommission.toLocaleString()+'</div>'+
+          '<div class="agent-stat-lbl">Commission</div>'+
+        '</div>'+
+        '<div class="agent-stat">'+
+          '<div class="agent-stat-val" style="color:'+(a.backouts>0?'var(--red)':'var(--green)')+'">'+a.backouts+'</div>'+
+          '<div class="agent-stat-lbl">Backouts</div>'+
+        '</div>'+
+      '</div>'+
+      '<div style="display:flex;gap:6px;margin-top:12px;border-top:1px solid var(--border);padding-top:12px">'+
+        '<button class="btn btn-s btn-sm" style="flex:1" onclick="event.stopPropagation();viewAgentLedger(\''+a.id+'\')">📒 Ledger</button>'+
+        '<button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();openEditAgent('+DB.agents.indexOf(a)+')">✏ Edit</button>'+
+        '<button class="btn btn-danger btn-xs" onclick="event.stopPropagation();deleteAgent('+DB.agents.indexOf(a)+')">✕</button>'+
+      '</div>'+
+    '</div>';
+  }).join('');
+}
+
+function filterAgents(q) { renderAgentGrid(q); }
+
+function viewAgentLedger(agentId) {
+  currentLedgerAgent = agentId;
+  switchAccTab('ledger', document.querySelectorAll('.acc-tab')[2]);
+  var sel = document.getElementById('ledger-agent-select');
+  if (sel) sel.value = agentId;
+  renderLedger();
+}
+
+// ── LEDGER ────────────────────────────────────────────────────────────
+function initLedgerTab() {
+  var sel = document.getElementById('ledger-agent-select');
+  if (!sel) return;
+  var prev = sel.value;
+  sel.innerHTML = '<option value="">— Select Agent —</option>' +
+    DB.agents.map(function(a){
+      return '<option value="'+a.id+'"'+(prev===a.id?' selected':'')+'>'+a.name+' ('+a.code+')</option>';
+    }).join('');
+
+  var adjSel = document.getElementById('adj-applicant');
+  if (adjSel) {
+    adjSel.innerHTML = '<option value="">— None —</option>' +
+      DB.applicants.map(function(a){
+        return '<option value="'+a.id+'">'+a.name+' ('+a.id+')</option>';
+      }).join('');
+  }
+
+  if (currentLedgerAgent) { sel.value = currentLedgerAgent; renderLedger(); }
+  else renderLedger();
+}
+
+function renderLedger() {
+  var agentId = document.getElementById('ledger-agent-select') ? document.getElementById('ledger-agent-select').value : currentLedgerAgent;
+  var fromDate = document.getElementById('ledger-date-from') ? document.getElementById('ledger-date-from').value : '';
+  var toDate   = document.getElementById('ledger-date-to')   ? document.getElementById('ledger-date-to').value   : '';
+
+  var emptyEl = document.getElementById('ledger-empty');
+  var tableEl = document.getElementById('ledger-table');
+  var sumEl   = document.getElementById('ledger-summary');
+  var tbody   = document.getElementById('ledger-tbody');
+
+  if (!agentId) {
+    if (emptyEl) emptyEl.style.display = 'block';
+    if (tableEl) tableEl.style.display = 'none';
+    if (sumEl) sumEl.innerHTML = '';
+    return;
+  }
+  if (emptyEl) emptyEl.style.display = 'none';
+  if (tableEl) tableEl.style.display = 'table';
+
+  var agent   = DB.agents.find(function(a){ return a.id===agentId; });
+  var entries = DB.agentLedger.filter(function(e){ return e.agentId===agentId; });
+
+  if (fromDate) entries = entries.filter(function(e){ return e.date>=fromDate; });
+  if (toDate)   entries = entries.filter(function(e){ return e.date<=toDate;   });
+  entries = entries.slice().sort(function(a,b){ return b.date.localeCompare(a.date); });
+
+  // Summary cards
+  var credits   = entries.filter(function(e){ return e.amount>0; }).reduce(function(s,e){ return s+e.amount; }, 0);
+  var debits    = entries.filter(function(e){ return e.amount<0; }).reduce(function(s,e){ return s+e.amount; }, 0);
+  var commTot   = entries.filter(function(e){ return e.type==='commission'; }).reduce(function(s,e){ return s+e.amount; }, 0);
+  var expTot    = entries.filter(function(e){ return e.type==='expense'; }).reduce(function(s,e){ return s+e.amount; }, 0);
+
+  if (sumEl) sumEl.innerHTML = [
+    { label:'Total Credits', val:'₱'+credits.toLocaleString(), color:'var(--green)' },
+    { label:'Total Debits',  val:'−₱'+Math.abs(debits).toLocaleString(), color:'var(--red)' },
+    { label:'Commission',    val:'₱'+commTot.toLocaleString(), color:'var(--brand)' },
+    { label:'Net Balance',   val:(agent?((agent.balance>=0?'₱':'−₱')+Math.abs(agent.balance).toLocaleString()):'—'), color:agent&&agent.balance>=0?'var(--green)':'var(--red)' },
+  ].map(function(s){
+    return '<div class="ledger-sum-card"><div class="ledger-sum-val" style="color:'+s.color+'">'+s.val+'</div><div class="ledger-sum-lbl">'+s.label+'</div></div>';
+  }).join('');
+
+  if (!tbody) return;
+  if (!entries.length) {
+    tbody.innerHTML = '<tr><td colspan="6"><div class="empty-state" style="padding:24px"><div class="empty-icon">📒</div><div class="empty-title">No entries found</div></div></td></tr>';
+    return;
+  }
+
+  var typeColors = { commission:'var(--green)', expense:'var(--red)', reversal:'var(--red)', penalty:'var(--red)', adjustment:'var(--amber)', credit:'var(--green)' };
+  var typeIcons  = { commission:'🏆', expense:'💸', reversal:'↩', penalty:'⚠', adjustment:'🔧', credit:'💰' };
+
+  tbody.innerHTML = entries.map(function(e) {
+    var app = e.applicantId ? DB.applicants.find(function(a){ return a.id===e.applicantId; }) : null;
+    var isPos = e.amount >= 0;
+    return '<tr>'+
+      '<td style="font-size:11.5px;font-family:\'IBM Plex Mono\',monospace;color:var(--muted)">'+e.date+'</td>'+
+      '<td style="font-size:12.5px">'+(app?'<div style="font-weight:600">'+app.name+'</div><div style="font-size:11px;color:var(--muted)">'+app.id+'</div>':'<span style="color:var(--dim);font-size:12px">—</span>')+'</td>'+
+      '<td><span class="pill '+(isPos?'pill-green':'pill-red')+'" style="font-size:11px">'+(typeIcons[e.type]||'•')+' '+e.type.charAt(0).toUpperCase()+e.type.slice(1)+'</span></td>'+
+      '<td style="font-size:12.5px;max-width:200px">'+e.desc+'</td>'+
+      '<td style="text-align:right;font-weight:800;font-family:\'IBM Plex Mono\',monospace;color:'+(isPos?'var(--green)':'var(--red)')+'">'+
+        (isPos?'+':'')+'₱'+e.amount.toLocaleString()+
+      '</td>'+
+      '<td style="text-align:right;font-weight:700;font-family:\'IBM Plex Mono\',monospace;color:'+(e.runningBalance>=0?'var(--text)':'var(--red)')+'">'+
+        (e.runningBalance>=0?'₱':'−₱')+Math.abs(e.runningBalance).toLocaleString()+
+      '</td>'+
+    '</tr>';
+  }).join('');
+}
+
+function clearLedgerFilters() {
+  var df = document.getElementById('ledger-date-from');
+  var dt = document.getElementById('ledger-date-to');
+  if (df) df.value = '';
+  if (dt) dt.value = '';
+  renderLedger();
+}
+
+// ── EXPENSES TAB ──────────────────────────────────────────────────────
+function renderExpensesTab(search) {
+  var agentF  = document.getElementById('exp-agent-filter');
+  var statusF = document.getElementById('exp-status-filter');
+
+  // Populate agent filter
+  if (agentF && agentF.options.length <= 1) {
+    DB.agents.forEach(function(a){
+      var o = document.createElement('option');
+      o.value = a.name; o.text = a.name;
+      agentF.appendChild(o);
+    });
+  }
+
+  var expenses = DB.expenses.slice();
+  if (agentF && agentF.value)  expenses = expenses.filter(function(e){ return e.applicant && DB.applicants.find(function(a){ return a.name===e.applicant && a.agent===agentF.value; }); });
+  if (statusF && statusF.value) expenses = expenses.filter(function(e){ return e.status===statusF.value; });
+  if (search) { var q=search.toLowerCase(); expenses = expenses.filter(function(e){ return (e.desc||'').toLowerCase().includes(q)||(e.applicant||'').toLowerCase().includes(q); }); }
+
+  // KPIs
+  var kpisEl = document.getElementById('expense-kpis');
+  if (kpisEl) {
+    var total   = expenses.reduce(function(s,e){ return s+e.amount; }, 0);
+    var charged = expenses.filter(function(e){ return e.status==='Charged'; }).reduce(function(s,e){ return s+e.amount; }, 0);
+    var agency  = expenses.filter(function(e){ return e.status==='Agency'||e.status==='Pending'; }).reduce(function(s,e){ return s+e.amount; }, 0);
+    kpisEl.innerHTML = [
+      { label:'Total Expenses', val:'₱'+total.toLocaleString(),   icon:'📊', bg:'var(--brand-l)', c:'var(--brand)' },
+      { label:'Charged to Agents', val:'₱'+charged.toLocaleString(), icon:'💸', bg:'var(--rbg)',  c:'var(--red)' },
+      { label:'Agency Absorbed', val:'₱'+agency.toLocaleString(), icon:'🏢', bg:'var(--abg)',    c:'var(--amber)' },
+      { label:'Transactions', val:expenses.length, icon:'🔢', bg:'var(--gbg)', c:'var(--green)' },
+    ].map(function(s){ return '<div class="stat-card"><div class="stat-top"><div class="stat-icon" style="background:'+s.bg+';color:'+s.c+'">'+s.icon+'</div></div><div class="stat-val">'+s.val+'</div><div class="stat-lbl">'+s.label+'</div></div>'; }).join('');
+  }
+
+  var tbody = document.getElementById('expense-tbody');
+  if (!tbody) return;
+  if (!expenses.length) {
+    tbody.innerHTML = '<tr><td colspan="8"><div class="empty-state"><div class="empty-icon">💸</div><div class="empty-title">No expenses found</div></div></td></tr>';
+    return;
+  }
+  tbody.innerHTML = expenses.map(function(e) {
+    var app = e.applicant ? DB.applicants.find(function(a){ return a.name===e.applicant; }) : null;
+    var agent = app ? DB.agents.find(function(a){ return a.name===app.agent; }) : null;
+    return '<tr>'+
+      '<td style="font-size:11.5px;font-family:\'IBM Plex Mono\',monospace;color:var(--muted)">'+e.date+'</td>'+
+      '<td style="font-weight:600">'+(e.applicant||'—')+'</td>'+
+      '<td style="font-size:12.5px;color:var(--text2)">'+(agent?agent.name:'—')+'</td>'+
+      '<td>'+pillHtml(e.category,'category')+'</td>'+
+      '<td style="font-size:12.5px;max-width:160px">'+e.desc+'</td>'+
+      '<td style="font-weight:800;font-family:\'IBM Plex Mono\',monospace;text-align:right">₱'+e.amount.toLocaleString()+'</td>'+
+      '<td>'+pillHtml(e.status)+'</td>'+
+      '<td style="text-align:right;white-space:nowrap">'+
+        (agent?'<button class="btn btn-sm" style="font-size:11px;background:var(--rbg);color:var(--red);border:1px solid #fca5a5" onclick="chargeExpenseToAgent(\''+e.id+'\',\''+agent.id+'\')">Charge Agent</button> ':'')+
+        '<button class="btn btn-ghost btn-xs" style="color:var(--red)" onclick="confirmDelete(\'expense\',\''+e.id+'\')">🗑</button>'+
+      '</td>'+
+    '</tr>';
+  }).join('');
+}
+
+// ── COMMISSIONS ───────────────────────────────────────────────────────
+function renderCommissions() {
+  var today = new Date();
+
+  // KPIs
+  var kpisEl = document.getElementById('commission-kpis');
+  if (kpisEl) {
+    var released   = DB.commissions.filter(function(c){ return c.status==='Released'; }).reduce(function(s,c){ return s+c.amount; }, 0);
+    var inGuarantee= DB.commissions.filter(function(c){ return c.status==='In Guarantee'; }).reduce(function(s,c){ return s+c.amount; }, 0);
+    var reversed   = DB.commissions.filter(function(c){ return c.status==='Reversed'; }).reduce(function(s,c){ return s+c.amount; }, 0);
+    kpisEl.innerHTML = [
+      { label:'Released',     val:'₱'+released.toLocaleString(),    icon:'✅', bg:'var(--gbg)',  c:'var(--green)' },
+      { label:'In Guarantee', val:'₱'+inGuarantee.toLocaleString(), icon:'⏳', bg:'var(--abg)',  c:'var(--amber)' },
+      { label:'Reversed',     val:'₱'+reversed.toLocaleString(),    icon:'↩',  bg:'var(--rbg)',  c:'var(--red)'   },
+      { label:'Total',        val:DB.commissions.length+' records',  icon:'🏆', bg:'var(--pbg)', c:'var(--purple)'},
+    ].map(function(s){ return '<div class="stat-card"><div class="stat-top"><div class="stat-icon" style="background:'+s.bg+';color:'+s.c+'">'+s.icon+'</div></div><div class="stat-val">'+s.val+'</div><div class="stat-lbl">'+s.label+'</div></div>'; }).join('');
+  }
+
+  // Commission rates config
+  var ratesEl = document.getElementById('commission-rates');
+  if (ratesEl) {
+    ratesEl.innerHTML = DB.countryRules.filter(function(r){ return r.active; }).map(function(r) {
+      return '<div class="comm-row">'+
+        '<div class="comm-country">'+r.flag+' '+r.country+'</div>'+
+        '<div style="display:flex;align-items:center;gap:8px">'+
+          '<input class="comm-inp" type="number" min="0" max="100" step="0.5" value="'+r.commissionRate+'" id="crate-'+r.id+'" title="Commission %">'+
+          '<span style="font-size:12px;color:var(--muted)">%</span>'+
+          '<input class="comm-inp" type="number" min="0" max="100" step="1" value="'+r.withholdPct+'" id="cwith-'+r.id+'" title="Withhold during guarantee %" style="width:60px">'+
+          '<span style="font-size:11px;color:var(--dim)">%&nbsp;held</span>'+
+        '</div>'+
+      '</div>';
+    }).join('');
+  }
+
+  // Pending commissions
+  var pendEl = document.getElementById('pending-commissions');
+  if (pendEl) {
+    var pending = DB.commissions.filter(function(c){ return c.status==='In Guarantee'; });
+    pendEl.innerHTML = pending.length ? pending.map(function(c) {
+      var agent = DB.agents.find(function(a){ return a.id===c.agentId; });
+      var end   = new Date(c.guaranteeEnd);
+      var daysLeft = Math.ceil((end - today)/(1000*60*60*24));
+      return '<div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)">'+
+        '<div style="flex:1">'+
+          '<div style="font-size:12.5px;font-weight:700">'+c.applicantName+'</div>'+
+          '<div style="font-size:11px;color:var(--muted)">'+(agent?agent.name:'—')+' · '+c.country+'</div>'+
+          '<div style="font-size:11px;color:'+(daysLeft<=30?'var(--red)':'var(--muted)')+'">'+
+            (daysLeft>0?daysLeft+' days left':'Expired')+'</div>'+
+        '</div>'+
+        '<div style="text-align:right">'+
+          '<div style="font-size:13px;font-weight:800;font-family:\'IBM Plex Mono\',monospace">₱'+c.amount.toLocaleString()+'</div>'+
+          '<button class="btn btn-sm" style="font-size:11px;margin-top:4px;background:var(--gbg);color:var(--green);border:1px solid #86efac" onclick="releaseCommission(\''+c.id+'\')">Release</button>'+
+        '</div>'+
+      '</div>';
+    }).join('') : '<div class="empty-state" style="padding:20px"><div class="empty-icon">✅</div><div class="empty-title" style="font-size:13px">No pending commissions</div></div>';
+  }
+
+  // Commission history table
+  var tbody = document.getElementById('commission-tbody');
+  if (tbody) {
+    tbody.innerHTML = DB.commissions.map(function(c) {
+      var agent = DB.agents.find(function(a){ return a.id===c.agentId; });
+      return '<tr>'+
+        '<td style="font-size:11.5px;font-family:\'IBM Plex Mono\',monospace;color:var(--muted)">'+c.deployDate+'</td>'+
+        '<td style="font-weight:600">'+(agent?agent.name:'—')+'</td>'+
+        '<td>'+c.applicantName+'</td>'+
+        '<td style="font-size:12.5px">'+c.country+'</td>'+
+        '<td style="text-align:right;font-weight:800;font-family:\'IBM Plex Mono\',monospace">₱'+c.amount.toLocaleString()+'</td>'+
+        '<td>'+pillHtml(c.status)+'</td>'+
+        '<td style="text-align:right;white-space:nowrap">'+
+          (c.status==='In Guarantee'?'<button class="btn btn-sm" style="font-size:11px;background:var(--gbg);color:var(--green);border:1px solid #86efac" onclick="releaseCommission(\''+c.id+'\')">Release</button> ':'')+
+          (c.status==='Released'?'<button class="btn btn-sm" style="font-size:11px;background:var(--rbg);color:var(--red);border:1px solid #fca5a5" onclick="reverseCommission(\''+c.id+'\')">Reverse</button>':'')+
+        '</td>'+
+      '</tr>';
+    }).join('');
+  }
+}
+
+function saveCommissionRates() {
+  DB.countryRules.forEach(function(r) {
+    var rateEl = document.getElementById('crate-'+r.id);
+    var withEl = document.getElementById('cwith-'+r.id);
+    if (rateEl) r.commissionRate = parseFloat(rateEl.value) || r.commissionRate;
+    if (withEl) r.withholdPct    = parseFloat(withEl.value) || r.withholdPct;
+  });
+  addAudit('UPDATE','Commissions','Commission rates updated');
+  toast('Commission rates saved','success');
+}
+
+function releaseCommission(commId) {
+  var c = DB.commissions.find(function(x){ return x.id===commId; });
+  if (!c) return;
+  if (!confirm('Release commission of ₱'+c.amount.toLocaleString()+' for '+c.applicantName+'?')) return;
+  c.status = 'Released';
+  c.releaseDate = new Date().toISOString().split('T')[0];
+  var agent = DB.agents.find(function(a){ return a.id===c.agentId; });
+  if (agent) {
+    agent.balance += c.amount;
+    agent.totalCommission += c.amount;
+  }
+  addLedgerEntry(c.agentId, 'commission', 'Commission released — '+c.applicantName+' ('+c.country+')', c.amount, c.applicantId);
+  addAudit('UPDATE','Commission','Released ₱'+c.amount.toLocaleString()+' for '+c.applicantName);
+  toast('Commission of ₱'+c.amount.toLocaleString()+' released','success');
+  renderCommissions();
+}
+
+function reverseCommission(commId) {
+  var c = DB.commissions.find(function(x){ return x.id===commId; });
+  if (!c) return;
+  if (!confirm('Reverse commission of ₱'+c.amount.toLocaleString()+'? This will debit the agent.')) return;
+  var prev = c.status;
+  c.status = 'Reversed';
+  var agent = DB.agents.find(function(a){ return a.id===c.agentId; });
+  if (agent && prev==='Released') {
+    agent.balance -= c.amount;
+    agent.totalCommission -= c.amount;
+  }
+  addLedgerEntry(c.agentId, 'reversal', 'Commission reversed — '+c.applicantName, -c.amount, c.applicantId);
+  addAudit('UPDATE','Commission','Reversed ₱'+c.amount.toLocaleString()+' for '+c.applicantName);
+  toast('Commission reversed','success');
+  renderCommissions();
+}
+
+// ── COUNTRY RULES ─────────────────────────────────────────────────────
+function renderCountryRules() {
+  var grid = document.getElementById('rules-grid');
+  if (!grid) return;
+  grid.innerHTML = DB.countryRules.map(function(r, idx) {
+    var expLabel = {full:'Full recovery',partial:'50% recovery',medical:'Medical only',none:'Agency absorbs'}[r.expenseRule]||r.expenseRule;
+    return '<div class="rule-card">'+
+      '<div class="rule-country">'+r.flag+' '+r.country+
+        '<span class="pill '+(r.active?'pill-green':'pill-gray')+'" style="font-size:10px;margin-left:auto">'+(r.active?'Active':'Inactive')+'</span>'+
+      '</div>'+
+      '<div class="rule-row"><span>Guarantee Period</span><span class="rule-val">'+r.guaranteePeriod+' mo</span></div>'+
+      '<div class="rule-row"><span>Commission Rate</span><span class="rule-val">'+r.commissionRate+'%</span></div>'+
+      '<div class="rule-row"><span>Withhold (guarantee)</span><span class="rule-val">'+r.withholdPct+'%</span></div>'+
+      '<div class="rule-row"><span>Expense Rule</span><span style="font-size:11.5px;color:var(--muted)">'+expLabel+'</span></div>'+
+      '<div class="rule-row"><span>Currency</span><span class="rule-val">'+r.currency+'</span></div>'+
+      '<div style="display:flex;gap:6px;margin-top:10px">'+
+        '<button class="btn btn-s btn-sm" style="flex:1" onclick="openEditCountryRule('+idx+')">✏ Edit</button>'+
+        '<button class="btn btn-ghost btn-xs" onclick="toggleRuleActive('+idx+')">'+(r.active?'Disable':'Enable')+'</button>'+
+      '</div>'+
+    '</div>';
+  }).join('');
+}
+
+function toggleRuleActive(idx) {
+  DB.countryRules[idx].active = !DB.countryRules[idx].active;
+  renderCountryRules();
+  toast('Country rule '+(DB.countryRules[idx].active?'enabled':'disabled'),'success');
+}
+
+// ── REPORTS ───────────────────────────────────────────────────────────
+function renderReports() {
+  var maxBal = Math.max.apply(null, DB.agents.map(function(a){ return Math.abs(a.balance); }));
+
+  // Profitability
+  var profEl = document.getElementById('report-profitability');
+  if (profEl) {
+    var sorted = DB.agents.slice().sort(function(a,b){ return b.totalDeployed-a.totalDeployed; });
+    profEl.innerHTML = sorted.map(function(a) {
+      var profit = a.totalCommission - a.totalExpenses;
+      return '<div class="report-metric">'+
+        '<div style="min-width:100px;font-size:12.5px;font-weight:700">'+a.name.split(' ')[0]+'</div>'+
+        '<div class="report-bar-wrap"><div class="report-bar" style="width:'+(a.totalDeployed/20*100)+'%;background:'+(profit>=0?'var(--green)':'var(--red)')+'"></div></div>'+
+        '<div style="min-width:80px;text-align:right;font-size:12px;font-weight:800;font-family:\'IBM Plex Mono\',monospace;color:'+(profit>=0?'var(--green)':'var(--red)')+'">'+
+          (profit>=0?'₱':'−₱')+Math.abs(profit).toLocaleString()+
+        '</div>'+
+      '</div>';
+    }).join('');
+  }
+
+  // Outstanding balances
+  var outEl = document.getElementById('report-outstanding');
+  if (outEl) {
+    var debtors = DB.agents.filter(function(a){ return a.balance<0; }).sort(function(a,b){ return a.balance-b.balance; });
+    outEl.innerHTML = debtors.length ? debtors.map(function(a) {
+      return '<div class="report-metric">'+
+        '<div style="flex:1">'+
+          '<div style="font-size:12.5px;font-weight:700">'+a.name+'</div>'+
+          '<div style="font-size:11px;color:var(--muted)">'+a.code+' · '+a.country+'</div>'+
+        '</div>'+
+        '<div style="font-size:14px;font-weight:800;font-family:\'IBM Plex Mono\',monospace;color:var(--red)">−₱'+Math.abs(a.balance).toLocaleString()+'</div>'+
+      '</div>';
+    }).join('') : '<div class="empty-state" style="padding:20px"><div class="empty-icon">✅</div><div class="empty-title" style="font-size:13px">No outstanding debts</div></div>';
+  }
+
+  // Repatriation rate
+  var repEl = document.getElementById('report-repatriation');
+  if (repEl) {
+    repEl.innerHTML = DB.agents.map(function(a) {
+      var rate = a.totalDeployed ? Math.round(a.repatriations/a.totalDeployed*100) : 0;
+      return '<div class="report-metric">'+
+        '<div style="min-width:90px;font-size:12.5px;font-weight:700">'+a.name.split(' ')[0]+'</div>'+
+        '<div class="report-bar-wrap"><div class="report-bar" style="width:'+rate+'%;background:'+(rate>=20?'var(--red)':rate>=10?'var(--amber)':'var(--green)')+'"></div></div>'+
+        '<div style="min-width:50px;text-align:right;font-size:12px;font-weight:800;color:'+(rate>=20?'var(--red)':rate>=10?'var(--amber)':'var(--green)')+'">'+rate+'%</div>'+
+      '</div>';
+    }).join('');
+  }
+
+  // Cost per deployment
+  var costEl = document.getElementById('report-cost-deploy');
+  if (costEl) {
+    costEl.innerHTML = DB.agents.filter(function(a){ return a.totalDeployed>0; }).map(function(a) {
+      var cpd = Math.round(a.totalExpenses/a.totalDeployed);
+      return '<div class="report-metric">'+
+        '<div style="flex:1">'+
+          '<div style="font-size:12.5px;font-weight:700">'+a.name+'</div>'+
+          '<div style="font-size:11px;color:var(--muted)">'+a.totalDeployed+' deployed</div>'+
+        '</div>'+
+        '<div style="text-align:right">'+
+          '<div style="font-size:13px;font-weight:800;font-family:\'IBM Plex Mono\',monospace">₱'+cpd.toLocaleString()+'</div>'+
+          '<div style="font-size:10.5px;color:var(--muted)">per deployment</div>'+
+        '</div>'+
+      '</div>';
+    }).join('');
+  }
+}
+
+// ── BUSINESS LOGIC — TRIGGERS ─────────────────────────────────────────
+function addLedgerEntry(agentId, type, desc, amount, applicantId) {
+  var agent = DB.agents.find(function(a){ return a.id===agentId; });
+  if (!agent) return;
+  var newBalance = agent.balance + amount;
+  agent.balance = newBalance;
+  DB.agentLedger.unshift({
+    id: 'LDG-' + String(DB.agentLedger.length+1).padStart(3,'0'),
+    agentId: agentId,
+    applicantId: applicantId || null,
+    type: type,
+    desc: desc,
+    amount: amount,
+    date: new Date().toISOString().split('T')[0],
+    runningBalance: newBalance,
+  });
+}
+
+function chargeExpenseToAgent(expenseId, agentId) {
+  var exp   = DB.expenses.find(function(e){ return e.id===expenseId; });
+  var agent = DB.agents.find(function(a){ return a.id===agentId; });
+  if (!exp || !agent) return;
+  if (exp.status === 'Charged') { toast('Expense already charged','info'); return; }
+  exp.status = 'Charged';
+  agent.totalExpenses += exp.amount;
+  addLedgerEntry(agentId, 'expense', 'Expense charged: '+exp.desc+' ('+exp.applicant+')', -exp.amount, null);
+  addAudit('UPDATE','Expense','Charged ₱'+exp.amount.toLocaleString()+' to '+agent.name);
+  toast('₱'+exp.amount.toLocaleString()+' charged to '+agent.name,'success');
+  renderExpensesTab();
+}
+
+function onApplicantStatusChange(applicantId, newStatus, oldStatus) {
+  var app = DB.applicants.find(function(a){ return a.id===applicantId; });
+  if (!app || !app.agent) return;
+  var agent = DB.agents.find(function(a){ return a.name===app.agent; });
+  if (!agent) return;
+
+  var appExpenses = DB.expenses.filter(function(e){ return e.applicant===app.name && e.status!=='Charged'; });
+  var totalExp    = appExpenses.reduce(function(s,e){ return s+e.amount; }, 0);
+
+  // Unfit → charge medical expenses
+  if (newStatus === 'Backout' && oldStatus !== 'Backout') {
+    var medExp = appExpenses.filter(function(e){ return e.category==='Medical'; });
+    var medTotal = medExp.reduce(function(s,e){ return s+e.amount; }, 0);
+    if (medTotal > 0) {
+      medExp.forEach(function(e){ e.status='Charged'; });
+      agent.totalExpenses += medTotal;
+      addLedgerEntry(agent.id, 'expense', 'Auto-charge: Medical expenses — '+app.name+' (Backout)', -medTotal, applicantId);
+      toast('₱'+medTotal.toLocaleString()+' medical expenses charged to '+agent.name+' (backout)','info');
+    }
+  }
+
+  // Medically Unfit → charge all medical expenses
+  if (app.medical === 'Unfit' && newStatus !== oldStatus) {
+    var unfitExp = appExpenses.filter(function(e){ return e.category==='Medical'; });
+    var unfitTotal = unfitExp.reduce(function(s,e){ return s+e.amount; }, 0);
+    if (unfitTotal > 0) {
+      unfitExp.forEach(function(e){ e.status='Charged'; });
+      agent.totalExpenses += unfitTotal;
+      addLedgerEntry(agent.id, 'expense', 'Auto-charge: Medical exam — '+app.name+' (Medically Unfit)', -unfitTotal, applicantId);
+      toast('Medical expenses auto-charged to '+agent.name,'info');
+    }
+  }
+
+  // Deployed → create commission record
+  if (newStatus === 'Deployed' && oldStatus !== 'Deployed') {
+    var country = app.job ? app.job.split('·').pop().trim() : 'Philippines';
+    var rule    = DB.countryRules.find(function(r){ return r.country===country; }) ||
+                  DB.countryRules.find(function(r){ return r.active; });
+    var rate    = rule ? rule.commissionRate : agent.commissionRate || 5;
+    var base    = totalExp > 0 ? totalExp : 25000; // fallback base
+    var commission = Math.round(base * rate / 100);
+    var gEnd    = new Date();
+    if (rule) gEnd.setMonth(gEnd.getMonth() + rule.guaranteePeriod);
+    else       gEnd.setMonth(gEnd.getMonth() + 6);
+
+    DB.commissions.push({
+      id: 'COM-'+String(DB.commissions.length+1).padStart(3,'0'),
+      agentId: agent.id,
+      applicantId: applicantId,
+      applicantName: app.name,
+      country: country,
+      amount: commission,
+      status: 'In Guarantee',
+      deployDate: new Date().toISOString().split('T')[0],
+      guaranteeEnd: gEnd.toISOString().split('T')[0],
+      releaseDate: null,
+    });
+    agent.totalDeployed++;
+    addAudit('CREATE','Commission','Commission created: ₱'+commission.toLocaleString()+' for '+app.name+' (In Guarantee)');
+    toast('Commission of ₱'+commission.toLocaleString()+' created for '+agent.name+' (in guarantee)','success');
+  }
+
+  // Repatriated → charge all expenses + reverse commission
+  if (newStatus === 'Repatriated') {
+    if (totalExp > 0) {
+      appExpenses.forEach(function(e){ e.status='Charged'; });
+      agent.totalExpenses += totalExp;
+      addLedgerEntry(agent.id, 'expense', 'Auto-charge: Full expenses — '+app.name+' (Repatriated)', -totalExp, applicantId);
+    }
+    var openComm = DB.commissions.find(function(c){ return c.applicantId===applicantId && c.status==='In Guarantee'; });
+    if (openComm) {
+      openComm.status = 'Reversed';
+      addLedgerEntry(agent.id, 'reversal', 'Commission reversed — '+app.name+' repatriated within guarantee', -openComm.amount, applicantId);
+    }
+    agent.repatriations++;
+    toast('Expenses charged + commission reversed for '+agent.name+' (repatriation)','info');
+    addAudit('UPDATE','Agent','Repatriation processed for '+app.name+' — agent: '+agent.name);
+  }
+}
+
+// ── AGENT CRUD ────────────────────────────────────────────────────────
+function openAddAgent() {
+  editingAgentIdx = -1;
+  document.getElementById('agent-modal-title').textContent = 'Add Agent';
+  ['ag-name','ag-code','ag-phone','ag-email','ag-address','ag-notes'].forEach(function(id){
+    var el = document.getElementById(id); if(el) el.value='';
+  });
+  var ci = document.getElementById('ag-commission'); if(ci) ci.value='5';
+  openOverlay('overlay-agent');
+  setTimeout(function(){ var el=document.getElementById('ag-name'); if(el) el.focus(); },100);
+}
+
+function openEditAgent(idx) {
+  var a = DB.agents[idx];
+  if (!a) return;
+  editingAgentIdx = idx;
+  document.getElementById('agent-modal-title').textContent = 'Edit Agent';
+  var flds = {
+    'ag-name':a.name,'ag-code':a.code,'ag-phone':a.phone,
+    'ag-email':a.email,'ag-address':a.address,'ag-notes':a.notes||'',
+    'ag-commission':a.commissionRate,
+  };
+  Object.keys(flds).forEach(function(id){ var el=document.getElementById(id); if(el) el.value=flds[id]; });
+  var ci = document.getElementById('ag-country');
+  if (ci) ci.value = a.country;
+  openOverlay('overlay-agent');
+}
+
+function submitAgent() {
+  var name  = (document.getElementById('ag-name').value||'').trim();
+  var phone = (document.getElementById('ag-phone').value||'').trim();
+  if (!name || !phone) { toast('Name and phone are required','error'); return; }
+  var data = {
+    name: name,
+    code: (document.getElementById('ag-code').value||'').trim() || ('AGT-'+String(DB.agents.length+1).padStart(3,'0')),
+    phone: phone,
+    email: (document.getElementById('ag-email').value||'').trim(),
+    country: document.getElementById('ag-country').value,
+    commissionRate: parseFloat(document.getElementById('ag-commission').value)||5,
+    address: (document.getElementById('ag-address').value||'').trim(),
+    notes: (document.getElementById('ag-notes').value||'').trim(),
+    status: 'Active',
+  };
+  if (editingAgentIdx >= 0) {
+    Object.assign(DB.agents[editingAgentIdx], data);
+    addAudit('UPDATE','Agent','Updated agent: '+name);
+    toast('Agent updated','success');
+  } else {
+    DB.agents.push(Object.assign(data,{id:'AGT-'+String(DB.agents.length+1).padStart(3,'0'),balance:0,totalCommission:0,totalExpenses:0,totalDeployed:0,backouts:0,repatriations:0}));
+    addAudit('CREATE','Agent','Added agent: '+name);
+    toast('Agent added','success');
+  }
+  closeOverlay('overlay-agent');
+  renderAgentGrid();
+}
+
+function deleteAgent(idx) {
+  var a = DB.agents[idx];
+  if (!a) return;
+  if (!confirm('Remove agent "'+a.name+'"? This cannot be undone.')) return;
+  DB.agents.splice(idx,1);
+  addAudit('DELETE','Agent','Removed agent: '+a.name);
+  toast('Agent removed','success');
+  renderAgentGrid();
+}
+
+// ── MANUAL ADJUSTMENT ────────────────────────────────────────────────
+function openManualAdjustment() {
+  var sel = document.getElementById('adj-agent');
+  if (sel) {
+    sel.innerHTML = DB.agents.map(function(a){
+      return '<option value="'+a.id+'">'+a.name+' ('+a.code+')</option>';
+    }).join('');
+  }
+  var appSel = document.getElementById('adj-applicant');
+  if (appSel) {
+    appSel.innerHTML = '<option value="">— None —</option>' +
+      DB.applicants.map(function(a){
+        return '<option value="'+a.id+'">'+a.name+' ('+a.id+')</option>';
+      }).join('');
+  }
+  ['adj-amount','adj-desc'].forEach(function(id){ var el=document.getElementById(id); if(el) el.value=''; });
+  openOverlay('overlay-adjustment');
+}
+
+function submitAdjustment() {
+  var agentId = (document.getElementById('adj-agent').value||'').trim();
+  var type    = document.getElementById('adj-type').value;
+  var amount  = parseFloat(document.getElementById('adj-amount').value)||0;
+  var desc    = (document.getElementById('adj-desc').value||'').trim();
+  var appId   = document.getElementById('adj-applicant').value||null;
+  if (!agentId||!desc||amount<=0) { toast('Agent, description and amount are required','error'); return; }
+  var finalAmt = (type==='credit')?amount:-amount;
+  addLedgerEntry(agentId, type, desc, finalAmt, appId);
+  addAudit('CREATE','Ledger','Manual adjustment: '+desc+' (₱'+amount.toLocaleString()+')');
+  toast('Ledger entry posted','success');
+  closeOverlay('overlay-adjustment');
+  if (currentAccTab==='ledger') renderLedger();
+}
+
+// ── COUNTRY RULE CRUD ─────────────────────────────────────────────────
+function openAddCountryRule() {
+  editingRuleIdx = -1;
+  document.getElementById('rule-modal-title').textContent = 'Add Country Rule';
+  ['cr-country','cr-guarantee','cr-commission','cr-withhold'].forEach(function(id){
+    var el=document.getElementById(id); if(el) el.value='';
+  });
+  var gu=document.getElementById('cr-guarantee'); if(gu) gu.value='6';
+  var co=document.getElementById('cr-commission'); if(co) co.value='5';
+  var wh=document.getElementById('cr-withhold'); if(wh) wh.value='20';
+  openOverlay('overlay-country-rule');
+}
+
+function openEditCountryRule(idx) {
+  var r = DB.countryRules[idx];
+  if (!r) return;
+  editingRuleIdx = idx;
+  document.getElementById('rule-modal-title').textContent = 'Edit Country Rule';
+  document.getElementById('cr-country').value    = r.country;
+  document.getElementById('cr-guarantee').value  = r.guaranteePeriod;
+  document.getElementById('cr-commission').value = r.commissionRate;
+  document.getElementById('cr-withhold').value   = r.withholdPct;
+  document.getElementById('cr-currency').value   = r.currency;
+  document.getElementById('cr-expense-rule').value = r.expenseRule;
+  openOverlay('overlay-country-rule');
+}
+
+function submitCountryRule() {
+  var country = (document.getElementById('cr-country').value||'').trim();
+  if (!country) { toast('Country name is required','error'); return; }
+  var data = {
+    country: country,
+    flag: '🌍',
+    guaranteePeriod: parseInt(document.getElementById('cr-guarantee').value)||6,
+    commissionRate:  parseFloat(document.getElementById('cr-commission').value)||5,
+    withholdPct:     parseFloat(document.getElementById('cr-withhold').value)||20,
+    currency:        document.getElementById('cr-currency').value,
+    expenseRule:     document.getElementById('cr-expense-rule').value,
+    active: true,
+  };
+  if (editingRuleIdx >= 0) {
+    Object.assign(DB.countryRules[editingRuleIdx], data);
+    toast('Country rule updated','success');
+  } else {
+    data.id = 'CR-'+String(DB.countryRules.length+1).padStart(3,'0');
+    DB.countryRules.push(data);
+    toast('Country added','success');
+  }
+  closeOverlay('overlay-country-rule');
+  renderCountryRules();
+}
+
+// ── EXPORTS ───────────────────────────────────────────────────────────
+function exportAccountingReport() {
+  var rows = ['Agent,Commission,Expenses,Balance,Deployed,Backouts'];
+  DB.agents.forEach(function(a){
+    rows.push([a.name,a.totalCommission,a.totalExpenses,a.balance,a.totalDeployed,a.backouts].join(','));
+  });
+  var blob = new Blob([rows.join('\n')],{type:'text/csv'});
+  var url  = URL.createObjectURL(blob);
+  var lnk  = document.createElement('a');
+  lnk.href = url; lnk.download = 'agent_accounting_'+new Date().toISOString().split('T')[0]+'.csv';
+  lnk.click();
+  toast('Report exported','success');
+}
+
+function exportLedger() {
+  var agentId = document.getElementById('ledger-agent-select') ? document.getElementById('ledger-agent-select').value : '';
+  if (!agentId) { toast('Select an agent first','error'); return; }
+  var agent   = DB.agents.find(function(a){ return a.id===agentId; });
+  var entries = DB.agentLedger.filter(function(e){ return e.agentId===agentId; });
+  var rows    = ['Date,Type,Description,Amount,Balance'];
+  entries.forEach(function(e){
+    rows.push([e.date,e.type,'"'+e.desc+'"',e.amount,e.runningBalance].join(','));
+  });
+  var blob = new Blob([rows.join('\n')],{type:'text/csv'});
+  var url  = URL.createObjectURL(blob);
+  var lnk  = document.createElement('a');
+  lnk.href = url; lnk.download = (agent?agent.name:'agent')+'_ledger_'+new Date().toISOString().split('T')[0]+'.csv';
+  lnk.click();
+  toast('Ledger exported','success');
+}
+
+// ── PATCH saveApplicant to trigger accounting logic ───────────────────
+var _origSaveApplicant = saveApplicant;
+saveApplicant = function() {
+  // Capture old status before save
+  var editId = document.getElementById('a-name') ? document.getElementById('a-name').dataset.editId : null;
+  var oldStatus = editId ? (DB.applicants.find(function(a){ return a.id===editId; })||{}).status : null;
+  _origSaveApplicant();
+  // After save, get new status
+  var newStatus = editId ? (DB.applicants.find(function(a){ return a.id===editId; })||{}).status : null;
+  if (editId && newStatus && oldStatus !== newStatus) {
+    onApplicantStatusChange(editId, newStatus, oldStatus);
+  }
+};
+
+// Check guarantee periods on load
+function checkGuaranteePeriods() {
+  var today = new Date().toISOString().split('T')[0];
+  var expiring = DB.commissions.filter(function(c){
+    if (c.status!=='In Guarantee') return false;
+    var end = new Date(c.guaranteeEnd);
+    var now = new Date();
+    var days = Math.ceil((end-now)/(1000*60*60*24));
+    return days <= 30 && days > 0;
+  });
+  return expiring.length;
+}
+
+
+// ╔══════════════════════════════════════════════════════════════════╗
+// ║        OFFICE EXPENSE MANAGEMENT SYSTEM — DUAL CURRENCY         ║
+// ╚══════════════════════════════════════════════════════════════════╝
+
+// ── DATA MODEL ──────────────────────────────────────────────────────
+DB.officeFunds = {
+  fxRate:        57.50,          // PHP per 1 USD
+  fxUpdated:     '2026-04-15',
+  balancePHP:    285000,
+  balanceUSD:    3500,
+  lowThresholdPHP: 20000,
+  lowThresholdUSD: 500,
+};
+
+DB.officeLedger = [
+  { id:'OL-001', type:'allocation', currency:'PHP', amount:200000, balance:200000, desc:'Initial office fund allocation Q1',        ref:'ALLOC-001', category:null,             date:'2026-01-05', postedBy:'Admin', ts:'2026-01-05T08:00:00' },
+  { id:'OL-002', type:'allocation', currency:'USD', amount:5000,   balance:5000,   desc:'USD petty cash fund — head office',        ref:'ALLOC-002', category:null,             date:'2026-01-05', postedBy:'Admin', ts:'2026-01-05T08:05:00' },
+  { id:'OL-003', type:'expense',    currency:'PHP', amount:-8500,  balance:191500, desc:'Office rent — January 2026',               ref:'OR-2026-01', category:'Rent',           date:'2026-01-06', postedBy:'Accounting', ts:'2026-01-06T09:00:00' },
+  { id:'OL-004', type:'expense',    currency:'PHP', amount:-3200,  balance:188300, desc:'Office supplies — printer paper, ink',     ref:'OR-2026-02', category:'Office Supplies', date:'2026-01-10', postedBy:'Accounting', ts:'2026-01-10T10:30:00' },
+  { id:'OL-005', type:'expense',    currency:'PHP', amount:-5800,  balance:182500, desc:'Electricity bill — January 2026',          ref:'MERALCO-JAN', category:'Utilities',     date:'2026-01-15', postedBy:'Accounting', ts:'2026-01-15T14:00:00' },
+  { id:'OL-006', type:'refund',     currency:'PHP', amount:2000,   balance:184500, desc:'Refund from Juan Reyes — overpayment',     ref:'RF-001',     category:null,             date:'2026-01-20', postedBy:'Accounting', ts:'2026-01-20T11:00:00' },
+  { id:'OL-007', type:'expense',    currency:'PHP', amount:-1800,  balance:182700, desc:'Transportation — POEA submissions',        ref:'OR-2026-03', category:'Transportation', date:'2026-01-22', postedBy:'Accounting', ts:'2026-01-22T09:00:00' },
+  { id:'OL-008', type:'expense',    currency:'USD', amount:-320,   balance:4680,   desc:'Online subscription — job posting portal', ref:'SUB-2026-01', category:'Communication', date:'2026-01-25', postedBy:'Accounting', ts:'2026-01-25T10:00:00' },
+  { id:'OL-009', type:'allocation', currency:'PHP', amount:100000, balance:282700, desc:'Additional allocation — Q1 top-up',        ref:'ALLOC-003',  category:null,             date:'2026-02-01', postedBy:'Admin', ts:'2026-02-01T08:00:00' },
+  { id:'OL-010', type:'expense',    currency:'PHP', amount:-8500,  balance:274200, desc:'Office rent — February 2026',              ref:'OR-2026-04', category:'Rent',           date:'2026-02-05', postedBy:'Accounting', ts:'2026-02-05T09:00:00' },
+  { id:'OL-011', type:'expense',    currency:'PHP', amount:-4200,  balance:270000, desc:'Staff meals — client visit',               ref:'OR-2026-05', category:'Meals',          date:'2026-02-10', postedBy:'Accounting', ts:'2026-02-10T13:00:00' },
+  { id:'OL-012', type:'expense',    currency:'USD', amount:-180,   balance:4500,   desc:'Translation service fee',                  ref:'OR-2026-06', category:'Printing',       date:'2026-02-12', postedBy:'Accounting', ts:'2026-02-12T11:00:00' },
+  { id:'OL-013', type:'refund',     currency:'PHP', amount:5000,   balance:275000, desc:'Supplier credit note — ABC Printing',      ref:'RF-002',     category:null,             date:'2026-02-15', postedBy:'Accounting', ts:'2026-02-15T14:00:00' },
+  { id:'OL-014', type:'expense',    currency:'PHP', amount:-6200,  balance:268800, desc:'Internet bill — 6 months advance',         ref:'OR-2026-07', category:'Utilities',      date:'2026-02-20', postedBy:'Accounting', ts:'2026-02-20T10:00:00' },
+  { id:'OL-015', type:'expense',    currency:'PHP', amount:-2400,  balance:266400, desc:'Printing — applicant documents batch',     ref:'OR-2026-08', category:'Printing',       date:'2026-03-02', postedBy:'Accounting', ts:'2026-03-02T09:00:00' },
+  { id:'OL-016', type:'expense',    currency:'PHP', amount:-8500,  balance:257900, desc:'Office rent — March 2026',                 ref:'OR-2026-09', category:'Rent',           date:'2026-03-05', postedBy:'Accounting', ts:'2026-03-05T09:00:00' },
+  { id:'OL-017', type:'expense',    currency:'USD', amount:-500,   balance:4000,   desc:'Embassy coordination fee',                 ref:'OR-2026-10', category:'Bank Charges',   date:'2026-03-10', postedBy:'Accounting', ts:'2026-03-10T10:00:00' },
+  { id:'OL-018', type:'refund',     currency:'USD', amount:200,    balance:4200,   desc:'Refund from applicant — cancelled medical',ref:'RF-003',     category:null,             date:'2026-03-15', postedBy:'Accounting', ts:'2026-03-15T11:00:00' },
+  { id:'OL-019', type:'expense',    currency:'PHP', amount:-3800,  balance:254100, desc:'Staff overtime allowance — March',         ref:'OR-2026-11', category:'Staff Expense',  date:'2026-03-20', postedBy:'Accounting', ts:'2026-03-20T17:00:00' },
+  { id:'OL-020', type:'adjustment', currency:'PHP', amount:-800,   balance:253300, desc:'Adjustment — cash count discrepancy Q1',   ref:'ADJ-001',    category:null,             date:'2026-03-31', postedBy:'Admin', ts:'2026-03-31T18:00:00' },
+  { id:'OL-021', type:'expense',    currency:'PHP', amount:-8500,  balance:244800, desc:'Office rent — April 2026',                 ref:'OR-2026-12', category:'Rent',           date:'2026-04-02', postedBy:'Accounting', ts:'2026-04-02T09:00:00' },
+  { id:'OL-022', type:'expense',    currency:'PHP', amount:-2600,  balance:242200, desc:'Office supplies — toners and folders',     ref:'OR-2026-13', category:'Office Supplies', date:'2026-04-05', postedBy:'Accounting', ts:'2026-04-05T10:00:00' },
+  { id:'OL-023', type:'expense',    currency:'PHP', amount:-4800,  balance:237400, desc:'Electricity bill — April 2026',            ref:'OR-2026-14', category:'Utilities',      date:'2026-04-10', postedBy:'Accounting', ts:'2026-04-10T14:00:00' },
+  { id:'OL-024', type:'allocation', currency:'PHP', amount:50000,  balance:287400, desc:'Additional fund release — April top-up',   ref:'ALLOC-004',  category:null,             date:'2026-04-12', postedBy:'Admin', ts:'2026-04-12T08:00:00' },
+  { id:'OL-025', type:'expense',    currency:'PHP', amount:-2400,  balance:285000, desc:'Transportation — embassy & POEA runs',     ref:'OR-2026-15', category:'Transportation', date:'2026-04-14', postedBy:'Accounting', ts:'2026-04-14T09:00:00' },
+];
+
+DB.officeRefunds = [
+  { id:'RF-001', sourceType:'Agent',     sourceName:'Juan Reyes',    reason:'Overpayment',     currency:'PHP', amount:2000, date:'2026-01-20', notes:'Excess from cash advance' },
+  { id:'RF-002', sourceType:'Supplier',  sourceName:'ABC Printing',  reason:'Supplier Credit', currency:'PHP', amount:5000, date:'2026-02-15', notes:'Credit note for returned items' },
+  { id:'RF-003', sourceType:'Applicant', sourceName:'Ana Reyes',     reason:'Cancellation',    currency:'USD', amount:200,  date:'2026-03-15', notes:'Cancelled medical appointment' },
+];
+Object.defineProperty(DB,'officeExpenses',{get:function(){return DB.officeLedger.filter(function(e){return e.type==='expense';});},configurable:true});
+
+
+// ── STATE ────────────────────────────────────────────────────────────
+var officeActiveCatFilter = 'all';
+
+// ── MAIN RENDER ──────────────────────────────────────────────────────
+function renderOffice() {
+  recalcOfficeLedgerBalances();
+  renderOfficeCashCards();
+  renderOfficeFlowRow();
+  renderOfficeLedger();
+  renderOfficeCatBreakdown();
+  renderOfficeRefunds();
+  renderOfficeTrend();
+  renderOfficeTopCats();
+  checkOfficeLowBalance();
+}
+
+// ── RECALCULATE RUNNING BALANCES ─────────────────────────────────────
+function recalcOfficeLedgerBalances() {
+  var phpBal = 0, usdBal = 0;
+  var sorted = DB.officeLedger.slice().sort(function(a,b){ return a.ts.localeCompare(b.ts); });
+  sorted.forEach(function(e) {
+    if (e.currency === 'PHP') { phpBal += e.amount; e.balance = phpBal; }
+    else { usdBal += e.amount; e.balance = usdBal; }
+  });
+  DB.officeFunds.balancePHP = phpBal;
+  DB.officeFunds.balanceUSD = usdBal;
+}
+
+// ── CASH CARDS ────────────────────────────────────────────────────────
+function renderOfficeCashCards() {
+  var f     = DB.officeFunds;
+  var phpIn = DB.officeLedger.filter(function(e){ return e.currency==='PHP' && e.amount>0; }).reduce(function(s,e){ return s+e.amount; },0);
+  var phpOut= DB.officeLedger.filter(function(e){ return e.currency==='PHP' && e.amount<0; }).reduce(function(s,e){ return s+Math.abs(e.amount); },0);
+  var usdIn = DB.officeLedger.filter(function(e){ return e.currency==='USD' && e.amount>0; }).reduce(function(s,e){ return s+e.amount; },0);
+  var usdOut= DB.officeLedger.filter(function(e){ return e.currency==='USD' && e.amount<0; }).reduce(function(s,e){ return s+Math.abs(e.amount); },0);
+  var phpCnt= DB.officeLedger.filter(function(e){ return e.currency==='PHP'; }).length;
+  var usdCnt= DB.officeLedger.filter(function(e){ return e.currency==='USD'; }).length;
+
+  var phpClass = f.balancePHP < 0 ? 'cash-balance-negative' : f.balancePHP < f.lowThresholdPHP ? 'cash-balance-warning' : 'cash-balance-positive';
+  var usdClass = f.balanceUSD < 0 ? 'cash-balance-negative' : f.balanceUSD < f.lowThresholdUSD ? 'cash-balance-warning' : 'cash-balance-positive';
+
+  var phpEl = document.getElementById('cash-php-balance');
+  var usdEl = document.getElementById('cash-usd-balance');
+  if (phpEl) { phpEl.textContent = '₱'+f.balancePHP.toLocaleString('en',{minimumFractionDigits:2,maximumFractionDigits:2}); phpEl.className = 'cash-card-balance '+phpClass; }
+  if (usdEl) { usdEl.textContent = '$'+f.balanceUSD.toLocaleString('en',{minimumFractionDigits:2,maximumFractionDigits:2}); usdEl.className = 'cash-card-balance '+usdClass; }
+
+  var setTxt = function(id, val) { var el=document.getElementById(id); if(el) el.textContent=val; };
+  setTxt('cash-php-in',  '₱'+phpIn.toLocaleString());
+  setTxt('cash-php-out', '₱'+phpOut.toLocaleString());
+  setTxt('cash-php-count', phpCnt);
+  setTxt('cash-usd-in',  '$'+usdIn.toLocaleString());
+  setTxt('cash-usd-out', '$'+usdOut.toLocaleString());
+  setTxt('cash-usd-count', usdCnt);
+}
+
+// ── FLOW ROW ──────────────────────────────────────────────────────────
+function renderOfficeFlowRow() {
+  var f    = DB.officeFunds;
+  var fx   = f.fxRate;
+  var phpIn  = DB.officeLedger.filter(function(e){ return e.currency==='PHP'&&e.amount>0; }).reduce(function(s,e){ return s+e.amount; },0);
+  var phpOut = Math.abs(DB.officeLedger.filter(function(e){ return e.currency==='PHP'&&e.amount<0; }).reduce(function(s,e){ return s+e.amount; },0));
+  var usdIn  = DB.officeLedger.filter(function(e){ return e.currency==='USD'&&e.amount>0; }).reduce(function(s,e){ return s+e.amount; },0);
+  var usdOut = Math.abs(DB.officeLedger.filter(function(e){ return e.currency==='USD'&&e.amount<0; }).reduce(function(s,e){ return s+e.amount; },0));
+  var totalInPHP  = phpIn  + usdIn  * fx;
+  var totalOutPHP = phpOut + usdOut * fx;
+  var totalBalPHP = f.balancePHP + f.balanceUSD * fx;
+  var el = document.getElementById('office-flow-row');
+  if (!el) return;
+  el.innerHTML = [
+    { lbl:'Total Cash In',  val:'₱'+Math.round(totalInPHP).toLocaleString(),  color:'var(--green)'  },
+    { lbl:'arrow', val:'→', color:'var(--muted)' },
+    { lbl:'Total Expenses', val:'₱'+Math.round(totalOutPHP).toLocaleString(), color:'var(--red)'    },
+    { lbl:'arrow', val:'=', color:'var(--muted)' },
+    { lbl:'Net Balance (PHP equiv)', val:'₱'+Math.round(totalBalPHP).toLocaleString(), color: totalBalPHP>=0?'var(--green)':'var(--red)' },
+    { lbl:'FX Rate', val:'$1 = ₱'+fx, color:'var(--brand)' },
+  ].map(function(item) {
+    if (item.lbl==='arrow') return '<div class="flow-arrow" style="color:'+item.color+';font-size:20px;font-weight:300">'+item.val+'</div>';
+    return '<div class="flow-item"><div class="flow-val" style="color:'+item.color+'">'+item.val+'</div><div class="flow-lbl">'+item.lbl+'</div></div>';
+  }).join('');
+}
+
+// ── LEDGER RENDER ─────────────────────────────────────────────────────
+function renderOfficeLedger() {
+  var currFilter = document.getElementById('office-ledger-currency') ? document.getElementById('office-ledger-currency').value : 'all';
+  var typeFilter = document.getElementById('office-ledger-type')     ? document.getElementById('office-ledger-type').value     : 'all';
+  var entries = DB.officeLedger.slice().sort(function(a,b){ return b.ts.localeCompare(a.ts); });
+  if (currFilter !== 'all') entries = entries.filter(function(e){ return e.currency===currFilter; });
+  if (typeFilter !== 'all') entries = entries.filter(function(e){ return e.type===typeFilter;     });
+
+  var tbody = document.getElementById('office-ledger-tbody');
+  if (!tbody) return;
+  if (!entries.length) {
+    tbody.innerHTML = '<tr><td colspan="6"><div class="empty-state" style="padding:24px"><div class="empty-icon">📒</div><div class="empty-title">No entries found</div></div></td></tr>';
+    return;
+  }
+
+  var typeCss  = { allocation:'lt-allocation', refund:'lt-refund', expense:'lt-expense', adjustment:'lt-adjustment', override:'lt-override' };
+  var typeIcon  = { allocation:'📥', refund:'↩', expense:'📤', adjustment:'🔧', override:'⚠' };
+  var sym = function(cur) { return cur==='PHP'?'₱':'$'; };
+
+  tbody.innerHTML = entries.map(function(e) {
+    var isNeg = e.amount < 0;
+    var dispAmt = sym(e.currency)+(isNeg?'-':'+')+(Math.abs(e.amount)).toLocaleString('en',{minimumFractionDigits:2});
+    var dispBal = e.balance !== undefined ? sym(e.currency)+Math.abs(e.balance).toLocaleString('en',{minimumFractionDigits:2}) : '—';
+    return '<tr>'+
+      '<td style="font-size:11px;font-family:\'IBM Plex Mono\',monospace;color:var(--muted);white-space:nowrap">'+e.date+'</td>'+
+      '<td><span class="ledger-type-pill '+(typeCss[e.type]||'lt-allocation')+'">'+(typeIcon[e.type]||'•')+' '+e.type.charAt(0).toUpperCase()+e.type.slice(1)+'</span>'+
+        '<span class="pill '+(e.currency==='PHP'?'pill-blue':'pill-green')+'" style="font-size:10px;margin-left:4px">'+e.currency+'</span></td>'+
+      '<td style="font-size:12.5px;max-width:180px">'+e.desc+(e.ref?'<div style="font-size:10px;color:var(--dim);font-family:\'IBM Plex Mono\',monospace">'+e.ref+'</div>':'')+'</td>'+
+      '<td style="font-size:11.5px;color:var(--muted)">'+(e.category||'—')+'</td>'+
+      '<td style="text-align:right;font-weight:800;font-family:\'IBM Plex Mono\',monospace;color:'+(isNeg?'var(--red)':'var(--green)')+'">'+dispAmt+'</td>'+
+      '<td style="text-align:right;font-weight:700;font-family:\'IBM Plex Mono\',monospace;font-size:12px;color:'+(e.balance>=0?'var(--text)':'var(--red)')+'">'+dispBal+'</td>'+
+    '</tr>';
+  }).join('');
+}
+
+// ── CATEGORY BREAKDOWN ────────────────────────────────────────────────
+function renderOfficeCatBreakdown() {
+  var expenses = DB.officeLedger.filter(function(e){ return e.type==='expense' && e.category; });
+  var catMap   = {};
+  expenses.forEach(function(e){ catMap[e.category]=(catMap[e.category]||0)+Math.abs(e.amount); });
+  var cats     = Object.entries(catMap).sort(function(a,b){ return b[1]-a[1]; });
+  var max      = cats.length ? cats[0][1] : 1;
+
+  // Category filter chips
+  var filterEl = document.getElementById('office-cat-filter');
+  if (filterEl) {
+    var allCats = ['all'].concat(cats.map(function(c){ return c[0]; }));
+    filterEl.innerHTML = allCats.map(function(c) {
+      return '<div class="cat-chip '+(officeActiveCatFilter===c?'active':'')+'" onclick="filterOfficeCat(\''+c+'\')">'+
+        (c==='all'?'All':c)+'</div>';
+    }).join('');
+  }
+
+  var catColors = {
+    'Rent':'var(--brand)','Utilities':'var(--teal)','Office Supplies':'var(--purple)',
+    'Transportation':'var(--amber)','Staff Expense':'var(--green)','Meals':'var(--orange)',
+    'Communication':'var(--brand)','Printing':'var(--muted)','Equipment':'var(--purple)',
+    'Bank Charges':'var(--red)','Miscellaneous':'var(--dim)'
+  };
+
+  var filtered = officeActiveCatFilter==='all' ? cats : cats.filter(function(c){ return c[0]===officeActiveCatFilter; });
+  var totalExp = cats.reduce(function(s,c){ return s+c[1]; },0);
+
+  var breakEl = document.getElementById('office-cat-breakdown');
+  if (breakEl) {
+    breakEl.innerHTML = filtered.map(function(c) {
+      var pct = Math.round(c[1]/totalExp*100);
+      return '<div class="trend-row">'+
+        '<div class="trend-label" style="font-size:12px">'+c[0]+'</div>'+
+        '<div class="trend-bar-wrap"><div class="trend-bar-fill" style="width:'+(c[1]/max*100)+'%;background:'+(catColors[c[0]]||'var(--brand)')+'"></div></div>'+
+        '<div class="trend-val" style="color:'+(catColors[c[0]]||'var(--brand)')+'">₱'+c[1].toLocaleString()+'</div>'+
+        '<div style="font-size:10.5px;color:var(--muted);min-width:30px;text-align:right">'+pct+'%</div>'+
+      '</div>';
+    }).join('') || '<div style="color:var(--muted);font-size:12px;padding:8px 0">No data</div>';
+  }
+}
+
+function filterOfficeCat(cat) {
+  officeActiveCatFilter = cat;
+  renderOfficeCatBreakdown();
+}
+
+// ── REFUNDS ───────────────────────────────────────────────────────────
+function renderOfficeRefunds() {
+  var el = document.getElementById('office-refunds');
+  if (!el) return;
+  var refunds = DB.officeRefunds.slice().sort(function(a,b){ return b.date.localeCompare(a.date); }).slice(0,5);
+  el.innerHTML = refunds.length ? refunds.map(function(r) {
+    return '<div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border)">'+
+      '<div style="flex:1;min-width:0">'+
+        '<div style="font-size:12.5px;font-weight:700">'+r.sourceName+'</div>'+
+        '<div style="font-size:11px;color:var(--muted)">'+r.sourceType+' · '+r.reason+' · '+r.date+'</div>'+
+      '</div>'+
+      '<span class="pill '+(r.currency==='PHP'?'pill-blue':'pill-green')+'" style="font-size:10px">'+r.currency+'</span>'+
+      '<div style="font-weight:800;font-family:\'IBM Plex Mono\',monospace;color:var(--green);font-size:13px">'+
+        '+'+(r.currency==='PHP'?'₱':'$')+r.amount.toLocaleString()+
+      '</div>'+
+    '</div>';
+  }).join('') : '<div class="empty-state" style="padding:16px"><div class="empty-title" style="font-size:13px">No refunds yet</div></div>';
+}
+
+// ── TREND ─────────────────────────────────────────────────────────────
+function renderOfficeTrend() {
+  var monthMap = {};
+  DB.officeLedger.filter(function(e){ return e.type==='expense'; }).forEach(function(e) {
+    var mo = e.date.slice(0,7);
+    var amt = e.currency==='PHP' ? Math.abs(e.amount) : Math.abs(e.amount)*DB.officeFunds.fxRate;
+    monthMap[mo] = (monthMap[mo]||0) + amt;
+  });
+  var months = Object.keys(monthMap).sort().slice(-6);
+  var vals   = months.map(function(m){ return monthMap[m]||0; });
+  var maxV   = Math.max.apply(null, vals.concat([1]));
+  var el = document.getElementById('office-trend');
+  if (!el) return;
+  el.innerHTML = months.map(function(m, i) {
+    var mo = m.slice(5);
+    var moName = ['','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][parseInt(mo,10)];
+    return '<div class="trend-row">'+
+      '<div class="trend-label">'+moName+' '+m.slice(2,4)+'</div>'+
+      '<div class="trend-bar-wrap"><div class="trend-bar-fill" style="width:'+(vals[i]/maxV*100)+'%;background:var(--brand)"></div></div>'+
+      '<div class="trend-val">₱'+Math.round(vals[i]).toLocaleString()+'</div>'+
+    '</div>';
+  }).join('');
+}
+
+// ── TOP CATEGORIES ────────────────────────────────────────────────────
+function renderOfficeTopCats() {
+  var catMap = {};
+  DB.officeLedger.filter(function(e){ return e.type==='expense'&&e.category; }).forEach(function(e){
+    var amt = e.currency==='PHP' ? Math.abs(e.amount) : Math.abs(e.amount)*DB.officeFunds.fxRate;
+    catMap[e.category]=(catMap[e.category]||0)+amt;
+  });
+  var cats = Object.entries(catMap).sort(function(a,b){ return b[1]-a[1]; });
+  var maxV = cats.length ? cats[0][1] : 1;
+  var el = document.getElementById('office-top-cats');
+  if (!el) return;
+  el.innerHTML = cats.map(function(c) {
+    return '<div class="trend-row">'+
+      '<div class="trend-label">'+c[0]+'</div>'+
+      '<div class="trend-bar-wrap"><div class="trend-bar-fill" style="width:'+(c[1]/maxV*100)+'%;background:var(--amber)"></div></div>'+
+      '<div class="trend-val">₱'+Math.round(c[1]).toLocaleString()+'</div>'+
+    '</div>';
+  }).join('') || '<div style="color:var(--muted);font-size:12px">No data</div>';
+}
+
+// ── LOW BALANCE CHECK ─────────────────────────────────────────────────
+function checkOfficeLowBalance() {
+  var f     = DB.officeFunds;
+  var alert = document.getElementById('office-balance-alert');
+  if (!alert) return;
+  var low = f.balancePHP < f.lowThresholdPHP || f.balanceUSD < f.lowThresholdUSD || f.balancePHP < 0 || f.balanceUSD < 0;
+  alert.style.display = low ? 'flex' : 'none';
+  if (low) {
+    var msgs = [];
+    if (f.balancePHP < 0) msgs.push('PHP balance is negative (₱'+f.balancePHP.toLocaleString()+')');
+    else if (f.balancePHP < f.lowThresholdPHP) msgs.push('PHP balance low (₱'+f.balancePHP.toLocaleString()+' < ₱'+f.lowThresholdPHP.toLocaleString()+' threshold)');
+    if (f.balanceUSD < 0) msgs.push('USD balance is negative ($'+f.balanceUSD.toLocaleString()+')');
+    else if (f.balanceUSD < f.lowThresholdUSD) msgs.push('USD balance low ($'+f.balanceUSD.toLocaleString()+' < $'+f.lowThresholdUSD.toLocaleString()+' threshold)');
+    alert.innerHTML = '<span style="font-size:18px">⚠</span><div><div style="font-weight:700">Low Balance Warning</div><div style="font-size:12px;margin-top:2px">'+msgs.join(' · ')+'</div></div>';
+  }
+}
+
+// ── EXCHANGE RATE ─────────────────────────────────────────────────────
+function updateFxRate() {
+  var el = document.getElementById('fx-rate');
+  var rate = parseFloat(el ? el.value : 57.5);
+  if (!rate || rate < 1) { toast('Invalid exchange rate','error'); return; }
+  DB.officeFunds.fxRate = rate;
+  DB.officeFunds.fxUpdated = new Date().toISOString().split('T')[0];
+  var updEl = document.getElementById('fx-updated');
+  if (updEl) updEl.textContent = 'Updated '+DB.officeFunds.fxUpdated;
+  addAudit('UPDATE','Exchange Rate','FX rate updated to 1 USD = ₱'+rate);
+  toast('Exchange rate updated: $1 = ₱'+rate,'success');
+  renderOfficeFlowRow();
+  renderOfficeTrend();
+  renderOfficeTopCats();
+}
+
+// ── ADD FUNDS ─────────────────────────────────────────────────────────
+function openAddFunds(currency) {
+  var cur = document.getElementById('funds-currency');
+  if (cur) cur.value = currency || 'PHP';
+  var dt = document.getElementById('funds-date');
+  if (dt) dt.value = new Date().toISOString().split('T')[0];
+  var amt = document.getElementById('funds-amount');
+  if (amt) { amt.value=''; }
+  var src = document.getElementById('funds-source'); if (src) src.value='';
+  var nt  = document.getElementById('funds-notes');  if (nt)  nt.value='';
+  updateFundsBalance();
+  openOverlay('overlay-add-funds');
+  setTimeout(function(){ var a=document.getElementById('funds-amount'); if(a)a.focus(); },100);
+}
+
+function updateFundsBalance() {
+  var cur = document.getElementById('funds-currency') ? document.getElementById('funds-currency').value : 'PHP';
+  var amt = parseFloat(document.getElementById('funds-amount') ? document.getElementById('funds-amount').value : 0) || 0;
+  var curBal = cur==='PHP' ? DB.officeFunds.balancePHP : DB.officeFunds.balanceUSD;
+  var sym    = cur==='PHP' ? '₱' : '$';
+  var afterEl = document.getElementById('funds-after');
+  if (afterEl) afterEl.textContent = 'Current: '+sym+curBal.toLocaleString()+' → After: '+sym+(curBal+amt).toLocaleString();
+}
+
+function submitAddFunds() {
+  var type   = document.getElementById('funds-type').value;
+  var cur    = document.getElementById('funds-currency').value;
+  var amount = parseFloat(document.getElementById('funds-amount').value)||0;
+  var source = (document.getElementById('funds-source').value||'').trim();
+  var date   = document.getElementById('funds-date').value;
+  var notes  = (document.getElementById('funds-notes').value||'').trim();
+  if (!amount || amount<=0) { toast('Enter a valid amount','error'); return; }
+  if (!date) { toast('Date is required','error'); return; }
+
+  var user = localStorage.getItem('rams_user');
+  var uname = user ? (JSON.parse(user).name||'Admin') : 'Admin';
+  var newBal = (cur==='PHP'?DB.officeFunds.balancePHP:DB.officeFunds.balanceUSD) + amount;
+
+  DB.officeLedger.push({
+    id:         'OL-'+String(DB.officeLedger.length+1).padStart(3,'0'),
+    type:       'allocation',
+    currency:   cur,
+    amount:     amount,
+    balance:    newBal,
+    desc:       type.charAt(0).toUpperCase()+type.slice(1)+(source?' — '+source:''),
+    ref:        'ALLOC-'+String(Date.now()).slice(-5),
+    category:   null,
+    date:       date,
+    postedBy:   uname,
+    ts:         new Date().toISOString(),
+    notes:      notes,
+  });
+
+  addAudit('CREATE','Office Funds','Fund allocation: '+(cur==='PHP'?'₱':'$')+amount.toLocaleString()+' '+cur);
+  toast('₱'+(cur==='PHP'?amount.toLocaleString():amount.toLocaleString())+' '+cur+' allocated','success');
+  closeOverlay('overlay-add-funds');
+  recalcOfficeLedgerBalances();
+  renderOffice();
+}
+
+// ── OFFICE EXPENSE ────────────────────────────────────────────────────
+function openOfficeExpense(currency) {
+  var cur = document.getElementById('oe-currency');
+  if (cur) cur.value = currency || 'PHP';
+  var dt = document.getElementById('oe-date');
+  if (dt) dt.value = new Date().toISOString().split('T')[0];
+  ['oe-desc','oe-amount','oe-ref','oe-override-reason'].forEach(function(id){
+    var el=document.getElementById(id); if(el) el.value='';
+  });
+  var warn = document.getElementById('oe-balance-warn');
+  if (warn) warn.style.display='none';
+  var ovrPanel = document.getElementById('oe-override-panel');
+  if (ovrPanel) ovrPanel.style.display='none';
+  openOverlay('overlay-office-expense');
+  setTimeout(function(){ var el=document.getElementById('oe-desc'); if(el) el.focus(); },100);
+}
+
+function checkOfficeBalance() {
+  var cur = document.getElementById('oe-currency') ? document.getElementById('oe-currency').value : 'PHP';
+  var amt = parseFloat(document.getElementById('oe-amount') ? document.getElementById('oe-amount').value : 0)||0;
+  var bal = cur==='PHP' ? DB.officeFunds.balancePHP : DB.officeFunds.balanceUSD;
+  var insufficient = amt > bal;
+  var warnEl  = document.getElementById('oe-balance-warn');
+  var ovrEl   = document.getElementById('oe-override-panel');
+  var sym     = cur==='PHP' ? '₱' : '$';
+  if (warnEl) {
+    warnEl.style.display = insufficient ? 'block' : 'none';
+    warnEl.textContent = '⚠ Insufficient balance — available: '+sym+bal.toLocaleString()+', requested: '+sym+amt.toLocaleString();
+  }
+  if (ovrEl)  ovrEl.style.display  = insufficient ? 'block' : 'none';
+  var btnEl = document.getElementById('oe-submit-btn');
+  if (btnEl) { btnEl.textContent = insufficient ? 'Override & Post' : 'Post Expense'; btnEl.className = insufficient ? 'btn btn-danger' : 'btn btn-p'; }
+}
+
+function submitOfficeExpense() {
+  var cur    = document.getElementById('oe-currency').value;
+  var cat    = document.getElementById('oe-category').value;
+  var desc   = (document.getElementById('oe-desc').value||'').trim();
+  var amount = parseFloat(document.getElementById('oe-amount').value)||0;
+  var date   = document.getElementById('oe-date').value;
+  var ref    = (document.getElementById('oe-ref').value||'').trim();
+  var paidBy = document.getElementById('oe-paidby').value;
+  var override = (document.getElementById('oe-override-reason').value||'').trim();
+  if (!desc)   { toast('Description is required','error'); return; }
+  if (!amount||amount<=0) { toast('Enter a valid amount','error'); return; }
+  if (!date)   { toast('Date is required','error'); return; }
+
+  var bal = cur==='PHP' ? DB.officeFunds.balancePHP : DB.officeFunds.balanceUSD;
+  var insufficient = amount > bal;
+  if (insufficient && !override) { toast('Override reason required for insufficient balance','error'); document.getElementById('oe-override-reason').focus(); return; }
+
+  var user  = localStorage.getItem('rams_user');
+  var uname = user ? (JSON.parse(user).name||'Admin') : 'Admin';
+  var newBal= bal - amount;
+  var entryType = insufficient ? 'override' : 'expense';
+
+  DB.officeLedger.push({
+    id:       'OL-'+String(DB.officeLedger.length+1).padStart(3,'0'),
+    type:     entryType,
+    currency: cur,
+    amount:   -amount,
+    balance:  newBal,
+    desc:     cat+' — '+desc+(paidBy!=='Cash'?' ['+paidBy+']':'')+(override?' [OVERRIDE: '+override+']':''),
+    ref:      ref || ('OE-'+String(Date.now()).slice(-5)),
+    category: cat,
+    date:     date,
+    postedBy: uname,
+    ts:       new Date().toISOString(),
+  });
+
+  if (insufficient) addAudit('OVERRIDE','Office Expense','Override: '+(cur==='PHP'?'₱':'$')+amount.toLocaleString()+' — '+override);
+  addAudit('CREATE','Office Expense',cat+' — '+(cur==='PHP'?'₱':'$')+amount.toLocaleString()+' '+cur);
+  toast((cur==='PHP'?'₱':'$')+amount.toLocaleString()+' '+cat+' expense posted','success');
+  closeOverlay('overlay-office-expense');
+  recalcOfficeLedgerBalances();
+  renderOffice();
+}
+
+// ── REFUND ────────────────────────────────────────────────────────────
+function openRefund() {
+  ['rf-source-name','rf-notes'].forEach(function(id){ var el=document.getElementById(id); if(el) el.value=''; });
+  var dt=document.getElementById('rf-date'); if(dt) dt.value=new Date().toISOString().split('T')[0];
+  var am=document.getElementById('rf-amount'); if(am) am.value='';
+  openOverlay('overlay-refund');
+  setTimeout(function(){ var el=document.getElementById('rf-source-name'); if(el) el.focus(); },100);
+}
+
+function submitRefund() {
+  var sourceType = document.getElementById('rf-source-type').value;
+  var sourceName = (document.getElementById('rf-source-name').value||'').trim();
+  var reason     = document.getElementById('rf-reason').value;
+  var cur        = document.getElementById('rf-currency').value;
+  var amount     = parseFloat(document.getElementById('rf-amount').value)||0;
+  var date       = document.getElementById('rf-date').value;
+  var notes      = (document.getElementById('rf-notes').value||'').trim();
+  if (!sourceName) { toast('Source name is required','error'); return; }
+  if (!amount||amount<=0) { toast('Enter a valid amount','error'); return; }
+  if (!date) { toast('Date is required','error'); return; }
+
+  var user  = localStorage.getItem('rams_user');
+  var uname = user ? (JSON.parse(user).name||'Accounting') : 'Accounting';
+  var newBal= (cur==='PHP'?DB.officeFunds.balancePHP:DB.officeFunds.balanceUSD) + amount;
+
+  var refId = 'RF-'+String(DB.officeRefunds.length+1).padStart(3,'0');
+  DB.officeRefunds.push({ id:refId, sourceType:sourceType, sourceName:sourceName, reason:reason, currency:cur, amount:amount, date:date, notes:notes });
+  DB.officeLedger.push({
+    id:       'OL-'+String(DB.officeLedger.length+1).padStart(3,'0'),
+    type:     'refund',
+    currency: cur,
+    amount:   amount,
+    balance:  newBal,
+    desc:     'Refund from '+sourceName+' ('+sourceType+') — '+reason,
+    ref:      refId,
+    category: null,
+    date:     date,
+    postedBy: uname,
+    ts:       new Date().toISOString(),
+    notes:    notes,
+  });
+
+  addAudit('CREATE','Office Refund','Refund: '+(cur==='PHP'?'₱':'$')+amount.toLocaleString()+' from '+sourceName);
+  toast('Refund of '+(cur==='PHP'?'₱':'$')+amount.toLocaleString()+' posted','success');
+  closeOverlay('overlay-refund');
+  recalcOfficeLedgerBalances();
+  renderOffice();
+}
+
+// ── ADMIN ADJUSTMENT ──────────────────────────────────────────────────
+function openOfficeAdjustment() {
+  ['oa-amount','oa-reason'].forEach(function(id){ var el=document.getElementById(id); if(el) el.value=''; });
+  openOverlay('overlay-office-adjustment');
+}
+
+function submitOfficeAdjustment() {
+  var cur    = document.getElementById('oa-currency').value;
+  var dir    = parseInt(document.getElementById('oa-direction').value)||1;
+  var amount = parseFloat(document.getElementById('oa-amount').value)||0;
+  var reason = (document.getElementById('oa-reason').value||'').trim();
+  if (!amount||amount<=0) { toast('Enter a valid amount','error'); return; }
+  if (!reason) { toast('Reason is required','error'); return; }
+
+  var bal    = cur==='PHP' ? DB.officeFunds.balancePHP : DB.officeFunds.balanceUSD;
+  var newBal = bal + (amount * dir);
+  var user   = localStorage.getItem('rams_user');
+  var uname  = user ? (JSON.parse(user).name||'Admin') : 'Admin';
+
+  DB.officeLedger.push({
+    id:       'OL-'+String(DB.officeLedger.length+1).padStart(3,'0'),
+    type:     'adjustment',
+    currency: cur,
+    amount:   amount * dir,
+    balance:  newBal,
+    desc:     'Manual adjustment — '+reason,
+    ref:      'ADJ-'+String(Date.now()).slice(-5),
+    category: null,
+    date:     new Date().toISOString().split('T')[0],
+    postedBy: uname,
+    ts:       new Date().toISOString(),
+  });
+
+  addAudit('ADJUSTMENT','Office Funds','Manual adj: '+(dir>0?'+':'-')+(cur==='PHP'?'₱':'$')+amount.toLocaleString()+' — '+reason);
+  toast('Adjustment posted','success');
+  closeOverlay('overlay-office-adjustment');
+  recalcOfficeLedgerBalances();
+  renderOffice();
+}
+
+// ── EXPORT ────────────────────────────────────────────────────────────
+function exportOfficeLedger() {
+  var rows = ['Date,Type,Currency,Amount,Balance,Category,Description,Reference,Posted By'];
+  DB.officeLedger.slice().sort(function(a,b){ return b.ts.localeCompare(a.ts); }).forEach(function(e){
+    rows.push([e.date,e.type,e.currency,e.amount,e.balance||'',e.category||'','"'+e.desc+'"',e.ref||'',e.postedBy||''].join(','));
+  });
+  var blob = new Blob([rows.join('\n')],{type:'text/csv'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'office_ledger_'+new Date().toISOString().split('T')[0]+'.csv';
+  a.click();
+  toast('Office ledger exported','success');
+}
+
+// ── HOOK INTO switchAccTab ────────────────────────────────────────────
+var _origSwitchAccTab = switchAccTab;
+switchAccTab = function(tab, el) {
+  _origSwitchAccTab(tab, el);
+  if (tab === 'office') {
+    // Update header
+    var hdra = document.getElementById('acc-hdr-actions');
+    if (hdra) hdra.innerHTML =
+      '<button class="btn btn-ghost btn-sm" onclick="openOfficeAdjustment()">🔧 Adjust</button>'+
+      '<button class="btn btn-s btn-sm" onclick="openRefund()">↩ Refund</button>'+
+      '<button class="btn btn-ghost btn-sm" onclick="openOfficeExpense(\'USD\')">$ Expense</button>'+
+      '<button class="btn btn-p btn-sm" onclick="openOfficeExpense(\'PHP\')">− ₱ Expense</button>'+
+      '<button class="btn btn-s btn-sm" onclick="openAddFunds(\'PHP\')">+ ₱ Funds</button>';
+    renderOffice();
+  }
+};
+
+
+// submitFunds
+function submitFunds() {
+  var currency = document.getElementById('funds-currency').value;
+  var type     = document.getElementById('funds-type').value;
+  var amount   = parseFloat(document.getElementById('funds-amount').value) || 0;
+  var source   = (document.getElementById('funds-source').value || '').trim();
+  var notes    = (document.getElementById('funds-notes').value  || '').trim();
+  var dateEl   = document.getElementById('funds-date');
+  var date     = dateEl ? dateEl.value : new Date().toISOString().split('T')[0];
+  var errEl    = document.getElementById('funds-error');
+  if (errEl) errEl.style.display = 'none';
+  if (amount <= 0) { toast('Amount must be greater than zero','error'); return; }
+  if (!source)     { toast('Source is required','error'); return; }
+  var typeMap = {allocation:'Cash Allocation',deposit:'Deposit',topup:'Top-up',refund:'Refund'};
+  var entryType = (type==='refund') ? 'refund' : 'allocation';
+  var desc = (typeMap[type]||type)+' -- '+source+(notes?' . '+notes:'');
+  var udata = localStorage.getItem('rams_user');
+  var uname = udata ? (JSON.parse(udata).name||'Admin') : 'Admin';
+  DB.officeLedger.push({
+    id:'OL-'+String(DB.officeLedger.length+1).padStart(3,'0'),
+    type:entryType, currency:currency, amount:amount, balance:0,
+    desc:desc, ref:(type==='refund'?'RF':'ALLOC')+'-'+String(Date.now()).slice(-5),
+    category:null, date:date, postedBy:uname,
+    ts:date+'T'+new Date().toTimeString().slice(0,8),
+  });
+  if (type==='refund') {
+    DB.officeRefunds.push({
+      id:'RF-'+String(DB.officeRefunds.length+1).padStart(3,'0'),
+      sourceType:'Other',sourceName:source,reason:'Refund',
+      currency:currency,amount:amount,date:date,notes:notes||''
+    });
+  }
+  recalcOfficeLedgerBalances();
+  addAudit('CREATE','Office Funds','Added '+(currency==='PHP'?'P':'$')+amount.toLocaleString()+' ('+type+') from '+source);
+  closeOverlay('overlay-add-funds');
+  renderOffice();
+  toast((currency==='PHP'?'PHP ':'USD ')+amount.toLocaleString()+' added to cash-on-hand','success');
+}
+
 </script>
 
 <!-- Change Password Modal -->
@@ -3582,6 +5570,393 @@ filterExpenses = function(q) {
     <div class="modal-foot">
       <button class="btn btn-ghost" onclick="closeOverlay('overlay-create-user')">Cancel</button>
       <button class="btn btn-p" onclick="submitCreateUser()">Save User</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add/Edit Agent Modal -->
+<div class="overlay" id="overlay-agent" onclick="closeOverlayIfBg(event,'overlay-agent')" role="dialog" aria-modal="true">
+  <div class="modal modal-md">
+    <div class="modal-hdr">
+      <div><h2 id="agent-modal-title">Add Agent</h2><p>Register an external recruitment agent</p></div>
+      <button class="close-btn" onclick="closeOverlay('overlay-agent')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="f-row">
+        <div class="f-grp">
+          <label class="f-lbl">Full Name <span class="req">*</span></label>
+          <input class="f-inp" id="ag-name" type="text" placeholder="e.g. Juan Reyes">
+        </div>
+        <div class="f-grp">
+          <label class="f-lbl">Agent Code</label>
+          <input class="f-inp" id="ag-code" type="text" placeholder="Auto-generated">
+        </div>
+      </div>
+      <div class="f-row">
+        <div class="f-grp">
+          <label class="f-lbl">Phone <span class="req">*</span></label>
+          <input class="f-inp" id="ag-phone" type="tel" placeholder="+63 9XX XXX XXXX">
+        </div>
+        <div class="f-grp">
+          <label class="f-lbl">Email</label>
+          <input class="f-inp" id="ag-email" type="email" placeholder="agent@email.com">
+        </div>
+      </div>
+      <div class="f-row">
+        <div class="f-grp">
+          <label class="f-lbl">Primary Country</label>
+          <select class="f-inp" id="ag-country">
+            <option>Saudi Arabia</option><option>UAE</option><option>Qatar</option>
+            <option>Kuwait</option><option>Bahrain</option><option>Oman</option>
+            <option>Hong Kong</option><option>Singapore</option><option>Taiwan</option>
+            <option>Japan</option><option>South Korea</option><option>Canada</option>
+            <option>Germany</option><option>Multiple</option>
+          </select>
+        </div>
+        <div class="f-grp">
+          <label class="f-lbl">Commission Rate (%)</label>
+          <input class="f-inp" id="ag-commission" type="number" min="0" max="100" step="0.5" placeholder="5.0">
+        </div>
+      </div>
+      <div class="f-grp">
+        <label class="f-lbl">Address / Area</label>
+        <input class="f-inp" id="ag-address" type="text" placeholder="City, Province">
+      </div>
+      <div class="f-grp">
+        <label class="f-lbl">Notes</label>
+        <textarea class="f-inp" id="ag-notes" rows="2" placeholder="Any additional notes…" style="resize:vertical"></textarea>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeOverlay('overlay-agent')">Cancel</button>
+      <button class="btn btn-p" onclick="submitAgent()">Save Agent</button>
+    </div>
+  </div>
+</div>
+
+<!-- Manual Ledger Adjustment Modal -->
+<div class="overlay" id="overlay-adjustment" onclick="closeOverlayIfBg(event,'overlay-adjustment')" role="dialog" aria-modal="true">
+  <div class="modal modal-sm">
+    <div class="modal-hdr">
+      <div><h2>Manual Adjustment</h2><p>Add a debit or credit to an agent's ledger</p></div>
+      <button class="close-btn" onclick="closeOverlay('overlay-adjustment')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="f-grp">
+        <label class="f-lbl">Agent <span class="req">*</span></label>
+        <select class="f-inp" id="adj-agent"></select>
+      </div>
+      <div class="f-row">
+        <div class="f-grp">
+          <label class="f-lbl">Type <span class="req">*</span></label>
+          <select class="f-inp" id="adj-type">
+            <option value="credit">Credit (add funds)</option>
+            <option value="debit">Debit (charge agent)</option>
+            <option value="adjustment">Adjustment</option>
+            <option value="reversal">Commission Reversal</option>
+            <option value="penalty">Penalty</option>
+          </select>
+        </div>
+        <div class="f-grp">
+          <label class="f-lbl">Amount (₱) <span class="req">*</span></label>
+          <input class="f-inp" id="adj-amount" type="number" min="0" placeholder="0.00">
+        </div>
+      </div>
+      <div class="f-grp">
+        <label class="f-lbl">Linked Applicant (optional)</label>
+        <select class="f-inp" id="adj-applicant">
+          <option value="">— None —</option>
+        </select>
+      </div>
+      <div class="f-grp">
+        <label class="f-lbl">Description <span class="req">*</span></label>
+        <input class="f-inp" id="adj-desc" type="text" placeholder="Reason for adjustment…">
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeOverlay('overlay-adjustment')">Cancel</button>
+      <button class="btn btn-p" onclick="submitAdjustment()">Post Entry</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add Country Rule Modal -->
+<div class="overlay" id="overlay-country-rule" onclick="closeOverlayIfBg(event,'overlay-country-rule')" role="dialog" aria-modal="true">
+  <div class="modal modal-sm">
+    <div class="modal-hdr">
+      <div><h2 id="rule-modal-title">Add Country Rule</h2><p>Configure deployment rules for a destination country</p></div>
+      <button class="close-btn" onclick="closeOverlay('overlay-country-rule')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="f-grp">
+        <label class="f-lbl">Country <span class="req">*</span></label>
+        <input class="f-inp" id="cr-country" type="text" placeholder="e.g. Saudi Arabia">
+      </div>
+      <div class="f-row">
+        <div class="f-grp">
+          <label class="f-lbl">Guarantee Period (months)</label>
+          <input class="f-inp" id="cr-guarantee" type="number" min="1" max="24" value="6">
+        </div>
+        <div class="f-grp">
+          <label class="f-lbl">Default Commission (%)</label>
+          <input class="f-inp" id="cr-commission" type="number" min="0" max="100" step="0.5" value="5">
+        </div>
+      </div>
+      <div class="f-row">
+        <div class="f-grp">
+          <label class="f-lbl">Withhold During Guarantee (%)</label>
+          <input class="f-inp" id="cr-withhold" type="number" min="0" max="100" step="5" value="20">
+        </div>
+        <div class="f-grp">
+          <label class="f-lbl">Currency</label>
+          <select class="f-inp" id="cr-currency">
+            <option>PHP</option><option>SAR</option><option>AED</option><option>QAR</option>
+            <option>KWD</option><option>HKD</option><option>SGD</option><option>JPY</option>
+            <option>CAD</option><option>EUR</option>
+          </select>
+        </div>
+      </div>
+      <div class="f-grp">
+        <label class="f-lbl">Expense Responsibility on Backout</label>
+        <select class="f-inp" id="cr-expense-rule">
+          <option value="full">Full — Agent pays all expenses</option>
+          <option value="partial">Partial — Agent pays 50% of expenses</option>
+          <option value="medical">Medical Only — Agent pays medical expenses</option>
+          <option value="none">None — Agency absorbs expenses</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeOverlay('overlay-country-rule')">Cancel</button>
+      <button class="btn btn-p" onclick="submitCountryRule()">Save Rule</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add Funds / Allocation Modal -->
+<div class="overlay" id="overlay-add-funds" onclick="closeOverlayIfBg(event,'overlay-add-funds')" role="dialog" aria-modal="true">
+  <div class="modal modal-sm">
+    <div class="modal-hdr">
+      <div><h2 id="funds-modal-title">Add Funds</h2><p>Record a cash allocation or deposit</p></div>
+      <button class="close-btn" onclick="closeOverlay('overlay-add-funds')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="f-row">
+        <div class="f-grp">
+          <label class="f-lbl">Type <span class="req">*</span></label>
+          <select class="f-inp" id="funds-type">
+            <option value="allocation">Cash Allocation</option>
+            <option value="deposit">Bank Deposit</option>
+            <option value="transfer">Fund Transfer</option>
+          </select>
+        </div>
+        <div class="f-grp">
+          <label class="f-lbl">Currency <span class="req">*</span></label>
+          <select class="f-inp" id="funds-currency" onchange="updateFundsBalance()">
+            <option value="PHP">🇵🇭 PHP</option>
+            <option value="USD">🇺🇸 USD</option>
+          </select>
+        </div>
+      </div>
+      <div class="f-grp">
+        <label class="f-lbl">Amount <span class="req">*</span></label>
+        <input class="f-inp" id="funds-amount" type="number" min="0" step="0.01" placeholder="0.00" oninput="updateFundsBalance()">
+        <div style="font-size:11.5px;color:var(--muted);margin-top:4px" id="funds-after">Current balance: —</div>
+      </div>
+      <div class="f-grp">
+        <label class="f-lbl">Source / Reference</label>
+        <input class="f-inp" id="funds-source" type="text" placeholder="e.g. Head Office, Bank Transfer #12345">
+      </div>
+      <div class="f-grp">
+        <label class="f-lbl">Date <span class="req">*</span></label>
+        <input class="f-inp" id="funds-date" type="date">
+      </div>
+      <div class="f-grp">
+        <label class="f-lbl">Notes</label>
+        <textarea class="f-inp" id="funds-notes" rows="2" placeholder="Optional notes…" style="resize:vertical"></textarea>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeOverlay('overlay-add-funds')">Cancel</button>
+      <button class="btn btn-p" onclick="submitAddFunds()">Post Allocation</button>
+    </div>
+  </div>
+</div>
+
+<!-- Office Expense Modal -->
+<div class="overlay" id="overlay-office-expense" onclick="closeOverlayIfBg(event,'overlay-office-expense')" role="dialog" aria-modal="true">
+  <div class="modal modal-md">
+    <div class="modal-hdr">
+      <div><h2>Record Office Expense</h2><p>Expense will be deducted from cash-on-hand</p></div>
+      <button class="close-btn" onclick="closeOverlay('overlay-office-expense')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="f-row">
+        <div class="f-grp">
+          <label class="f-lbl">Category <span class="req">*</span></label>
+          <select class="f-inp" id="oe-category">
+            <option value="Office Supplies">Office Supplies</option>
+            <option value="Utilities">Utilities</option>
+            <option value="Transportation">Transportation</option>
+            <option value="Communication">Communication</option>
+            <option value="Staff Expense">Staff Expense</option>
+            <option value="Rent">Rent</option>
+            <option value="Equipment">Equipment</option>
+            <option value="Meals">Meals &amp; Entertainment</option>
+            <option value="Printing">Printing &amp; Docs</option>
+            <option value="Bank Charges">Bank Charges</option>
+            <option value="Miscellaneous">Miscellaneous</option>
+          </select>
+        </div>
+        <div class="f-grp">
+          <label class="f-lbl">Currency <span class="req">*</span></label>
+          <select class="f-inp" id="oe-currency" onchange="checkOfficeBalance()">
+            <option value="PHP">🇵🇭 PHP</option>
+            <option value="USD">🇺🇸 USD</option>
+          </select>
+        </div>
+      </div>
+      <div class="f-grp">
+        <label class="f-lbl">Description <span class="req">*</span></label>
+        <input class="f-inp" id="oe-desc" type="text" placeholder="Brief description of the expense">
+      </div>
+      <div class="f-row">
+        <div class="f-grp">
+          <label class="f-lbl">Amount <span class="req">*</span></label>
+          <input class="f-inp" id="oe-amount" type="number" min="0" step="0.01" placeholder="0.00" oninput="checkOfficeBalance()">
+          <div class="balance-warn" id="oe-balance-warn">⚠ Insufficient balance in selected currency</div>
+        </div>
+        <div class="f-grp">
+          <label class="f-lbl">Date <span class="req">*</span></label>
+          <input class="f-inp" id="oe-date" type="date">
+        </div>
+      </div>
+      <div class="f-grp">
+        <label class="f-lbl">Reference / Receipt No.</label>
+        <input class="f-inp" id="oe-ref" type="text" placeholder="e.g. OR-2026-001">
+      </div>
+      <div class="f-grp">
+        <label class="f-lbl">Paid By</label>
+        <select class="f-inp" id="oe-paidby">
+          <option value="Cash">Petty Cash</option>
+          <option value="Card">Company Card</option>
+          <option value="Bank">Bank Transfer</option>
+          <option value="Personal">Personal (Reimbursable)</option>
+        </select>
+      </div>
+      <div id="oe-override-panel" style="display:none;background:var(--abg);border:1px solid var(--amber);border-radius:8px;padding:10px 12px;margin-top:6px">
+        <div style="font-size:12.5px;font-weight:700;color:var(--amber);margin-bottom:6px">⚠ Admin Override Required</div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:8px">Balance is insufficient. Enter override reason to proceed.</div>
+        <input class="f-inp" id="oe-override-reason" type="text" placeholder="Override reason (required for admin)">
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeOverlay('overlay-office-expense')">Cancel</button>
+      <button class="btn btn-p" id="oe-submit-btn" onclick="submitOfficeExpense()">Post Expense</button>
+    </div>
+  </div>
+</div>
+
+<!-- Refund Modal -->
+<div class="overlay" id="overlay-refund" onclick="closeOverlayIfBg(event,'overlay-refund')" role="dialog" aria-modal="true">
+  <div class="modal modal-sm">
+    <div class="modal-hdr">
+      <div><h2>Record Refund</h2><p>Refunds increase the cash-on-hand balance</p></div>
+      <button class="close-btn" onclick="closeOverlay('overlay-refund')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="f-row">
+        <div class="f-grp">
+          <label class="f-lbl">Source Type <span class="req">*</span></label>
+          <select class="f-inp" id="rf-source-type">
+            <option value="Agent">Agent</option>
+            <option value="Applicant">Applicant</option>
+            <option value="Supplier">Supplier</option>
+            <option value="Government">Government</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div class="f-grp">
+          <label class="f-lbl">Currency <span class="req">*</span></label>
+          <select class="f-inp" id="rf-currency">
+            <option value="PHP">🇵🇭 PHP</option>
+            <option value="USD">🇺🇸 USD</option>
+          </select>
+        </div>
+      </div>
+      <div class="f-grp">
+        <label class="f-lbl">Source Name <span class="req">*</span></label>
+        <input class="f-inp" id="rf-source-name" type="text" placeholder="e.g. Juan Reyes, ABC Supplier">
+      </div>
+      <div class="f-grp">
+        <label class="f-lbl">Reason <span class="req">*</span></label>
+        <select class="f-inp" id="rf-reason">
+          <option value="Overpayment">Overpayment</option>
+          <option value="Cancellation">Cancellation / Backout</option>
+          <option value="Reimbursement">Reimbursement</option>
+          <option value="Supplier Credit">Supplier Credit Note</option>
+          <option value="Excess Cash">Excess Cash Return</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+      <div class="f-row">
+        <div class="f-grp">
+          <label class="f-lbl">Amount <span class="req">*</span></label>
+          <input class="f-inp" id="rf-amount" type="number" min="0" step="0.01" placeholder="0.00">
+        </div>
+        <div class="f-grp">
+          <label class="f-lbl">Date <span class="req">*</span></label>
+          <input class="f-inp" id="rf-date" type="date">
+        </div>
+      </div>
+      <div class="f-grp">
+        <label class="f-lbl">Notes</label>
+        <textarea class="f-inp" id="rf-notes" rows="2" placeholder="Additional details…" style="resize:vertical"></textarea>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeOverlay('overlay-refund')">Cancel</button>
+      <button class="btn btn-p" onclick="submitRefund()">Post Refund</button>
+    </div>
+  </div>
+</div>
+
+<!-- Manual Adjustment Modal (office) -->
+<div class="overlay" id="overlay-office-adjustment" onclick="closeOverlayIfBg(event,'overlay-office-adjustment')" role="dialog" aria-modal="true">
+  <div class="modal modal-sm">
+    <div class="modal-hdr">
+      <div><h2>Office Adjustment</h2><p>Admin-only manual correction to cash balance</p></div>
+      <button class="close-btn" onclick="closeOverlay('overlay-office-adjustment')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="f-row">
+        <div class="f-grp">
+          <label class="f-lbl">Currency <span class="req">*</span></label>
+          <select class="f-inp" id="oa-currency">
+            <option value="PHP">🇵🇭 PHP</option>
+            <option value="USD">🇺🇸 USD</option>
+          </select>
+        </div>
+        <div class="f-grp">
+          <label class="f-lbl">Direction</label>
+          <select class="f-inp" id="oa-direction">
+            <option value="1">+ Credit (add)</option>
+            <option value="-1">− Debit (reduce)</option>
+          </select>
+        </div>
+      </div>
+      <div class="f-grp">
+        <label class="f-lbl">Amount <span class="req">*</span></label>
+        <input class="f-inp" id="oa-amount" type="number" min="0" step="0.01" placeholder="0.00">
+      </div>
+      <div class="f-grp">
+        <label class="f-lbl">Reason <span class="req">*</span></label>
+        <input class="f-inp" id="oa-reason" type="text" placeholder="Explain the adjustment…">
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeOverlay('overlay-office-adjustment')">Cancel</button>
+      <button class="btn btn-danger" onclick="submitOfficeAdjustment()">Post Adjustment</button>
     </div>
   </div>
 </div>
