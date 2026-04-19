@@ -3901,11 +3901,11 @@ filterExpenses = function(q) {
 
 // ── DATA MODEL ──────────────────────────────────────────────────────
 DB.agents = [
-  { id:'AGT-001', code:'JR-001', name:'Juan Reyes',    phone:'+63 917 123 4567', email:'juan.reyes@email.com',    country:'Saudi Arabia', commissionRate:5,   address:'Quezon City', status:'Active',   balance:28500,  totalCommission:85000, totalExpenses:56500, totalDeployed:14, backouts:1, repatriations:0, notes:'Top performer' },
-  { id:'AGT-002', code:'AL-002', name:'Ana Lim',       phone:'+63 918 234 5678', email:'ana.lim@email.com',       country:'UAE',          commissionRate:4.5, address:'Makati',      status:'Active',   balance:-8200,  totalCommission:42000, totalExpenses:50200, totalDeployed:8,  backouts:3, repatriations:1, notes:'' },
-  { id:'AGT-003', code:'MC-003', name:'Miguel Cruz',   phone:'+63 919 345 6789', email:'miguel.cruz@email.com',   country:'Qatar',        commissionRate:5.5, address:'Pasig',       status:'Active',   balance:45200,  totalCommission:95000, totalExpenses:49800, totalDeployed:18, backouts:0, repatriations:0, notes:'Excellent track record' },
-  { id:'AGT-004', code:'LG-004', name:'Lisa Garcia',   phone:'+63 920 456 7890', email:'lisa.garcia@email.com',   country:'Hong Kong',    commissionRate:4,   address:'Manila',      status:'Active',   balance:12800,  totalCommission:38000, totalExpenses:25200, totalDeployed:9,  backouts:2, repatriations:1, notes:'' },
-  { id:'AGT-005', code:'RS-005', name:'Rico Santos',   phone:'+63 921 567 8901', email:'rico.santos@email.com',   country:'Singapore',    commissionRate:6,   address:'Cebu City',   status:'Inactive', balance:-15400, totalCommission:28000, totalExpenses:43400, totalDeployed:5,  backouts:4, repatriations:2, notes:'High risk — under review' },
+  { id:'AGT-001', code:'JR-001', name:'Juan Reyes',    phone:'+63 917 123 4567', email:'juan.reyes@email.com',    country:'Saudi Arabia', commissionAmt:15000,   address:'Quezon City', status:'Active',   balance:28500,  totalCommission:85000, totalExpenses:56500, totalDeployed:14, backouts:1, repatriations:0, notes:'Top performer' },
+  { id:'AGT-002', code:'AL-002', name:'Ana Lim',       phone:'+63 918 234 5678', email:'ana.lim@email.com',       country:'UAE',          commissionAmt:12000, address:'Makati',      status:'Active',   balance:-8200,  totalCommission:42000, totalExpenses:50200, totalDeployed:8,  backouts:3, repatriations:1, notes:'' },
+  { id:'AGT-003', code:'MC-003', name:'Miguel Cruz',   phone:'+63 919 345 6789', email:'miguel.cruz@email.com',   country:'Qatar',        commissionAmt:18000, address:'Pasig',       status:'Active',   balance:45200,  totalCommission:95000, totalExpenses:49800, totalDeployed:18, backouts:0, repatriations:0, notes:'Excellent track record' },
+  { id:'AGT-004', code:'LG-004', name:'Lisa Garcia',   phone:'+63 920 456 7890', email:'lisa.garcia@email.com',   country:'Hong Kong',    commissionAmt:10000,   address:'Manila',      status:'Active',   balance:12800,  totalCommission:38000, totalExpenses:25200, totalDeployed:9,  backouts:2, repatriations:1, notes:'' },
+  { id:'AGT-005', code:'RS-005', name:'Rico Santos',   phone:'+63 921 567 8901', email:'rico.santos@email.com',   country:'Singapore',    commissionAmt:20000,   address:'Cebu City',   status:'Inactive', balance:-15400, totalCommission:28000, totalExpenses:43400, totalDeployed:5,  backouts:4, repatriations:2, notes:'High risk — under review' },
 ];
 
 DB.agentLedger = [
@@ -3924,16 +3924,16 @@ DB.agentLedger = [
 ];
 
 DB.countryRules = [
-  { id:'CR-001', country:'Saudi Arabia', flag:'🇸🇦', guaranteePeriod:6,  commissionRate:5,   withholdPct:20, currency:'SAR', expenseRule:'full',    active:true  },
-  { id:'CR-002', country:'UAE',          flag:'🇦🇪', guaranteePeriod:6,  commissionRate:4.5, withholdPct:20, currency:'AED', expenseRule:'full',    active:true  },
-  { id:'CR-003', country:'Qatar',        flag:'🇶🇦', guaranteePeriod:6,  commissionRate:5.5, withholdPct:25, currency:'QAR', expenseRule:'full',    active:true  },
-  { id:'CR-004', country:'Kuwait',       flag:'🇰🇼', guaranteePeriod:6,  commissionRate:5,   withholdPct:20, currency:'KWD', expenseRule:'full',    active:true  },
-  { id:'CR-005', country:'Hong Kong',    flag:'🇭🇰', guaranteePeriod:3,  commissionRate:4,   withholdPct:15, currency:'HKD', expenseRule:'medical', active:true  },
-  { id:'CR-006', country:'Singapore',    flag:'🇸🇬', guaranteePeriod:3,  commissionRate:6,   withholdPct:15, currency:'SGD', expenseRule:'medical', active:true  },
-  { id:'CR-007', country:'Japan',        flag:'🇯🇵', guaranteePeriod:9,  commissionRate:7,   withholdPct:30, currency:'JPY', expenseRule:'partial', active:true  },
-  { id:'CR-008', country:'South Korea',  flag:'🇰🇷', guaranteePeriod:9,  commissionRate:7,   withholdPct:30, currency:'KRW', expenseRule:'partial', active:true  },
-  { id:'CR-009', country:'Canada',       flag:'🇨🇦', guaranteePeriod:9,  commissionRate:8,   withholdPct:30, currency:'CAD', expenseRule:'partial', active:true  },
-  { id:'CR-010', country:'Germany',      flag:'🇩🇪', guaranteePeriod:9,  commissionRate:8,   withholdPct:30, currency:'EUR', expenseRule:'partial', active:true  },
+  { id:'CR-001', country:'Saudi Arabia', flag:'🇸🇦', guaranteePeriod:6,  commissionAmt:15000,   withholdPct:20, currency:'SAR', expenseRule:'full',    active:true  },
+  { id:'CR-002', country:'UAE',          flag:'🇦🇪', guaranteePeriod:6,  commissionAmt:12000, withholdPct:20, currency:'AED', expenseRule:'full',    active:true  },
+  { id:'CR-003', country:'Qatar',        flag:'🇶🇦', guaranteePeriod:6,  commissionAmt:18000, withholdPct:25, currency:'QAR', expenseRule:'full',    active:true  },
+  { id:'CR-004', country:'Kuwait',       flag:'🇰🇼', guaranteePeriod:6,  commissionAmt:15000,   withholdPct:20, currency:'KWD', expenseRule:'full',    active:true  },
+  { id:'CR-005', country:'Hong Kong',    flag:'🇭🇰', guaranteePeriod:3,  commissionAmt:10000,   withholdPct:15, currency:'HKD', expenseRule:'medical', active:true  },
+  { id:'CR-006', country:'Singapore',    flag:'🇸🇬', guaranteePeriod:3,  commissionAmt:20000,   withholdPct:15, currency:'SGD', expenseRule:'medical', active:true  },
+  { id:'CR-007', country:'Japan',        flag:'🇯🇵', guaranteePeriod:9,  commissionAmt:25000,   withholdPct:30, currency:'JPY', expenseRule:'partial', active:true  },
+  { id:'CR-008', country:'South Korea',  flag:'🇰🇷', guaranteePeriod:9,  commissionAmt:25000,   withholdPct:30, currency:'KRW', expenseRule:'partial', active:true  },
+  { id:'CR-009', country:'Canada',       flag:'🇨🇦', guaranteePeriod:9,  commissionAmt:30000,   withholdPct:30, currency:'CAD', expenseRule:'partial', active:true  },
+  { id:'CR-010', country:'Germany',      flag:'🇩🇪', guaranteePeriod:9,  commissionAmt:30000,   withholdPct:30, currency:'EUR', expenseRule:'partial', active:true  },
 ];
 
 DB.commissions = [
@@ -4324,8 +4324,8 @@ function renderCommissions() {
       return '<div class="comm-row">'+
         '<div class="comm-country">'+r.flag+' '+r.country+'</div>'+
         '<div style="display:flex;align-items:center;gap:8px">'+
-          '<input class="comm-inp" type="number" min="0" max="100" step="0.5" value="'+r.commissionRate+'" id="crate-'+r.id+'" title="Commission %">'+
-          '<span style="font-size:12px;color:var(--muted)">%</span>'+
+          '<span style="font-size:12px;color:var(--muted);font-weight:700">₱</span>'+
+          '<input class="comm-inp" type="number" min="0" step="500" value="'+r.commissionAmt+'" id="crate-'+r.id+'" title="Commission amount PHP" style="width:90px">'+
           '<input class="comm-inp" type="number" min="0" max="100" step="1" value="'+r.withholdPct+'" id="cwith-'+r.id+'" title="Withhold during guarantee %" style="width:60px">'+
           '<span style="font-size:11px;color:var(--dim)">%&nbsp;held</span>'+
         '</div>'+
@@ -4381,7 +4381,7 @@ function saveCommissionRates() {
   DB.countryRules.forEach(function(r) {
     var rateEl = document.getElementById('crate-'+r.id);
     var withEl = document.getElementById('cwith-'+r.id);
-    if (rateEl) r.commissionRate = parseFloat(rateEl.value) || r.commissionRate;
+    if (rateEl) r.commissionAmt  = parseFloat(rateEl.value) || r.commissionAmt;
     if (withEl) r.withholdPct    = parseFloat(withEl.value) || r.withholdPct;
   });
   addAudit('UPDATE','Commissions','Commission rates updated');
@@ -4433,7 +4433,7 @@ function renderCountryRules() {
         '<span class="pill '+(r.active?'pill-green':'pill-gray')+'" style="font-size:10px;margin-left:auto">'+(r.active?'Active':'Inactive')+'</span>'+
       '</div>'+
       '<div class="rule-row"><span>Guarantee Period</span><span class="rule-val">'+r.guaranteePeriod+' mo</span></div>'+
-      '<div class="rule-row"><span>Commission Rate</span><span class="rule-val">'+r.commissionRate+'%</span></div>'+
+      '<div class="rule-row"><span>Commission Amount</span><span class="rule-val">₱'+r.commissionAmt.toLocaleString()+'</span></div>'+
       '<div class="rule-row"><span>Withhold (guarantee)</span><span class="rule-val">'+r.withholdPct+'%</span></div>'+
       '<div class="rule-row"><span>Expense Rule</span><span style="font-size:11.5px;color:var(--muted)">'+expLabel+'</span></div>'+
       '<div class="rule-row"><span>Currency</span><span class="rule-val">'+r.currency+'</span></div>'+
@@ -4590,9 +4590,7 @@ function onApplicantStatusChange(applicantId, newStatus, oldStatus) {
     var country = app.job ? app.job.split('·').pop().trim() : 'Philippines';
     var rule    = DB.countryRules.find(function(r){ return r.country===country; }) ||
                   DB.countryRules.find(function(r){ return r.active; });
-    var rate    = rule ? rule.commissionRate : agent.commissionRate || 5;
-    var base    = totalExp > 0 ? totalExp : 25000; // fallback base
-    var commission = Math.round(base * rate / 100);
+    var commission = rule ? rule.commissionAmt : (agent.commissionAmt || 15000);
     var gEnd    = new Date();
     if (rule) gEnd.setMonth(gEnd.getMonth() + rule.guaranteePeriod);
     else       gEnd.setMonth(gEnd.getMonth() + 6);
@@ -4652,7 +4650,7 @@ function openEditAgent(idx) {
   var flds = {
     'ag-name':a.name,'ag-code':a.code,'ag-phone':a.phone,
     'ag-email':a.email,'ag-address':a.address,'ag-notes':a.notes||'',
-    'ag-commission':a.commissionRate,
+    'ag-commission':a.commissionAmt,
   };
   Object.keys(flds).forEach(function(id){ var el=document.getElementById(id); if(el) el.value=flds[id]; });
   var ci = document.getElementById('ag-country');
@@ -4670,7 +4668,7 @@ function submitAgent() {
     phone: phone,
     email: (document.getElementById('ag-email').value||'').trim(),
     country: document.getElementById('ag-country').value,
-    commissionRate: parseFloat(document.getElementById('ag-commission').value)||5,
+    commissionAmt:  parseFloat(document.getElementById('ag-commission').value)||15000,
     address: (document.getElementById('ag-address').value||'').trim(),
     notes: (document.getElementById('ag-notes').value||'').trim(),
     status: 'Active',
@@ -4752,7 +4750,7 @@ function openEditCountryRule(idx) {
   document.getElementById('rule-modal-title').textContent = 'Edit Country Rule';
   document.getElementById('cr-country').value    = r.country;
   document.getElementById('cr-guarantee').value  = r.guaranteePeriod;
-  document.getElementById('cr-commission').value = r.commissionRate;
+  document.getElementById('cr-commission').value = r.commissionAmt;
   document.getElementById('cr-withhold').value   = r.withholdPct;
   document.getElementById('cr-currency').value   = r.currency;
   document.getElementById('cr-expense-rule').value = r.expenseRule;
@@ -4766,7 +4764,7 @@ function submitCountryRule() {
     country: country,
     flag: '🌍',
     guaranteePeriod: parseInt(document.getElementById('cr-guarantee').value)||6,
-    commissionRate:  parseFloat(document.getElementById('cr-commission').value)||5,
+    commissionAmt:   parseFloat(document.getElementById('cr-commission').value)||15000,
     withholdPct:     parseFloat(document.getElementById('cr-withhold').value)||20,
     currency:        document.getElementById('cr-currency').value,
     expenseRule:     document.getElementById('cr-expense-rule').value,
@@ -5912,8 +5910,8 @@ function renderAgentSummaryInDrawer(app) {
           </select>
         </div>
         <div class="f-grp">
-          <label class="f-lbl">Commission Rate (%)</label>
-          <input class="f-inp" id="ag-commission" type="number" min="0" max="100" step="0.5" placeholder="5.0">
+          <label class="f-lbl">Commission Amount (₱)</label>
+          <input class="f-inp" id="ag-commission" type="number" min="0" step="500" placeholder="15000">
         </div>
       </div>
       <div class="f-grp">
@@ -5996,8 +5994,8 @@ function renderAgentSummaryInDrawer(app) {
           <input class="f-inp" id="cr-guarantee" type="number" min="1" max="24" value="6">
         </div>
         <div class="f-grp">
-          <label class="f-lbl">Default Commission (%)</label>
-          <input class="f-inp" id="cr-commission" type="number" min="0" max="100" step="0.5" value="5">
+          <label class="f-lbl">Commission Amount (₱)</label>
+          <input class="f-inp" id="cr-commission" type="number" min="0" step="500" value="15000">
         </div>
       </div>
       <div class="f-row">
