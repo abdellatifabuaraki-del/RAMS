@@ -1066,6 +1066,29 @@ tr:hover td{background:var(--s2);}
         </div>
       </div>
       <div class="kanban-board" id="kanban-board" role="region" aria-label="Applicant pipeline"></div>
+      <div style="margin-top:16px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
+        <div style="background:var(--rbg);border:1px solid #fca5a5;border-radius:10px;padding:14px;display:flex;align-items:center;gap:10px">
+          <span style="font-size:20px">↩</span>
+          <div>
+            <div style="font-size:20px;font-weight:800;font-family:'IBM Plex Mono',monospace;color:var(--red)" id="repat-count">0</div>
+            <div style="font-size:11.5px;color:var(--muted)">Repatriated</div>
+          </div>
+        </div>
+        <div style="background:var(--abg);border:1px solid #fde68a;border-radius:10px;padding:14px;display:flex;align-items:center;gap:10px">
+          <span style="font-size:20px">↩</span>
+          <div>
+            <div style="font-size:20px;font-weight:800;font-family:'IBM Plex Mono',monospace;color:var(--amber)" id="backout-count">0</div>
+            <div style="font-size:11.5px;color:var(--muted)">Backouts</div>
+          </div>
+        </div>
+        <div style="background:var(--s2);border:1px solid var(--border);border-radius:10px;padding:14px;display:flex;align-items:center;gap:10px">
+          <span style="font-size:20px">✕</span>
+          <div>
+            <div style="font-size:20px;font-weight:800;font-family:'IBM Plex Mono',monospace;color:var(--muted)" id="rejected-count">0</div>
+            <div style="font-size:11.5px;color:var(--muted)">Rejected</div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- ══════════════════════════════════════
@@ -1960,16 +1983,18 @@ tr:hover td{background:var(--s2);}
 // ════════════════════════════════════════════════════════
 const DB = {
   applicants: [
-    {id:'APP-001',name:'Maria Santos',    status:'Deployed',    agentId:'AGT-001',agent:'Juan Reyes',  contact:'+63 912 345 6789',email:'maria@email.com',  job:'Domestic Helper · Saudi Arabia',  medical:'Passed', date:'2024-01-10',notes:'Deployed to Saudi Arabia. Guarantee ends Sep 2024.'},
-    {id:'APP-002',name:'Jose Reyes',      status:'Interview',   agentId:'AGT-002',agent:'Ana Lim',    contact:'+63 923 456 7890',email:'jose@email.com',   job:'Construction Worker · UAE',       medical:'Pending',date:'2024-01-15',notes:'Awaiting visa approval.'},
-    {id:'APP-003',name:'Ana Garcia',      status:'Medical',     agentId:'AGT-003',agent:'Miguel Cruz',contact:'+63 934 567 8901',email:'ana@email.com',    job:'Caregiver · Qatar',               medical:'Passed', date:'2024-01-20',notes:'Medical exam completed. Awaiting results.'},
-    {id:'APP-004',name:'Pedro Cruz',      status:'Screening',   agentId:'AGT-001',agent:'Juan Reyes', contact:'+63 945 678 9012',email:'pedro@email.com',  job:'Driver · Qatar',                  medical:'Pending',date:'2024-01-22',notes:'Background check ongoing.'},
-    {id:'APP-005',name:'Rosa Dela Cruz',  status:'Applied',     agentId:'AGT-004',agent:'Lisa Garcia',contact:'+63 956 789 0123',email:'rosa@email.com',   job:'Factory Worker · Hong Kong',      medical:'Pending',date:'2024-01-25',notes:'Documents submitted.'},
-    {id:'APP-006',name:'Carlos Mendoza',  status:'Deployed',    agentId:'AGT-003',agent:'Miguel Cruz',contact:'+63 967 890 1234',email:'carlos@email.com', job:'Domestic Helper · Saudi Arabia',  medical:'Passed', date:'2024-01-05',notes:'Second deployment. Excellent record.'},
-    {id:'APP-007',name:'Luz Flores',      status:'Repatriated', agentId:'AGT-002',agent:'Ana Lim',    contact:'+63 978 901 2345',email:'luz@email.com',    job:'Caregiver · UAE',                 medical:'Failed', date:'2024-01-18',notes:'Repatriated within guarantee period. Expenses charged to agent.'},
-    {id:'APP-008',name:'Ramon Aquino',    status:'Interview',   agentId:'AGT-001',agent:'Juan Reyes', contact:'+63 989 012 3456',email:'ramon@email.com',  job:'Chef · Japan',                    medical:'Pending',date:'2024-01-28',notes:'Initial interview scheduled.'},
-    {id:'APP-009',name:'Rosario Bautista',status:'Screening',   agentId:'AGT-004',agent:'Lisa Garcia',contact:'+63 990 123 4567',email:'rosario@email.com',job:'Nurse · Singapore',               medical:'Passed', date:'2024-01-30',notes:'License verification in progress.'},
-    {id:'APP-010',name:'Felipe Torres',   status:'Medical',     agentId:'AGT-005',agent:'Rico Santos',contact:'+63 901 234 5678',email:'felipe@email.com', job:'Welder · Canada',                 medical:'Pending',date:'2024-02-01',notes:'Scheduled for medical exam.'},
+    {id:'#2481',name:'Maria Santos',   status:'Deployed',     agent:'Sarah Tan',    contact:'+63 912 345 6789',email:'maria@email.com',   job:'Caregiver · Saudi Arabia', medical:'Fit',     date:'2026-03-31',notes:'Deployed Q1 2026'},
+    {id:'#2480',name:'Juan dela Cruz', status:'Visa',         agent:'Mike Reyes',   contact:'+63 923 456 7890',email:'juan@email.com',    job:'Factory Worker · UAE',      medical:'Fit',     date:'2026-03-30',notes:'Visa processing stage'},
+    {id:'#2479',name:'Ana Reyes',      status:'Medical',      agent:'Ana Santos',   contact:'+63 934 567 8901',email:'ana@email.com',     job:'Domestic Helper · HK',      medical:'Pending', date:'2026-03-30',notes:'Awaiting final medical result'},
+    {id:'#2478',name:'Pedro Gutierrez',status:'Processing',   agent:'Sarah Tan',    contact:'+63 945 678 9012',email:'pedro@email.com',   job:'Driver · Qatar',            medical:'Fit',     date:'2026-03-29',notes:'Documents being processed'},
+    {id:'#2477',name:'Liza Mendoza',   status:'Backout',      agent:'Carlo Bautista',contact:'+63 956 789 0123',email:'liza@email.com',  job:'Nurse · Germany',           medical:'Unfit',   date:'2026-03-28',notes:'Withdrew application - personal'},
+    {id:'#2476',name:'Carlo Bautista', status:'OWWA',         agent:'Mike Reyes',   contact:'+63 967 890 1234',email:'carlo@email.com',   job:'Welder · Saudi Arabia',     medical:'Fit',     date:'2026-03-28',notes:'OWWA registration in progress'},
+    {id:'#2475',name:'Rosa Garcia',    status:'For Selection',agent:'Lisa Gomez',   contact:'+63 978 901 2345',email:'rosa@email.com',    job:'Caregiver · KSA',           medical:'Pending', date:'2026-03-27',notes:'Awaiting employer selection'},
+    {id:'#2474',name:'Ben Torres',     status:'Interview',    agent:'Sarah Tan',    contact:'+63 989 012 3456',email:'ben@email.com',     job:'Electrician · Dubai',       medical:'Pending', date:'2026-03-27',notes:'Interview scheduled'},
+    {id:'#2473',name:'Cathy Villanueva',status:'Deployed',   agent:'Ana Santos',   contact:'+63 990 123 4567',email:'cathy@email.com',   job:'Caregiver · KSA',           medical:'Fit',     date:'2026-03-26',notes:'Deployed March 2026'},
+    {id:'#2472',name:'Rico Fernandez', status:'Repatriated',  agent:'Sarah Tan',    contact:'+63 901 234 5678',email:'rico@email.com',    job:'Plumber · Qatar',           medical:'Fit',     date:'2026-03-25',notes:'Repatriated - homesickness'},
+    {id:'#2471',name:'Joy Santos',     status:'Screening',    agent:'Carlo Bautista',contact:'+63 912 345 6780',email:'joy@email.com',   job:'Teacher Aide · Canada',      medical:'Pending', date:'2026-03-24',notes:'Background check ongoing'},
+    {id:'#2470',name:'Mark Navarro',   status:'Applied',      agent:'Lisa Gomez',   contact:'+63 923 456 7891',email:'mark@email.com',   job:'Cook · Singapore',           medical:'Pending', date:'2026-03-23',notes:'New application'},
   ],
   expenses: [
     {id:'EXP-001',date:'2024-01-10',desc:'POEA Processing Fee',applicant:'Maria Santos',category:'Processing Fee',amount:3500,status:'Paid'},
@@ -1981,37 +2006,47 @@ const DB = {
     {id:'EXP-007',date:'2024-01-28',desc:'Passport Renewal',applicant:'Ramon Aquino',category:'Documentation',amount:950,status:'Pending'},
   ],
   documents: [
-    {id:'DOC-001',name:'NBI Clearance',type:'Government ID',applicant:'Maria Santos',status:'Approved',date:'2024-01-08',size:'2.1 MB'},
-    {id:'DOC-002',name:'Medical Certificate',type:'Medical Certificate',applicant:'Ana Garcia',status:'Approved',date:'2024-01-12',size:'1.4 MB'},
-    {id:'DOC-003',name:'Work Permit',type:'Work Permit',applicant:'Jose Reyes',status:'Pending',date:'2024-01-15',size:'856 KB'},
-    {id:'DOC-004',name:'Passport Copy',type:'Government ID',applicant:'Pedro Cruz',status:'Pending',date:'2024-01-20',size:'3.2 MB'},
-    {id:'DOC-005',name:'Employment Contract',type:'Contract',applicant:'Carlos Mendoza',status:'Approved',date:'2024-01-05',size:'1.8 MB'},
-    {id:'DOC-006',name:'TESDA Certificate',type:'Training Certificate',applicant:'Rosario Bautista',status:'Approved',date:'2024-01-28',size:'1.1 MB'},
+    {id:'DOC-001',name:'Passport - Maria Santos',       type:'Government ID',  applicant:'Maria Santos',   status:'Approved', date:'2026-03-15',size:'2.1 MB'},
+    {id:'DOC-002',name:'Medical Certificate - Juan DC', type:'Medical Report',  applicant:'Juan dela Cruz', status:'Pending',  date:'2026-03-28',size:'1.4 MB'},
+    {id:'DOC-003',name:'NBI Clearance - Ana Reyes',     type:'Government ID',  applicant:'Ana Reyes',      status:'Approved', date:'2026-03-20',size:'0.8 MB'},
+    {id:'DOC-004',name:'Employment Contract - Pedro G', type:'Work Contract',   applicant:'Pedro Gutierrez',status:'Pending',  date:'2026-03-29',size:'3.2 MB'},
+    {id:'DOC-005',name:'OWWA Membership - Carlo B',     type:'Government ID',  applicant:'Carlo Bautista', status:'Approved', date:'2026-03-22',size:'0.5 MB'},
+    {id:'DOC-006',name:'Training Cert - Rosa Garcia',   type:'Training Cert',   applicant:'Rosa Garcia',    status:'Pending',  date:'2026-03-27',size:'1.8 MB'},
+    {id:'DOC-007',name:'Visa Copy - Maria Santos',      type:'Government ID',  applicant:'Maria Santos',   status:'Approved', date:'2026-03-30',size:'0.9 MB'},
+    {id:'DOC-008',name:'Skills Assessment - Ben Torres',type:'Training Cert',   applicant:'Ben Torres',     status:'Pending',  date:'2026-03-26',size:'2.4 MB'},
   ],
   jobs: [
-    {id:'JOB-001',title:'Domestic Helper',employer:'Al-Rashidi Family',country:'Saudi Arabia',slots:15,filled:12,salary:'SAR 800/mo',status:'Open',deadline:'2024-03-15'},
-    {id:'JOB-002',title:'Caregiver',employer:'Silver Care Home',country:'Canada',slots:8,filled:3,salary:'CAD 3,200/mo',status:'In Progress',deadline:'2024-02-28'},
-    {id:'JOB-003',title:'Construction Worker',employer:'Gulf Builders LLC',country:'UAE',slots:20,filled:18,salary:'AED 1,500/mo',status:'In Progress',deadline:'2024-03-01'},
-    {id:'JOB-004',title:'Factory Worker',employer:'Nagoya Precision',country:'Japan',slots:10,filled:10,salary:'¥180,000/mo',status:'Filled',deadline:'2024-01-31'},
-    {id:'JOB-005',title:'Nurse',employer:'Kings Medical Center',country:'Bahrain',slots:5,filled:0,salary:'BHD 450/mo',status:'Open',deadline:'2024-04-01'},
-    {id:'JOB-006',title:'Chef',employer:'La Maison Restaurant',country:'Singapore',slots:3,filled:1,salary:'SGD 2,800/mo',status:'In Progress',deadline:'2024-03-20'},
+    {id:'JOB-001',title:'Caregiver',         employer:'Al-Rashid Medical Center', country:'Saudi Arabia',slots:10,filled:7, salary:'SAR 1,800/mo',status:'Open',       deadline:'2026-05-30'},
+    {id:'JOB-002',title:'Factory Worker',     employer:'Emirates Industrial Corp',  country:'UAE',          slots:20,filled:20,salary:'AED 1,200/mo',status:'Filled',     deadline:'2026-04-15'},
+    {id:'JOB-003',title:'Domestic Helper',    employer:'Hong Kong Placement Bureau',country:'Hong Kong',   slots:8, filled:3, salary:'HKD 4,630/mo',status:'Open',       deadline:'2026-06-01'},
+    {id:'JOB-004',title:'Construction Worker',employer:'Qatar National Projects',   country:'Qatar',        slots:30,filled:18,salary:'QAR 1,500/mo',status:'Open',       deadline:'2026-05-15'},
+    {id:'JOB-005',title:'Registered Nurse',   employer:'Klinikum Berlin GmbH',      country:'Germany',      slots:5, filled:2, salary:'EUR 2,800/mo',status:'Open',       deadline:'2026-07-01'},
+    {id:'JOB-006',title:'Welder',             employer:'Saudi Aramco Contractors',  country:'Saudi Arabia', slots:15,filled:15,salary:'SAR 2,200/mo',status:'Filled',     deadline:'2026-03-01'},
+    {id:'JOB-007',title:'Chef / Cook',        employer:'Marina Bay Sands Hotel',    country:'Singapore',    slots:6, filled:1, salary:'SGD 2,400/mo',status:'Open',       deadline:'2026-06-15'},
+    {id:'JOB-008',title:'Software Developer', employer:'Tokyo Tech Systems',        country:'Japan',        slots:3, filled:0, salary:'JPY 280,000/mo',status:'Open',     deadline:'2026-08-01'},
   ],
   auditLog: [
-    {id:'AUD-001',action:'CREATE',entity:'Applicant',detail:'Created APP-010: Felipe Torres',user:'Maria Aguilar',time:'2024-02-01 10:23',type:'create'},
-    {id:'AUD-002',action:'UPDATE',entity:'Job Order',detail:'Updated JOB-001 slots from 12 to 15',user:'Sarah Tan',time:'2024-01-31 15:44',type:'update'},
-    {id:'AUD-003',action:'DELETE',entity:'Document',detail:'Deleted expired passport copy',user:'Mike Reyes',time:'2024-01-30 09:12',type:'delete'},
-    {id:'AUD-004',action:'EXPORT',entity:'Applicants',detail:'Exported 10 applicant records CSV',user:'Maria Aguilar',time:'2024-01-29 14:30',type:'export'},
-    {id:'AUD-005',action:'UPDATE',entity:'Applicant',detail:'Status changed: Jose Reyes → Interview',user:'Ana Santos',time:'2024-01-28 11:05',type:'update'},
-    {id:'AUD-006',action:'CREATE',entity:'Expense',detail:'Recorded EXP-007: Passport Renewal ₱950',user:'Carlo Bautista',time:'2024-01-28 09:50',type:'create'},
-    {id:'AUD-007',action:'UPDATE',entity:'Document',detail:'Approved DOC-006: TESDA Certificate',user:'Maria Aguilar',time:'2024-01-27 16:20',type:'update'},
-    {id:'AUD-008',action:'CREATE',entity:'Job Order',detail:'Created JOB-006: Chef – Singapore',user:'Lisa Gomez',time:'2024-01-26 13:15',type:'create'},
+    {id:'A001',action:'CREATE',entity:'Applicant', detail:'Created #2481: Maria Santos',          user:'Sarah Tan',    time:'2026-03-31 09:00',type:'create'},
+    {id:'A002',action:'UPDATE',entity:'Applicant', detail:'Updated Maria Santos → Deployed',      user:'Sarah Tan',    time:'2026-03-31 14:00',type:'update'},
+    {id:'A003',action:'CREATE',entity:'Commission',detail:'Commission created: ₱15,000 for Maria Santos (In Guarantee)', user:'System', time:'2026-03-31 14:01',type:'create'},
+    {id:'A004',action:'CREATE',entity:'Document',  detail:'Uploaded Passport - Maria Santos',     user:'Ana Santos',   time:'2026-03-30 10:30',type:'create'},
+    {id:'A005',action:'UPDATE',entity:'Document',  detail:'Approved Medical Certificate - Ana Reyes', user:'Carlo Bautista', time:'2026-03-30 11:00',type:'update'},
+    {id:'A006',action:'CREATE',entity:'Expense',   detail:'Recorded medical exam ₱4,500 - Maria Santos', user:'Lisa Gomez', time:'2026-03-29 09:00',type:'create'},
+    {id:'A007',action:'UPDATE',entity:'Applicant', detail:'Rico Fernandez → Repatriated',         user:'Mike Reyes',   time:'2026-03-25 16:00',type:'update'},
+    {id:'A008',action:'CREATE',entity:'Ledger',    detail:'Auto-charge: expenses charged to Sarah Tan (repatriation)', user:'System', time:'2026-03-25 16:01',type:'create'},
+    {id:'A009',action:'DELETE',entity:'Applicant', detail:'Deleted test applicant #0000',          user:'Admin',        time:'2026-03-20 10:00',type:'delete'},
+    {id:'A010',action:'UPDATE',entity:'Job Order', detail:'JOB-001 status → Filled',               user:'Sarah Tan',    time:'2026-03-18 15:00',type:'update'},
+    {id:'A011',action:'CREATE',entity:'Agent',     detail:'Added agent: Carlo Bautista (CB-004)',  user:'Admin',        time:'2026-03-15 09:00',type:'create'},
+    {id:'A012',action:'UPDATE',entity:'Office Funds', detail:'Added PHP 50,000 — Monthly allocation', user:'Admin',    time:'2026-04-01 08:00',type:'update'},
   ],
   notifications: [
-    {id:'N01',title:'New Applicant Registered',body:'Felipe Torres submitted an application for Welder position.',time:'2 min ago',read:false},
-    {id:'N02',title:'Document Pending Review',body:'Work permit for Jose Reyes needs approval.',time:'1 hr ago',read:false},
-    {id:'N03',title:'Job Order Deadline',body:'JOB-002 (Caregiver – Canada) closes in 3 days.',time:'3 hrs ago',read:false},
-    {id:'N04',title:'Medical Exam Passed',body:'Ana Garcia passed her medical examination.',time:'Yesterday',read:true},
-    {id:'N05',title:'Deployment Confirmed',body:'Carlos Mendoza departs Feb 5 to Saudi Arabia.',time:'2 days ago',read:true},
+    {id:'N001',title:'Repatriation Alert',  msg:'Rico Fernandez repatriated from Qatar — expenses auto-charged to Sarah Tan',  time:'2h ago',  read:false, icon:'⚠', type:'alert'},
+    {id:'N002',title:'Commission Released', msg:'₱15,000 commission released for Maria Santos (guarantee period complete)',      time:'1d ago',  read:false, icon:'✅', type:'success'},
+    {id:'N003',title:'Document Pending',    msg:'3 documents awaiting review — Juan dela Cruz, Pedro Gutierrez, Rosa Garcia',   time:'2d ago',  read:false, icon:'📋', type:'info'},
+    {id:'N004',title:'Guarantee Expiring',  msg:'Rico Fernandez guarantee period ends in 25 days — review commission status',   time:'3d ago',  read:true,  icon:'⏳', type:'warning'},
+    {id:'N005',title:'New Job Order',       msg:'Chef/Cook position posted for Marina Bay Sands Singapore (6 slots)',           time:'4d ago',  read:true,  icon:'💼', type:'info'},
+    {id:'N006',title:'Low Office Balance',  msg:'USD cash-on-hand below threshold — current balance $350',                      time:'5d ago',  read:true,  icon:'💰', type:'alert'},
+    {id:'N007',title:'Agent Risk Alert',    msg:'Lisa Gomez flagged as high-risk: 4 backouts, 2 repatriations this quarter',   time:'1w ago',  read:true,  icon:'🔴', type:'alert'},
   ],
   chatMessages: [
     {user:'Sarah Tan',av:'ST',msg:'Good morning everyone! Reminder: JOB-001 deadline is March 15.',time:'09:01',me:false},
@@ -2238,15 +2273,12 @@ function switchDrawerTab(tab, btn) {
   if (!app) return;
 
   if (tab === 'overview') {
-    const stages = ['Applied','Screening','Interview','Medical','Processing','Deployed'];
+    const stages = ['For Selection','Applied','Screening','Interview','Medical','Processing','Visa','OWWA','Deployed'];
     const ci = stages.indexOf(app.status);
     panel.innerHTML = `
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
         ${[['Status',pillHtml(app.status)],['Medical',pillHtml(app.medical,'medical')],
-           ['Agent',`<span style="font-weight:700;cursor:pointer;color:var(--brand)" onclick="openAgentAccountPanel('${app.agentId||''}','${app.agent||''}')">
-                ${app.agent||'Unassigned'}
-                ${app.agentId?'<span style="font-size:10px;color:var(--muted)"> ↗ view account</span>':''}
-              </span>`],
+           ['Agent',`<span style="font-weight:700">${app.agent||'Unassigned'}</span>`],
            ['Applied',`<span style="font-family:'IBM Plex Mono',monospace;font-size:12px">${app.date}</span>`],
            ['Contact',app.contact],['Email',app.email]
           ].map(([k,v])=>`<div style="padding:10px;background:var(--s2);border:1px solid var(--border);border-radius:8px"><div style="font-size:10.5px;color:var(--muted);font-weight:700;margin-bottom:4px">${k}</div><div style="font-size:13px">${v}</div></div>`).join('')}
@@ -2413,9 +2445,11 @@ function addAudit(action, entity, detail) {
 // DASHBOARD
 // ════════════════════════════════════════════════════════
 function renderDashboard() {
+  const repatriated = DB.applicants.filter(a=>a.status==='Repatriated').length;
+  const inPipeline  = DB.applicants.filter(a=>!['Deployed','Repatriated','Rejected','Backout'].includes(a.status)).length;
   const stats = [
-    { label: 'Total Applicants', val: DB.applicants.length, badge: '+2', dir: 'up', icon: '👤', bg: 'var(--brand-l)', color: 'var(--brand)' },
-    { label: 'Active Deployments', val: DB.applicants.filter(a=>a.status==='Deployed').length, badge: '+1', dir: 'up', icon: '✈️', bg: 'var(--gbg)', color: 'var(--green)' },
+    { label: 'Total Applicants', val: DB.applicants.length, badge: '+'+inPipeline+' active', dir: 'up', icon: '👤', bg: 'var(--brand-l)', color: 'var(--brand)' },
+    { label: 'Active Deployments', val: DB.applicants.filter(a=>a.status==='Deployed').length, badge: repatriated+' repatriated', dir: 'up', icon: '✈️', bg: 'var(--gbg)', color: 'var(--green)' },
     { label: 'Open Job Orders', val: DB.jobs.filter(j=>j.status==='Open').length, badge: 'Stable', dir: 'up', icon: '💼', bg: 'var(--abg)', color: 'var(--amber)' },
     { label: 'Pending Documents', val: DB.documents.filter(d=>d.status==='Pending').length, badge: '-1', dir: 'down', icon: '📄', bg: 'var(--pbg)', color: 'var(--purple)' },
   ];
@@ -2486,19 +2520,23 @@ function renderDashboard() {
 // KANBAN
 // ════════════════════════════════════════════════════════
 const STAGES = [
-  {key:'Applied',      color:'var(--brand)',  bg:'var(--brand-l)', cnt:'pill-blue'},
-  {key:'Screening',    color:'var(--purple)', bg:'var(--pbg)',      cnt:'pill-purple'},
-  {key:'Interview',    color:'var(--amber)',  bg:'var(--abg)',      cnt:'pill-amber'},
-  {key:'Medical',      color:'var(--teal)',   bg:'#F0F9FF',         cnt:'pill-teal'},
-  {key:'Processing',   color:'#0891B2',       bg:'#E0F2FE',         cnt:'pill-teal'},
-  {key:'Deployed',     color:'var(--green)',  bg:'var(--gbg)',      cnt:'pill-green'},
-  {key:'Repatriated',  color:'var(--red)',    bg:'var(--rbg)',      cnt:'pill-red'},
-  {key:'Rejected',     color:'var(--muted)',  bg:'var(--s2)',       cnt:'pill-gray'},
-  {key:'Backout',      color:'var(--amber)',  bg:'var(--abg)',      cnt:'pill-amber'},
+  {key:'For Selection',color:'var(--muted)', bg:'var(--s2)',       cnt:'pill-gray'},
+  {key:'Applied',      color:'var(--brand)', bg:'var(--brand-l)', cnt:'pill-blue'},
+  {key:'Screening',    color:'var(--purple)',bg:'var(--pbg)',      cnt:'pill-purple'},
+  {key:'Interview',    color:'var(--amber)', bg:'var(--abg)',      cnt:'pill-amber'},
+  {key:'Medical',      color:'var(--teal)',  bg:'#F0F9FF',         cnt:'pill-teal'},
+  {key:'Processing',   color:'#0891B2',      bg:'#E0F2FE',         cnt:'pill-teal'},
+  {key:'Visa',         color:'var(--purple)',bg:'var(--pbg)',      cnt:'pill-purple'},
+  {key:'OWWA',         color:'#0891B2',      bg:'#E0F2FE',         cnt:'pill-teal'},
+  {key:'Deployed',     color:'var(--green)', bg:'var(--gbg)',      cnt:'pill-green'},
+  {key:'Repatriated',  color:'var(--red)',   bg:'var(--rbg)',      cnt:'pill-red'},
+  {key:'Backout',      color:'var(--amber)', bg:'var(--abg)',      cnt:'pill-amber'},
+  {key:'Rejected',     color:'var(--muted)', bg:'var(--s2)',       cnt:'pill-gray'},
 ];
 function renderKanban() {
   const board = document.getElementById('kanban-board');
-  board.innerHTML = STAGES.map(s => {
+  const activeStages = STAGES.filter(s => !['Rejected','Backout','Repatriated'].includes(s.key));
+  board.innerHTML = activeStages.map(s => {
     const apps = DB.applicants.filter(a => a.status === s.key);
     return `
       <div class="kanban-col">
@@ -2639,6 +2677,14 @@ function bulkExport() {
   const rows = DB.applicants.filter(a => selectedApps.has(a.id));
   exportCSV(rows, 'selected_applicants');
   toast(`Exported ${rows.length} applicants`, 'success');
+  // Update summary counts
+  var rc = document.getElementById('repat-count');
+  var bc = document.getElementById('backout-count');
+  var rj = document.getElementById('rejected-count');
+  if (rc) rc.textContent = DB.applicants.filter(function(a){return a.status==='Repatriated';}).length;
+  if (bc) bc.textContent = DB.applicants.filter(function(a){return a.status==='Backout';}).length;
+  if (rj) rj.textContent = DB.applicants.filter(function(a){return a.status==='Rejected';}).length;
+
 }
 
 // ════════════════════════════════════════════════════════
@@ -3014,30 +3060,54 @@ let auditSearchQ = '', auditActionFilter = '';
 function filterAudit(q) { auditSearchQ = q; renderAudit(); }
 function filterAuditAction(a) { auditActionFilter = a; renderAudit(); }
 function renderAudit() {
-  const logs = DB.auditLog.filter(l =>
-    (!auditSearchQ || l.detail.toLowerCase().includes(auditSearchQ.toLowerCase()) || l.user.toLowerCase().includes(auditSearchQ.toLowerCase())) &&
-    (!auditActionFilter || l.action === auditActionFilter)
-  );
-  const icons = {create:'➕',update:'✏️',delete:'🗑️',export:'📤'};
-  const colors = {create:'var(--gbg)',update:'var(--brand-l)',delete:'var(--rbg)',export:'var(--abg)'};
-  const tagColors = {CREATE:'pill-green',UPDATE:'pill-blue',DELETE:'pill-red',EXPORT:'pill-amber'};
-  document.getElementById('audit-list').innerHTML = logs.length ? logs.map(l=>`
+  const search = document.getElementById('audit-search');
+  const q = search ? search.value.toLowerCase() : '';
+  const typeFilter = document.getElementById('audit-type-filter');
+  const tf = typeFilter ? typeFilter.value : '';
+  const dateFrom = document.getElementById('audit-date-from');
+  const dateTo   = document.getElementById('audit-date-to');
+
+  let logs = DB.auditLog.slice().reverse();
+  if (q)  logs = logs.filter(l => l.detail.toLowerCase().includes(q) || l.user.toLowerCase().includes(q) || l.entity.toLowerCase().includes(q));
+  if (tf) logs = logs.filter(l => l.type === tf);
+  if (dateFrom && dateFrom.value) logs = logs.filter(l => l.time >= dateFrom.value);
+  if (dateTo   && dateTo.value)   logs = logs.filter(l => l.time <= dateTo.value + ' 23:59');
+
+  const typeColors = {create:'var(--gbg)',update:'var(--brand-l)',delete:'var(--rbg)',export:'var(--abg)',adjustment:'var(--abg)'};
+  const typeIcons  = {create:'➕',update:'✏️',delete:'🗑️',export:'📤',adjustment:'🔧'};
+
+  const el = document.getElementById('audit-log');
+  if (!logs.length) {
+    el.innerHTML = '<div class="empty-state"><div class="empty-icon">📋</div><div class="empty-title">No audit entries found</div><div class="empty-sub">Try adjusting your filters.</div></div>';
+    return;
+  }
+  el.innerHTML = logs.map(l => `
     <div class="audit-item">
-      <div class="audit-ico" style="background:${colors[l.type]||'var(--s2)'}">${icons[l.type]||'•'}</div>
+      <div class="audit-ico" style="background:${typeColors[l.type]||'var(--s2)'}">
+        ${typeIcons[l.type]||'•'}
+      </div>
       <div class="audit-content">
         <div class="audit-action">${l.detail}</div>
-        <div class="audit-meta">${l.user} · ${l.entity} · <span class="pill ${tagColors[l.action]||'pill-gray'}">${l.action}</span></div>
+        <div class="audit-meta">
+          <span class="pill ${l.type==='create'?'pill-green':l.type==='delete'?'pill-red':l.type==='update'?'pill-blue':'pill-amber'}" style="font-size:10px">${l.action}</span>
+          ${l.entity} · ${l.user}
+        </div>
       </div>
       <div class="audit-time">${l.time}</div>
-    </div>
-  `).join('') : `<div class="empty-state"><div class="empty-icon">📋</div><div class="empty-title">No logs found</div></div>`;
+    </div>`).join('');
 }
 function clearAudit() { if(confirm('Clear all audit logs?')){DB.auditLog=[];renderAudit();toast('Audit log cleared','success');} }
 
 // ════════════════════════════════════════════════════════
 // CHAT
 // ════════════════════════════════════════════════════════
-const THREADS=[{name:'General',av:'G',desc:'Team-wide updates'},{name:'Recruiters',av:'R',desc:'Recruiter coordination'},{name:'Compliance',av:'C',desc:'Legal and compliance'}];
+const THREADS = [
+  {name:'General',    av:'GN', desc:'Team-wide updates and announcements'},
+  {name:'Recruiters', av:'RC', desc:'Recruiter coordination and leads'},
+  {name:'Compliance', av:'CO', desc:'Legal and compliance matters'},
+  {name:'Accounting', av:'AC', desc:'Financial discussions and approvals'},
+  {name:'Operations', av:'OP', desc:'Day-to-day operations and deployment'},
+];
 function renderChat() {
   document.getElementById('chat-threads').innerHTML = THREADS.map((t,i)=>`
     <div class="chat-thread ${i===0?'active':''}" onclick="selectThread(${i},this)">
@@ -5430,12 +5500,12 @@ function renderDrawerAgentPanel(app) {
   html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">' +
     '<div style="background:var(--gbg);border:1px solid #86efac;border-radius:8px;padding:12px">' +
       '<div style="font-size:11px;color:var(--muted);margin-bottom:4px">Commission</div>' +
-      '<div style="font-size:16px;font-weight:800;font-family:'IBM Plex Mono',monospace;color:var(--green)">' + (comm ? '₱' + comm.amount.toLocaleString() : '₱0') + '</div>' +
+      '<div style="font-size:16px;font-weight:800;font-family:\'IBM Plex Mono\',monospace;color:var(--green)">' + (comm ? '₱' + comm.amount.toLocaleString() : '₱0') + '</div>' +
       '<div style="font-size:11px;color:var(--muted);margin-top:2px">' + (comm ? comm.status : 'Not deployed yet') + '</div>' +
     '</div>' +
     '<div style="background:var(--rbg);border:1px solid #fca5a5;border-radius:8px;padding:12px">' +
       '<div style="font-size:11px;color:var(--muted);margin-bottom:4px">Expenses Charged</div>' +
-      '<div style="font-size:16px;font-weight:800;font-family:'IBM Plex Mono',monospace;color:var(--red)">₱' + charged.toLocaleString() + '</div>' +
+      '<div style="font-size:16px;font-weight:800;font-family:\'IBM Plex Mono\',monospace;color:var(--red)">₱' + charged.toLocaleString() + '</div>' +
       '<div style="font-size:11px;color:var(--muted);margin-top:2px">' + entries.length + ' ledger entries</div>' +
     '</div>' +
   '</div>';
@@ -5459,7 +5529,7 @@ function renderDrawerAgentPanel(app) {
     html += entries.map(function(e) {
       return '<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:12.5px">' +
         '<div><div style="font-weight:600">' + e.desc + '</div><div style="font-size:11px;color:var(--muted)">' + e.date + ' · ' + e.type + '</div></div>' +
-        '<div style="font-weight:800;font-family:'IBM Plex Mono',monospace;color:' + (e.amount >= 0 ? 'var(--green)' : 'var(--red)') + '">' +
+        '<div style="font-weight:800;font-family:\'IBM Plex Mono\',monospace;color:' + (e.amount >= 0 ? 'var(--green)' : 'var(--red)') + '">' +
           (e.amount >= 0 ? '+' : '') + '₱' + e.amount.toLocaleString() + '</div>' +
       '</div>';
     }).join('');
@@ -5469,7 +5539,7 @@ function renderDrawerAgentPanel(app) {
 
   // Link to full ledger
   html += '<div style="margin-top:14px">' +
-    '<button class="btn btn-s btn-sm" style="width:100%" onclick="viewAgentLedger('' + agent.id + '');nav('accounting')">📒 View Agent Full Ledger</button>' +
+    '<button class="btn btn-s btn-sm" style="width:100%" onclick="viewAgentLedger(\'' + agent.id + '\');nav(\'accounting\')">📒 View Agent Full Ledger</button>' +
   '</div>';
 
   return html;
@@ -5562,7 +5632,7 @@ function renderAgentSummaryInDrawer(app) {
         ';border-radius:8px;padding:10px 12px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center">' +
           '<div><div style="font-size:12px;font-weight:700">Commission (' + commission.status + ')</div>' +
           '<div style="font-size:11px;color:var(--muted)">Guarantee ends: ' + (commission.guaranteeEnd||'—') + '</div></div>' +
-          '<div style="font-size:14px;font-weight:800;font-family:'IBM Plex Mono',monospace">₱' + commission.amount.toLocaleString() + '</div>' +
+          '<div style="font-size:14px;font-weight:800;font-family:\'IBM Plex Mono\',monospace">₱' + commission.amount.toLocaleString() + '</div>' +
         '</div>' : '') +
       (ledgerEntries.length ?
         '<div style="margin-bottom:10px">' +
@@ -5570,12 +5640,12 @@ function renderAgentSummaryInDrawer(app) {
           ledgerEntries.slice(0,4).map(function(e) {
             return '<div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--border);font-size:12px">' +
               '<div style="color:var(--text2);max-width:60%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + e.desc + '</div>' +
-              '<div style="font-weight:700;font-family:'IBM Plex Mono',monospace;color:' + (e.amount>=0?'var(--green)':'var(--red)') + '">' +
+              '<div style="font-weight:700;font-family:\'IBM Plex Mono\',monospace;color:' + (e.amount>=0?'var(--green)':'var(--red)') + '">' +
                 (e.amount>=0?'+':'-') + '₱' + Math.abs(e.amount).toLocaleString() +
               '</div></div>';
           }).join('') +
         '</div>' : '<div style="font-size:12px;color:var(--muted);margin-bottom:10px">No transactions linked to this applicant yet.</div>') +
-      '<button class="btn btn-p btn-sm" style="width:100%" onclick="openAgentAccountPanel('' + agent.id + '','' + agent.name + '')">' +
+      '<button class="btn btn-s btn-sm" style="width:100%" onclick="switchAccTab(\'agents\',document.querySelectorAll(\'.acc-tab\')[1]);nav(\'accounting\')">📒 View in Accounting</button>' +
         '📒 Open Full Agent Ledger →' +
       '</button>' +
     '</div>'
