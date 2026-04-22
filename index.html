@@ -2832,6 +2832,17 @@ function openDrawer(appId) {
   document.getElementById('drawer-meta').innerHTML = `
     <span style="font-family:'IBM Plex Mono',monospace">${app.id}</span> · ${app.job}
   `;
+
+  // Hide restricted tabs from Viewers
+  var isViewer = (typeof getCurrentRole === 'function') && getCurrentRole() === 'Viewer';
+  var restrictedTabs = ['expenses','agent','history'];
+  document.querySelectorAll('.dtab').forEach(function(btn) {
+    var tabName = (btn.getAttribute('onclick') || '').match(/switchDrawerTab\('([^']+)'/);
+    if (tabName && restrictedTabs.indexOf(tabName[1]) !== -1) {
+      btn.style.display = isViewer ? 'none' : '';
+    }
+  });
+
   document.getElementById('drawer-overlay').classList.add('active');
   document.getElementById('applicant-drawer').classList.add('active');
   switchDrawerTab('overview', null);
@@ -2853,15 +2864,21 @@ function switchDrawerTab(tab, btn) {
   if (!app) return;
 
   if (tab === 'overview') {
+    var _isViewer = (typeof getCurrentRole === 'function') && getCurrentRole() === 'Viewer';
     const stages = ['For Selection','Applied','Screening','Interview','Medical','Processing','Visa','OWWA','Deployed'];
     const ci = stages.indexOf(app.status);
+    // Viewers only see status, medical, position and pipeline — no agent/contact/email
+    var _infoFields = _isViewer
+      ? [['Status',pillHtml(app.status)],['Medical',pillHtml(app.medical,'medical')],
+         ['Position',`<span style="font-size:13px">${(app.job||'').split('·')[0]||'—'}</span>`],
+         ['Destination',`<span style="font-size:13px">${(app.job||'').split('·')[1]||'—'}</span>`]]
+      : [['Status',pillHtml(app.status)],['Medical',pillHtml(app.medical,'medical')],
+         ['Agent',`<span style="font-weight:700">${app.agent||'Unassigned'}</span>`],
+         ['Applied',`<span style="font-family:'IBM Plex Mono',monospace;font-size:12px">${app.date}</span>`],
+         ['Contact',app.contact],['Email',app.email]];
     panel.innerHTML = `
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
-        ${[['Status',pillHtml(app.status)],['Medical',pillHtml(app.medical,'medical')],
-           ['Agent',`<span style="font-weight:700">${app.agent||'Unassigned'}</span>`],
-           ['Applied',`<span style="font-family:'IBM Plex Mono',monospace;font-size:12px">${app.date}</span>`],
-           ['Contact',app.contact],['Email',app.email]
-          ].map(([k,v])=>`<div style="padding:10px;background:var(--s2);border:1px solid var(--border);border-radius:8px"><div style="font-size:10.5px;color:var(--muted);font-weight:700;margin-bottom:4px">${k}</div><div style="font-size:13px">${v}</div></div>`).join('')}
+        ${_infoFields.map(([k,v])=>`<div style="padding:10px;background:var(--s2);border:1px solid var(--border);border-radius:8px"><div style="font-size:10.5px;color:var(--muted);font-weight:700;margin-bottom:4px">${k}</div><div style="font-size:13px">${v}</div></div>`).join('')}
       </div>
       <div style="margin-bottom:14px">
         <div style="font-size:11px;font-weight:700;color:var(--muted);margin-bottom:8px">PIPELINE STAGE</div>
@@ -2870,12 +2887,12 @@ function switchDrawerTab(tab, btn) {
         </div>
       </div>
       ${app.notes?`<div style="padding:10px 12px;background:var(--abg);border:1px solid var(--abd);border-radius:8px;font-size:12.5px;color:var(--text2)"><strong>Notes:</strong> ${app.notes}</div>`:''}
-      <div s
-      ${app.status==='Repatriated'?`<div style="margin-bottom:10px;padding:10px 14px;background:var(--rbg);border:1px solid #fca5a5;border-radius:8px;display:flex;align-items:center;gap:8px"><span style="font-size:18px">⚠</span><div><div style="font-size:13px;font-weight:700;color:var(--red)">Repatriated</div><div style="font-size:11.5px;color:var(--muted)">Agent charged for all expenses. Commission reversed if applicable.</div></div></div>`:''}${app.status==='Backout'?`<div style="margin-bottom:10px;padding:10px 14px;background:var(--abg);border:1px solid var(--abd);border-radius:8px;display:flex;align-items:center;gap:8px"><span style="font-size:18px">↩</span><div><div style="font-size:13px;font-weight:700;color:var(--amber)">Backed Out</div><div style="font-size:11.5px;color:var(--muted)">Medical expenses may be charged to agent.</div></div></div>`:''}${app.agentId?`<div style="margin-bottom:10px;padding:10px 14px;background:var(--gbg);border:1px solid #86efac;border-radius:8px;display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:12px;font-weight:700;color:var(--green)">Linked Agent</div><div style="font-size:11.5px">${app.agent}</div></div><button style='font-size:11px;padding:4px 10px' class='btn btn-s btn-sm' onclick="openAgentAccountPanel('${app.agentId}','${app.agent}')">View Account →</button></div>`:''}${''}
-      tyle="margin-top:16px;display:flex;gap:8px">
+      ${_isViewer ? '' : `<div style="margin-top:16px;display:flex;gap:8px">
         <button class="btn btn-p btn-sm" onclick="editApplicant('${app.id}')">Edit Applicant</button>
         <button class="btn btn-danger btn-sm" onclick="confirmDelete('applicant','${app.id}')">Delete</button>
-      </div>
+      </div>`}
+      ${app.status==='Repatriated'?`<div style="margin-bottom:10px;padding:10px 14px;background:var(--rbg);border:1px solid #fca5a5;border-radius:8px;display:flex;align-items:center;gap:8px"><span style="font-size:18px">⚠</span><div><div style="font-size:13px;font-weight:700;color:var(--red)">Repatriated</div><div style="font-size:11.5px;color:var(--muted)">Agent charged for all expenses. Commission reversed if applicable.</div></div></div>`:''}${app.status==='Backout'?`<div style="margin-bottom:10px;padding:10px 14px;background:var(--abg);border:1px solid var(--abd);border-radius:8px;display:flex;align-items:center;gap:8px"><span style="font-size:18px">↩</span><div><div style="font-size:13px;font-weight:700;color:var(--amber)">Backed Out</div><div style="font-size:11.5px;color:var(--muted)">Medical expenses may be charged to agent.</div></div></div>`:''}${app.agentId?`<div style="margin-bottom:10px;padding:10px 14px;background:var(--gbg);border:1px solid #86efac;border-radius:8px;display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:12px;font-weight:700;color:var(--green)">Linked Agent</div><div style="font-size:11.5px">${app.agent}</div></div><button style='font-size:11px;padding:4px 10px' class='btn btn-s btn-sm' onclick="openAgentAccountPanel('${app.agentId}','${app.agent}')">View Account →</button></div>`:''}${''}
+
     `;
   }
   if (tab === 'docs') {
@@ -4174,9 +4191,9 @@ const SETTINGS_SECTIONS = {
     title: 'Data Management',
     fields: [
       { lbl: 'Export All Data',    sub: 'Download a full CSV export of all records',       type: 'button', lbl2: 'Export Data',    danger: false },
-      { lbl: 'Backup Database',    sub: 'Create a backup of the current database',         type: 'button', lbl2: 'Create Backup',  danger: false },
+      { lbl: 'Clear Local Cache',  sub: 'Remove locally cached data and re-sync from server', type: 'button', lbl2: 'Clear Cache', danger: false, action: 'clearLocalCache' },
       { lbl: 'Clear Audit Log',    sub: 'Permanently delete all audit trail entries',      type: 'button', lbl2: 'Clear Audit Log',danger: true },
-      { lbl: 'Reset Demo Data',    sub: 'Restore the system to default demo state',        type: 'button', lbl2: 'Reset Data',      danger: true },
+      { lbl: 'Wipe All Data',      sub: 'Clear ALL records from the live database (irreversible)', type: 'button', lbl2: 'Wipe Database', danger: true, action: 'wipeAllServerData' },
     ]
   },
 };
@@ -7451,6 +7468,39 @@ function resetOfficeLedger() {
   addAudit('DELETE', 'Office Ledger', 'Office ledger cleared by admin');
   if (typeof renderOfficeFunds === 'function') renderOfficeFunds();
   toast('Office ledger cleared', 'success');
+}
+
+
+// ── Clear local cache + re-sync from PostgreSQL ───────────────────────
+async function clearLocalCache() {
+  DB.applicants = []; DB.jobs = []; DB.expenses = []; DB.users = []; DB.auditLog = [];
+  filteredApps = [];
+  await Store.clear();
+  toast('Cache cleared — re-syncing from server…', 'info');
+  await syncAllFromAPI();
+  renderDashboard();
+  toast('Data refreshed from server', 'success');
+}
+
+// ── Wipe all server data (admin only, nuclear option) ─────────────────
+async function wipeAllServerData() {
+  if (getCurrentRole() !== 'Admin') { toast('Admin only', 'error'); return; }
+  var confirmed = prompt('Type DELETE to wipe ALL data from the server database:');
+  if (confirmed !== 'DELETE') { toast('Cancelled', 'info'); return; }
+  // Delete all via API in sequence
+  toast('Wiping server data…', 'info');
+  var allApps = DB.applicants.slice();
+  var allJobs = DB.jobs.slice();
+  var allExp  = DB.expenses.slice();
+  for (var a of allApps) await apiFetch('/applicants/' + (a._dbId||a.id), { method: 'DELETE' });
+  for (var j of allJobs) await apiFetch('/jobs/' + (j._dbId||j.id), { method: 'DELETE' });
+  for (var e of allExp)  await apiFetch('/expenses/' + (e._dbId||e.id), { method: 'DELETE' });
+  DB.applicants=[]; DB.jobs=[]; DB.expenses=[]; DB.auditLog=[];
+  filteredApps = [];
+  autosave('applicants'); autosave('jobs'); autosave('expenses');
+  addAudit('DELETE','System','All server data wiped by admin');
+  renderDashboard();
+  toast('All data wiped from server', 'success');
 }
 
 </script>
