@@ -4270,6 +4270,7 @@ function _doLogin() {
       Store.set('rams:session:user',JSON.stringify(_au));
       Store.remove('rams:session:api_url');
       window._ramsSessionUser = _au;
+      window._ramsSessionToken = 'demo';
       _showApp(_au);
     } else {
       errEl.textContent='Demo: admin@rams.io / password123 (Admin) — or any user email from Settings with password123';
@@ -4293,6 +4294,7 @@ function _doLogin() {
     Store.set('rams:session:user',JSON.stringify(r.data.user));
     Store.set('rams:session:api_url',apiUrl);
     window._ramsSessionUser = r.data.user;
+    window._ramsSessionToken = r.data.token;
     _showApp(r.data.user);
   }).catch(function(err){
     errEl.textContent=err.message||'Login failed. Check credentials and API URL.';
@@ -4304,6 +4306,7 @@ function _doLogin() {
 }
 function handleLogout() {
   window._ramsSessionUser = null;
+  window._ramsSessionToken = null;
   Store.remove('rams:session:token');
   Store.remove('rams:session:user');
   Store.remove('rams:session:api_url');
@@ -4332,7 +4335,7 @@ function go(page, el) {
     }
   } catch(e) {}
   try{
-    var t=null /* token via Store */;
+    var t=window._ramsSessionToken||null;
     var u=JSON.parse(null /* user via Store */);
     var k='' /* api_url via Store */;
     if((t&&t!=='demo'&&t.length>10&&u&&k)||(t==='demo'&&u)){ _showApp(u); }
@@ -4374,7 +4377,7 @@ function submitChangePassword() {
   }
 
   var apiUrl = RAILWAY_URL;
-  var token  = null /* token via Store */ || '';
+  var token  = window._ramsSessionToken || '';
 
   // Demo mode — simulate success
   if (!apiUrl || token === 'demo') {
@@ -4545,10 +4548,10 @@ function submitCreateUser() {
   if (!password || password.length < 8) { errEl.textContent = 'Password must be at least 8 characters.'; errEl.style.display = 'block'; return; }
 
   var apiUrl = RAILWAY_URL;
-  var token  = null /* token via Store */ || '';
+  var token  = window._ramsSessionToken || '';
 
   // Demo mode — add to local DB.users
-  if (!apiUrl || token === 'demo') {
+  if (!apiUrl || !token || token === 'demo') {
     if (DB.users.find(function(u) { return u.email === email; })) {
       errEl.textContent = 'A user with this email already exists.';
       errEl.style.display = 'block'; return;
@@ -4669,7 +4672,7 @@ function submitUser() {
   if (duplicate) { errEl.textContent = 'A user with this email already exists.'; errEl.style.display='block'; return; }
 
   var apiUrl = RAILWAY_URL;
-  var token  = null /* token via Store */ || '';
+  var token  = window._ramsSessionToken || '';
 
   if (editingUserIdx >= 0) {
     // Update local
@@ -7066,6 +7069,7 @@ _doLogin = function() {
         Store.set('rams:session:user', JSON.stringify(sessionUser));
         Store.remove('rams:session:api_url');
         window._ramsSessionUser = sessionUser;
+        window._ramsSessionToken = 'demo';
         _origShowApp(sessionUser);
         return;
       }
@@ -7076,6 +7080,7 @@ _doLogin = function() {
         Store.set('rams:session:user',JSON.stringify(adminUser));
         Store.remove('rams:session:api_url');
         window._ramsSessionUser = adminUser;
+        window._ramsSessionToken = 'demo';
         _origShowApp(adminUser);
         return;
       }
