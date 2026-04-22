@@ -7485,22 +7485,39 @@ async function clearLocalCache() {
 // ── Wipe all server data (admin only, nuclear option) ─────────────────
 async function wipeAllServerData() {
   if (getCurrentRole() !== 'Admin') { toast('Admin only', 'error'); return; }
-  var confirmed = prompt('Type DELETE to wipe ALL data from the server database:');
+  var confirmed = prompt('Type DELETE to wipe ALL records (applicants, jobs, expenses, other users) from the server. Your account will be preserved:');
   if (confirmed !== 'DELETE') { toast('Cancelled', 'info'); return; }
   // Delete all via API in sequence
   toast('Wiping server data…', 'info');
-  var allApps = DB.applicants.slice();
-  var allJobs = DB.jobs.slice();
-  var allExp  = DB.expenses.slice();
+  var allApps  = DB.applicants.slice();
+  var allJobs  = DB.jobs.slice();
+  var allExp   = DB.expenses.slice();
+  var me       = getCurrentUser();
+  var allUsers = DB.users.filter(function(u){ return !me || u.email.toLowerCase() !== me.email.toLowerCase(); });
+
+  toast('Wiping applicants…', 'info');
   for (var a of allApps) await apiFetch('/applicants/' + (a._dbId||a.id), { method: 'DELETE' });
+
+  toast('Wiping job orders…', 'info');
   for (var j of allJobs) await apiFetch('/jobs/' + (j._dbId||j.id), { method: 'DELETE' });
-  for (var e of allExp)  await apiFetch('/expenses/' + (e._dbId||e.id), { method: 'DELETE' });
+
+  toast('Wiping expenses…', 'info');
+  for (var e of allExp) await apiFetch('/expenses/' + (e._dbId||e.id), { method: 'DELETE' });
+
+  toast('Wiping other users…', 'info');
+  for (var u of allUsers) {
+    var uid = u._dbId || u.id;
+    if (uid) await apiFetch('/users/' + uid, { method: 'DELETE' });
+  }
+
   DB.applicants=[]; DB.jobs=[]; DB.expenses=[]; DB.auditLog=[];
+  DB.users = me ? [me] : [];
   filteredApps = [];
   autosave('applicants'); autosave('jobs'); autosave('expenses');
-  addAudit('DELETE','System','All server data wiped by admin');
+  addAudit('DELETE','System','All server data wiped by admin — demo users removed');
   renderDashboard();
-  toast('All data wiped from server', 'success');
+  if (typeof renderSettings === 'function' && currentSettingsSection === 'users') renderSettings();
+  toast('All data wiped — only your account remains', 'success');
 }
 
 </script>
