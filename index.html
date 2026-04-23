@@ -2312,7 +2312,7 @@ async function apiFetch(path, opts) {
     var data = await res.json();
     if (res.status === 401) { toast('Session expired — please log in again', 'error'); handleLogout(); return { ok: false, error: 'Unauthorized' }; }
     if (res.status === 403) { toast('Permission denied: ' + (data.error || 'Your role cannot perform this action'), 'error'); return { ok: false, error: data.error || 'Forbidden' }; }
-    if (!res.ok) throw new Error(data.error || ('Server error ' + res.status));
+    if (!res.ok) throw new Error((data.error || 'Server error') + (data.detail ? ': ' + data.detail : '') + ' [' + res.status + ']');
     return { ok: true, data: data };
   } catch(e) {
     console.warn('[API]', path, e.message);
@@ -7807,11 +7807,15 @@ function changeApplicantStatus(applicantId, newStatus) {
   // Sync status change to server — only send status field
   var _sid = app._dbId || app.id;
   if (isUUID(_sid) && window._ramsSessionToken !== 'demo') {
+    var serverStatus = toServerStatus(newStatus);
     apiFetch('/applicants/' + _sid, {
       method: 'PATCH',
-      body: JSON.stringify({ status: toServerStatus(newStatus) })
+      body: JSON.stringify({ status: serverStatus })
     }).then(function(r) {
-      if (!r.ok) toast('Status saved locally; sync failed: ' + r.error, 'error');
+      if (!r.ok) {
+        console.error('Status sync failed:', r.error, 'status sent:', serverStatus);
+        toast('Status saved locally; sync failed: ' + r.error, 'error');
+      }
     });
   }
   onApplicantStatusChange(applicantId, newStatus, oldStatus);
