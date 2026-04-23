@@ -1072,7 +1072,7 @@ button[disabled][data-rbac-locked] {
   <div class="sb-footer">
 
     <div class="role-switcher">
-      <button class="role-switch-btn" onclick="toggleRoleDropdown()">
+      <button class="role-switch-btn" onclick="toggleRoleDropdown()" title="Only admins can switch roles">
         <div class="role-dot" id="role-dot" style="background:#16A34A"></div>
         <span id="role-label">Super Admin</span>
         <span style="margin-left:auto;opacity:.5">⌄</span>
@@ -2306,7 +2306,9 @@ async function apiFetch(path, opts) {
   try {
     var res = await fetch(RAILWAY_URL + '/api' + path, Object.assign({}, opts, { headers: headers }));
     var data = await res.json();
-    if (!res.ok) throw new Error(data.error || ('API error ' + res.status));
+    if (res.status === 401) { toast('Session expired — please log in again', 'error'); handleLogout(); return { ok: false, error: 'Unauthorized' }; }
+    if (res.status === 403) { toast('Permission denied: ' + (data.error || 'Your role cannot perform this action'), 'error'); return { ok: false, error: data.error || 'Forbidden' }; }
+    if (!res.ok) throw new Error(data.error || ('Server error ' + res.status));
     return { ok: true, data: data };
   } catch(e) {
     console.warn('[API]', path, e.message);
@@ -2725,6 +2727,7 @@ function toggleSidebar() {
   try { Store.set('rams:session:sb_collapsed', collapsed ? '1' : '0'); } catch(e) {}
 }
 function toggleRoleDropdown() {
+  if (getCurrentRole() !== 'Admin') { toast('Only admins can switch roles', 'error'); return; }
   document.getElementById('role-dropdown').classList.toggle('open');
 }
 function setRole(name, color) {
@@ -4802,8 +4805,8 @@ function submitCreateUser() {
   var apiUrl = RAILWAY_URL;
   var token  = window._ramsSessionToken || '';
 
-  // Demo mode — add to local DB.users
-  if (!apiUrl || !token || token === 'demo') {
+  // Demo mode — add to local DB.users only (no server)
+  if (!token || token === 'demo') {
     if (DB.users.find(function(u) { return u.email === email; })) {
       errEl.textContent = 'A user with this email already exists.';
       errEl.style.display = 'block'; return;
@@ -7323,9 +7326,16 @@ function _showReadOnlyBanner() {
 
 // ── Role switcher in sidebar footer (demo/dev only) ───────────────────
 function _addRoleSwitcher() {
-  // Populate the existing role-dropdown in the sidebar footer
   var dropdown = document.getElementById('role-dropdown');
   if (!dropdown) return;
+
+  // Only Admin can switch roles — hide entire role switcher for others
+  var switcher = document.querySelector('.role-switcher');
+  if (getCurrentRole() !== 'Admin') {
+    if (switcher) switcher.style.display = 'none';
+    return;
+  }
+  if (switcher) switcher.style.display = '';
 
   var roleColors = {
     Admin:'#16A34A', Recruiter:'#1447E6', Manager:'#7C3AED',
@@ -7413,6 +7423,10 @@ function changeApplicantStatus(applicantId, newStatus) {
 
   app.status = newStatus;
   addAudit('UPDATE', 'Applicant', app.name + ' status changed: ' + oldStatus + ' → ' + newStatus);
+  // Sync status change to server
+  apiUpdateApplicant(app).then(function(r) {
+    if (!r.ok) toast('Status saved locally; sync failed: ' + r.error, 'error');
+  });
   onApplicantStatusChange(applicantId, newStatus, oldStatus);
 
   // Refresh visible pages
