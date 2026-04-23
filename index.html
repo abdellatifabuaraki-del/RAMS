@@ -2796,7 +2796,7 @@ const Store = (() => {
 // ════════════════════════════════════════════════════════
 // 💾  DB PERSISTENCE  — save / load all collections
 // ════════════════════════════════════════════════════════
-const DB_KEYS = ['applicants','expenses','documents','jobs','auditLog','notifications','chatMessages','integrations','users'];
+const DB_KEYS = ['applicants','expenses','documents','jobs','auditLog','notifications','chatMessages','integrations','users','agents','agentLedger'];
 
 // Viewer scope assignments: { 'user@email.com': ['JOB-001','JOB-003', ...] }
 let viewerScopes = {};
@@ -2849,6 +2849,15 @@ async function loadDB() {
   // Also load viewer scopes
   const vs = await Store.get('rams:db:viewerScopes');
   if (vs && typeof vs === 'object') viewerScopes = vs;
+  // Load agents and ledger (stored locally since no backend API)
+  const storedAgents = await Store.get('rams:db:agents');
+  if (storedAgents && Array.isArray(storedAgents) && storedAgents.length > 0) {
+    DB.agents = storedAgents;
+  }
+  const storedLedger = await Store.get('rams:db:agentLedger');
+  if (storedLedger && Array.isArray(storedLedger) && storedLedger.length > 0) {
+    DB.agentLedger = storedLedger;
+  }
   let loaded = false;
   for (const k of DB_KEYS) {
     const data = await Store.get('rams:db:' + k);
@@ -5935,6 +5944,8 @@ function addLedgerEntry(agentId, type, desc, amount, applicantId) {
     date: new Date().toISOString().split('T')[0],
     runningBalance: newBalance,
   });
+  autosave('agents');
+  autosave('agentLedger');
 }
 
 function chargeExpenseToAgent(expenseId, agentId) {
@@ -6164,6 +6175,7 @@ function submitAgent() {
     addAudit('CREATE','Agent','Added agent: '+name);
     toast('Agent added','success');
   }
+  autosave('agents');
   closeOverlay('overlay-agent');
   renderAgentGrid();
 }
@@ -6174,6 +6186,7 @@ function deleteAgent(idx) {
   if (!confirm('Remove agent "'+a.name+'"? This cannot be undone.')) return;
   DB.agents.splice(idx,1);
   addAudit('DELETE','Agent','Removed agent: '+a.name);
+  autosave('agents');
   toast('Agent removed','success');
   renderAgentGrid();
 }
@@ -7571,14 +7584,16 @@ _showApp = function(user) {
     _showReadOnlyBanner();
     _addRoleSwitcher();
   }, 80);
-  // Sync all data from PostgreSQL after login + flush any pending writes + start polling
-  setTimeout(function() {
-    _flushPendingWrites().then(function() {
-      return syncAllFromAPI();
-    }).then(function() {
-      if (typeof renderDashboard === 'function') renderDashboard();
-      if (typeof renderNotifications === 'function') renderNotifications();
-    });
+  // Sync all data from PostgreSQL after login + flush pending + load local data
+  setTimeout(async function() {
+    // Load local-only data first (agents, ledger, scopes)
+    await loadDB();
+    // Flush any pending server writes from last session
+    await _flushPendingWrites();
+    // Pull fresh data from PostgreSQL
+    await syncAllFromAPI();
+    if (typeof renderDashboard === 'function') renderDashboard();
+    if (typeof renderNotifications === 'function') renderNotifications();
     startPolling();
   }, 200);
 };
