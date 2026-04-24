@@ -5420,31 +5420,60 @@ function submitUser() {
   var token  = window._ramsSessionToken || '';
 
   if (editingUserIdx >= 0) {
-    // Update local
-    DB.users[editingUserIdx].name   = name;
-    DB.users[editingUserIdx].email  = email;
-    DB.users[editingUserIdx].role   = role;
-    DB.users[editingUserIdx].status = status;
-    addAudit('UPDATE', 'User', 'Updated user: ' + name);
-    // Sync to backend
-    if (apiUrl && token && token !== 'demo') {
-      // Would call PATCH /api/users/:id here — silently sync
+    // ── EDIT USER ──────────────────────────────────────────────────────
+    var u = DB.users[editingUserIdx];
+    u.name   = name;
+    u.email  = email;
+    u.role   = role;
+    u.status = status;
+    addAudit('UPDATE', 'User', 'Updated user: ' + name + ' (role: ' + role + ')');
+
+    var uid = u._dbId || u.id;
+    if (uid && isUUID(uid) && token && token !== 'demo') {
+      // PATCH role + name + status to server
+      apiFetch('/users/' + uid, {
+        method: 'PATCH',
+        body: JSON.stringify({
+          name:      name,
+          role:      toDbRole(role),
+          is_active: (status === 'Active'),
+        })
+      }).then(function(r) {
+        if (!r.ok) toast('User updated locally; sync failed: ' + r.error, 'error');
+        else {
+          // Update local with server response
+          if (r.data) {
+            u._dbId = r.data.id;
+            u.id    = r.data.id;
+          }
+          toast('User saved to server ✓', 'success');
+        }
+      });
+    } else {
+      toast('User updated locally', 'success');
     }
     toast('User updated', 'success');
+
   } else {
-    // Create local
-    DB.users.push({ name: name, email: email, role: role, status: status, last: 'Just now' });
+    // ── CREATE USER ────────────────────────────────────────────────────
+    var newUser = { name: name, email: email, role: role, status: status, last: 'Just now' };
+    DB.users.push(newUser);
     addAudit('CREATE', 'User', 'Created user: ' + name + ' (' + role + ')');
-    // Sync to backend
-    if (apiUrl && token && token !== 'demo') {
-      fetch(apiUrl.replace(/\/+$/, '') + '/api/auth/register', {
+
+    if (token && token !== 'demo') {
+      apiFetch('/auth/register', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
         body: JSON.stringify({ name: name, email: email, password: pass, role: toDbRole(role) }),
-      }).then(function(r){ return r.json(); }).then(function(d){
-        if (d.error) toast('Backend: ' + d.error, 'error');
-        else toast('User created on server', 'success');
-      }).catch(function(){ toast('User saved locally only', 'info'); });
+      }).then(function(r) {
+        if (!r.ok) toast('User saved locally; server sync failed: ' + r.error, 'error');
+        else {
+          if (r.data && r.data.user) {
+            newUser._dbId = r.data.user.id;
+            newUser.id    = r.data.user.id;
+          }
+          toast('User created on server ✓', 'success');
+        }
+      });
     }
     toast('User created', 'success');
   }
