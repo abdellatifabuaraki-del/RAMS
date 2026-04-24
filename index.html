@@ -2073,10 +2073,15 @@ button[disabled][data-rbac-locked] {
 <div class="overlay" id="overlay-job" onclick="closeOverlayIfBg(event,'overlay-job')" role="dialog" aria-modal="true" aria-label="Job order form">
   <div class="modal modal-md">
     <div class="modal-hdr">
-      <div><h2>New Job Order</h2><p>Create a new job placement opportunity.</p></div>
+      <div>
+        <h2 id="j-modal-title">New Job Order</h2>
+        <p id="j-modal-sub">Create a new job placement opportunity.</p>
+      </div>
       <button class="close-btn" onclick="closeOverlay('overlay-job')" aria-label="Close">✕</button>
     </div>
     <div class="modal-body">
+      <input type="hidden" id="j-edit-id" value="">
+      <input type="hidden" id="j-edit-dbid" value="">
       <div class="form-row">
         <div class="form-group">
           <label class="form-label">Position Title <span class="req">*</span></label>
@@ -2089,28 +2094,43 @@ button[disabled][data-rbac-locked] {
       </div>
       <div class="form-row">
         <div class="form-group">
-          <label class="form-label">Country</label>
+          <label class="form-label">Country / Destination</label>
           <input type="text" class="form-input" id="j-country" placeholder="e.g. Saudi Arabia">
         </div>
         <div class="form-group">
-          <label class="form-label">Available Slots</label>
+          <label class="form-label">Total Slots</label>
           <input type="number" class="form-input" id="j-slots" placeholder="10" min="1">
         </div>
       </div>
       <div class="form-row">
         <div class="form-group">
-          <label class="form-label">Salary Range</label>
-          <input type="text" class="form-input" id="j-salary" placeholder="e.g. ₱25,000–30,000/mo">
+          <label class="form-label">Filled Slots</label>
+          <input type="number" class="form-input" id="j-filled" placeholder="0" min="0">
         </div>
         <div class="form-group">
-          <label class="form-label">Deadline</label>
+          <label class="form-label">Status</label>
+          <select class="form-input" id="j-status">
+            <option value="Open">Open</option>
+            <option value="Filled">Filled</option>
+            <option value="Closed">Closed</option>
+            <option value="On Hold">On Hold</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Salary</label>
+          <input type="text" class="form-input" id="j-salary" placeholder="e.g. SAR 1,800/mo">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Application Deadline</label>
           <input type="date" class="form-input" id="j-deadline">
         </div>
       </div>
     </div>
     <div class="modal-foot">
       <button class="btn btn-ghost" onclick="closeOverlay('overlay-job')">Cancel</button>
-      <button class="btn btn-p" onclick="saveJob()">Create Job Order</button>
+      <button class="btn btn-p" id="j-submit-btn" onclick="saveJob()">Create Job Order</button>
     </div>
   </div>
 </div>
@@ -2351,10 +2371,10 @@ function mapJob(row) {
     id:       row.id,
     title:    row.title || '',
     employer: row.employer || '',
-    country:  row.destination || '',
-    slots:    row.slots || 0,
-    filled:   row.filled || 0,
-    salary:   row.salary_min ? '₱' + Number(row.salary_min).toLocaleString() + '/mo' : '',
+    country:  row.destination || row.country || '',
+    slots:    parseInt(row.slots) || 0,
+    filled:   parseInt(row.filled) || 0,
+    salary:   row.salary || (row.salary_min ? '₱' + Number(row.salary_min).toLocaleString() + '/mo' : ''),
     status:   row.status || 'Open',
     deadline: row.deadline ? row.deadline.slice(0, 10) : '',
     _dbId:    row.id,
@@ -2744,14 +2764,16 @@ async function apiDeleteApplicant(dbId) {
 // ── JOBS API ──────────────────────────────────────────────────────────
 async function apiCreateJob(data) {
   if (window._ramsSessionToken === 'demo') return { ok: true };
-  var validJobStatuses = ['Open','Closed','On Hold'];
+  var validJobStatuses = ['Open','Closed','On Hold','Filled'];
   var payload = {
     title:       data.title,
     employer:    data.employer || null,
     destination: data.country || null,
     slots:       parseInt(data.slots) || 1,
+    filled:      parseInt(data.filled) || 0,
+    salary:      data.salary || null,
     status:      validJobStatuses.includes(data.status) ? data.status : 'Open',
-    deadline:    data.deadline || null
+    deadline:    (data.deadline && data.deadline !== 'TBD') ? data.deadline : null,
   };
   var r = await apiFetch('/jobs', { method: 'POST', body: JSON.stringify(payload) });
   if (r.ok) { data._dbId = r.data.id; data.id = r.data.id; }
@@ -2765,8 +2787,21 @@ async function apiDeleteJob(dbId) {
 
 async function apiUpdateJob(data) {
   var dbId = data._dbId || data.id;
-  if (!dbId || window._ramsSessionToken === 'demo') return { ok: true };
-  return await apiFetch('/jobs/' + dbId, { method: 'PATCH', body: JSON.stringify({ title: data.title, employer: data.employer, destination: data.country, slots: data.slots, filled: data.filled, status: data.status, deadline: data.deadline }) });
+  if (!dbId || !isUUID(dbId) || window._ramsSessionToken === 'demo') return { ok: true };
+  var validJobStatuses = ['Open','Closed','On Hold','Filled'];
+  return await apiFetch('/jobs/' + dbId, {
+    method: 'PATCH',
+    body: JSON.stringify({
+      title:       data.title,
+      employer:    data.employer || null,
+      destination: data.country  || null,
+      slots:       parseInt(data.slots)  || 1,
+      filled:      parseInt(data.filled) || 0,
+      salary:      data.salary || null,
+      status:      validJobStatuses.includes(data.status) ? data.status : 'Open',
+      deadline:    (data.deadline && data.deadline !== 'TBD') ? data.deadline : null,
+    })
+  });
 }
 
 // ── EXPENSES API ──────────────────────────────────────────────────────
@@ -4137,38 +4172,116 @@ function renderJobs() {
       <td style="font-size:12px;font-family:'IBM Plex Mono',monospace">${j.salary}</td>
       <td>${pillHtml(j.status)}</td>
       <td style="font-size:11.5px;font-family:'IBM Plex Mono',monospace;color:var(--muted)">${j.deadline}</td>
-      <td style="text-align:right">
-        <button class="btn btn-ghost btn-xs" onclick="confirmDelete('job','${j.id}')">Delete</button>
+      <td style="text-align:right;display:flex;gap:5px;justify-content:flex-end;align-items:center">
+        <button class="btn btn-ghost btn-xs" onclick="openEditJob('${j.id}')" style="color:var(--brand)">Edit</button>
+        <button class="btn btn-ghost btn-xs" onclick="confirmDelete('job','${j.id}')" style="color:var(--red)">Delete</button>
       </td>
     </tr>
   `).join('') : `<tr><td colspan="9"><div class="empty-state"><div class="empty-icon">💼</div><div class="empty-title">No job orders found</div></div></td></tr>`;
   document.getElementById('sb-job-count').textContent = DB.jobs.filter(j=>j.status==='Open').length;
 }
 function openAddJob() {
-  document.getElementById('j-title').value=''; document.getElementById('j-employer').value='';
-  document.getElementById('j-country').value=''; document.getElementById('j-slots').value='';
-  document.getElementById('j-salary').value=''; document.getElementById('j-deadline').value='';
+  // Reset to create mode
+  document.getElementById('j-edit-id').value = '';
+  document.getElementById('j-edit-dbid').value = '';
+  document.getElementById('j-modal-title').textContent = 'New Job Order';
+  document.getElementById('j-modal-sub').textContent = 'Create a new job placement opportunity.';
+  document.getElementById('j-submit-btn').textContent = 'Create Job Order';
+  document.getElementById('j-title').value = '';
+  document.getElementById('j-employer').value = '';
+  document.getElementById('j-country').value = '';
+  document.getElementById('j-slots').value = '';
+  document.getElementById('j-filled').value = '0';
+  document.getElementById('j-salary').value = '';
+  document.getElementById('j-deadline').value = '';
+  document.getElementById('j-status').value = 'Open';
   openOverlay('overlay-job');
 }
+
+function openEditJob(jobId) {
+  var job = DB.jobs.find(function(j){ return j.id === jobId; });
+  if (!job) return;
+  // Switch to edit mode
+  document.getElementById('j-edit-id').value   = job.id;
+  document.getElementById('j-edit-dbid').value  = job._dbId || job.id;
+  document.getElementById('j-modal-title').textContent = 'Edit Job Order';
+  document.getElementById('j-modal-sub').textContent   = 'Update job order details.';
+  document.getElementById('j-submit-btn').textContent  = 'Save Changes';
+  document.getElementById('j-title').value    = job.title    || '';
+  document.getElementById('j-employer').value = job.employer || '';
+  document.getElementById('j-country').value  = job.country  || '';
+  document.getElementById('j-slots').value    = job.slots    || 1;
+  document.getElementById('j-filled').value   = job.filled   || 0;
+  document.getElementById('j-salary').value   = job.salary   || '';
+  document.getElementById('j-deadline').value = (job.deadline && job.deadline !== 'TBD') ? job.deadline : '';
+  document.getElementById('j-status').value   = job.status   || 'Open';
+  openOverlay('overlay-job');
+}
+
 function saveJob() {
-  const title = document.getElementById('j-title').value.trim();
-  if (!title) { toast('Position title required','error'); return; }
-  const job = {
-    id: genId('JOB'), title,
-    employer: document.getElementById('j-employer').value || 'Unnamed Employer',
-    country: document.getElementById('j-country').value || 'Unknown',
-    slots: parseInt(document.getElementById('j-slots').value)||1,
-    filled: 0,
-    salary: document.getElementById('j-salary').value || 'TBD',
-    status: 'Open',
-    deadline: document.getElementById('j-deadline').value || 'TBD'
+  var title = document.getElementById('j-title').value.trim();
+  if (!title) { toast('Position title is required', 'error'); return; }
+
+  var editId   = document.getElementById('j-edit-id').value;
+  var editDbId = document.getElementById('j-edit-dbid').value;
+
+  var slots  = parseInt(document.getElementById('j-slots').value)  || 1;
+  var filled = parseInt(document.getElementById('j-filled').value) || 0;
+  if (filled > slots) { toast('Filled slots cannot exceed total slots', 'error'); return; }
+
+  var jobData = {
+    title:    title,
+    employer: document.getElementById('j-employer').value.trim() || 'Unnamed Employer',
+    country:  document.getElementById('j-country').value.trim()  || 'Unknown',
+    slots:    slots,
+    filled:   filled,
+    salary:   document.getElementById('j-salary').value.trim()   || 'TBD',
+    status:   document.getElementById('j-status').value          || 'Open',
+    deadline: document.getElementById('j-deadline').value        || 'TBD',
   };
-  DB.jobs.unshift(job);
-  addAudit('CREATE','Job Order',`Created ${job.id}: ${title}`);
-  apiCreateJob(job).then(function(r){ if(!r.ok) toast('Job saved locally; sync failed: '+r.error,'error'); });
+
+  if (editId) {
+    // ── EDIT MODE ───────────────────────────────────────────────────
+    var idx = DB.jobs.findIndex(function(j){ return j.id === editId; });
+    if (idx === -1) { toast('Job order not found', 'error'); return; }
+
+    Object.assign(DB.jobs[idx], jobData);
+    DB.jobs[idx]._dbId = editDbId || DB.jobs[idx]._dbId;
+
+    addAudit('UPDATE', 'Job Order', 'Updated job: ' + title);
+    autosave('jobs');
+
+    var jobToSync = DB.jobs[idx];
+    if (isUUID(editDbId)) {
+      apiUpdateJob(jobToSync).then(function(r){
+        if (!r.ok) toast('Saved locally; sync failed: ' + r.error, 'error');
+        else toast('Job order updated ✓', 'success');
+      });
+    } else {
+      // No UUID yet — try creating on server instead
+      apiCreateJob(jobToSync).then(function(r){
+        if (r.ok) { jobToSync._dbId = r.data.id; autosave('jobs'); toast('Job order synced ✓', 'success'); }
+        else toast('Saved locally; sync failed: ' + r.error, 'error');
+      });
+    }
+    toast('Job order updated', 'success');
+
+  } else {
+    // ── CREATE MODE ─────────────────────────────────────────────────
+    var newJob = Object.assign({ id: genId('JOB'), filled: filled }, jobData);
+    DB.jobs.unshift(newJob);
+    addAudit('CREATE', 'Job Order', 'Created job: ' + title);
+    autosave('jobs');
+
+    apiCreateJob(newJob).then(function(r){
+      if (!r.ok) toast('Job saved locally; sync failed: ' + r.error, 'error');
+      else toast('Job order created on server ✓', 'success');
+    });
+    toast('Job order created', 'success');
+  }
+
   closeOverlay('overlay-job');
   renderJobs();
-  toast('Job order created','success');
 }
 
 // ════════════════════════════════════════════════════════
