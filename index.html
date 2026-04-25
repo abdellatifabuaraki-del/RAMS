@@ -3163,6 +3163,13 @@ async function saveDB(collection) {
 }
 
 async function loadDB() {
+  // Load permanently deleted document IDs
+  try {
+    var storedDelDocs = await Store.get('rams:deleted:documents');
+    var delDocsArr = storedDelDocs ? JSON.parse(typeof storedDelDocs === 'string' ? storedDelDocs : storedDelDocs.value || '[]') : [];
+    window._deletedDocumentIds = new Set(delDocsArr);
+  } catch(e) { window._deletedDocumentIds = new Set(); }
+
   // Load permanently deleted applicant IDs
   try {
     var storedDeleted = await Store.get('rams:deleted:applicants');
@@ -3195,19 +3202,19 @@ async function loadDB() {
   for (const k of DB_KEYS) {
     const data = await Store.get('rams:db:' + k);
     if (data && Array.isArray(data) && data.length > 0) {
-      DB[k] = data;
+      // Filter out permanently deleted documents
+      if (k === 'documents' && window._deletedDocumentIds && window._deletedDocumentIds.size > 0) {
+        DB[k] = data.filter(function(d){ return !window._deletedDocumentIds.has(d.id); });
+      } else {
+        DB[k] = data;
+      }
       loaded = true;
     }
   }
   return loaded;
 }
 
-// Debounced auto-save
-let _saveTimer = null;
-function autosave(collection) {
-  clearTimeout(_saveTimer);
-  _saveTimer = setTimeout(() => saveDB(collection), 400);
-}
+// autosave() is defined in the sync engine above — single authoritative version
 
 // ════════════════════════════════════════════════════════
 // 🤖  CLAUDE AI ASSISTANT  (Anthropic API)
@@ -4327,9 +4334,12 @@ function confirmDelete(type, id) {
     if (type==='document') {
       var _delDoc = DB.documents.find(x=>x.id===id);
       DB.documents = DB.documents.filter(x=>x.id!==id);
-      // Immediate save (no debounce) for deletes to prevent restore on reload
+      // Track deleted ID permanently — survives page reload
+      if (!window._deletedDocumentIds) window._deletedDocumentIds = new Set();
+      window._deletedDocumentIds.add(id);
+      Store.set('rams:deleted:documents', JSON.stringify([...window._deletedDocumentIds]));
+      // Immediately persist the filtered documents list (no debounce)
       Store.set('rams:db:documents', DB.documents);
-      autosave('documents');
       addAudit('DELETE','Document','Deleted '+name);
       // Sync delete to server
       var _docDbId = _delDoc ? (_delDoc._dbId || _delDoc.id) : id;
