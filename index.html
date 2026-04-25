@@ -3633,64 +3633,79 @@ function renderDashboard() {
     }).join('') || '<div style="padding:16px;text-align:center;color:var(--muted);font-size:13px">No activity yet</div>';
   }
 
-  // ── Top Job Orders ────────────────────────────────────────────────
+  // ── Top Job Orders ────────────────────────────────────────────────────
   const jobsEl = document.getElementById('top-jobs');
   if (jobsEl) {
     var openJobsSorted = _dashJobs.filter(function(j){return j.status==='Open';})
       .sort(function(a,b){return (b.filled/Math.max(b.slots,1))-(a.filled/Math.max(a.slots,1))})
       .slice(0,5);
-    jobsEl.innerHTML = openJobsSorted.length ? openJobsSorted.map(function(j){
-      var pct = j.slots ? Math.round(j.filled/j.slots*100) : 0;
-      var remaining = (j.slots||0)-(j.filled||0);
-      var barColor = pct>=80?'var(--amber)':pct>=100?'var(--red)':'var(--brand)';
-      return '<div style="padding:10px 0;border-bottom:1px solid var(--border)">' +
-        '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px">' +
-          '<div>' +
-            '<div style="font-size:13px;font-weight:700">'+j.title+'</div>' +
-            '<div style="font-size:11px;color:var(--muted)">'+j.employer+' · '+j.country+'</div>' +
+    if (!openJobsSorted.length) {
+      jobsEl.innerHTML = '<div style="text-align:center;padding:28px 0;color:var(--muted)"><div style="font-size:28px;margin-bottom:6px">💼</div><div style="font-size:12px">No open job orders</div></div>';
+    } else {
+      jobsEl.innerHTML = openJobsSorted.map(function(j,i){
+        var pct = j.slots ? Math.min(Math.round(j.filled/j.slots*100),100) : 0;
+        var remaining = Math.max((j.slots||0)-(j.filled||0),0);
+        var barColor = pct>=80?'var(--amber)':'var(--brand)';
+        var isLast = i===openJobsSorted.length-1;
+        return '<div style="padding:10px 0;'+(isLast?'':'border-bottom:1px solid var(--border)')+'">' +
+          '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">' +
+            '<div style="min-width:0;flex:1;margin-right:10px">' +
+              '<div style="font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+j.title+'</div>' +
+              '<div style="font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+j.employer+' · '+j.country+'</div>' +
+            '</div>' +
+            '<div style="flex-shrink:0;text-align:right">' +
+              '<div style="font-size:13px;font-weight:800">'+j.filled+'<span style="color:var(--muted);font-weight:400">/'+j.slots+'</span></div>' +
+              '<div style="font-size:10px;font-weight:600;color:'+(remaining<=2?'var(--red)':'var(--green)')+'">'+remaining+' left</div>' +
+            '</div>' +
           '</div>' +
-          '<div style="text-align:right">' +
-            '<div style="font-size:12px;font-weight:800;font-family:monospace">'+j.filled+'/'+j.slots+'</div>' +
-            '<div style="font-size:10px;color:'+(remaining<=2?'var(--red)':'var(--muted)')+'">'+remaining+' left</div>' +
+          '<div style="height:4px;border-radius:2px;background:var(--border)">' +
+            '<div style="height:4px;border-radius:2px;background:'+barColor+';width:'+pct+'%"></div>' +
           '</div>' +
-        '</div>' +
-        '<div class="prog-bar" style="height:5px;border-radius:3px">' +
-          '<div class="prog-fill" style="background:'+barColor+';width:'+pct+'%;border-radius:3px"></div>' +
-        '</div>' +
-      '</div>';
-    }).join('') : '<div style="padding:16px;text-align:center;color:var(--muted);font-size:13px">No open job orders</div>';
+        '</div>';
+      }).join('');
+    }
   }
-
-  // ── Document Status Summary ───────────────────────────────────────
+  // ── Document Status Summary ───────────────────────────────────────────
   const docEl = document.getElementById('doc-status-summary');
   if (docEl) {
+    var rejectedDocs = DB.documents.filter(function(d){return d.status==='Rejected';}).length;
+    var totalDocs    = DB.documents.length;
     var docStats = [
-      { k:'Approved', v:approvedDocs, color:'var(--green)', icon:'✓' },
-      { k:'Pending',  v:pendingDocs,  color:'var(--amber)', icon:'⏳' },
-      { k:'Rejected', v:DB.documents.filter(function(d){return d.status==='Rejected';}).length, color:'var(--red)', icon:'✕' },
+      { k:'Approved', v:approvedDocs, color:'var(--green)', bg:'var(--gbg)' },
+      { k:'Pending',  v:pendingDocs,  color:'var(--amber)', bg:'var(--abg)' },
+      { k:'Rejected', v:rejectedDocs, color:'var(--red)',   bg:'var(--rbg)' },
     ];
-    docEl.innerHTML = docStats.map(function(d){
-      return '<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border)">' +
-        '<div style="display:flex;align-items:center;gap:8px">' +
-          '<div style="width:28px;height:28px;border-radius:6px;background:'+d.color+'22;color:'+d.color+';display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700">'+d.icon+'</div>' +
-          '<span style="font-size:13px;font-weight:600">'+d.k+'</span>' +
-        '</div>' +
-        '<span style="font-size:18px;font-weight:800;font-family:monospace;color:'+d.color+'">'+d.v+'</span>' +
-      '</div>';
-    }).join('');
+    docEl.innerHTML =
+      '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">' +
+        docStats.map(function(d){
+          return '<div style="background:'+d.bg+';border-radius:10px;padding:14px 8px;text-align:center">' +
+            '<div style="font-size:26px;font-weight:800;color:'+d.color+';line-height:1">'+d.v+'</div>' +
+            '<div style="font-size:11px;color:'+d.color+';font-weight:600;margin-top:4px">'+d.k+'</div>' +
+          '</div>';
+        }).join('') +
+      '</div>' +
+      (totalDocs ? '<div style="font-size:11px;color:var(--muted);text-align:center;margin-top:10px">'+totalDocs+' total document'+(totalDocs!==1?'s':'')+'</div>' : '');
   }
-
-  // ── Quick Actions ─────────────────────────────────────────────────
+  // ── Quick Actions ─────────────────────────────────────────────────────
   const qaEl = document.getElementById('quick-actions');
   if (qaEl) {
-    qaEl.innerHTML = [
-      { lbl:'+ New Applicant', fn:'openAddApplicant()', cls:'btn-p', icon:'👤' },
-      { lbl:'+ Job Order',     fn:'openAddJob()',        cls:'btn-s', icon:'💼' },
-      { lbl:'+ Upload Doc',    fn:'openUploadDoc()',     cls:'btn-s', icon:'📄' },
-      { lbl:'Export Report',   fn:"exportData('applicants')", cls:'btn-s', icon:'⬇' },
-    ].map(function(a){
-      return '<button class="btn '+a.cls+' btn-sm" onclick="'+a.fn+'" style="display:flex;align-items:center;gap:6px;justify-content:center">'+a.icon+' '+a.lbl+'</button>';
-    }).join('');
+    var actions = [
+      { lbl:'New Applicant', fn:'openAddApplicant()', color:'var(--brand)',  bg:'var(--brand-l)', icon:'👤' },
+      { lbl:'New Job Order', fn:'openAddJob()',        color:'var(--amber)',  bg:'var(--abg)',     icon:'💼' },
+      { lbl:'Upload Doc',    fn:'openUploadDoc()',     color:'var(--purple)', bg:'var(--pbg)',     icon:'📎' },
+      { lbl:'Analytics',     fn:"nav('analytics')",   color:'var(--teal)',   bg:'#E0F2FE',        icon:'📊' },
+      { lbl:'Pipeline',      fn:"nav('pipeline')",    color:'var(--green)',  bg:'var(--gbg)',     icon:'🔄' },
+      { lbl:'Audit Trail',   fn:"nav('audit')",       color:'#7C3AED',      bg:'#F5F3FF',        icon:'📋' },
+    ];
+    qaEl.innerHTML =
+      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">' +
+        actions.map(function(a){
+          return '<button onclick="'+a.fn+'" style="background:'+a.bg+';color:'+a.color+';border:none;border-radius:10px;padding:13px 8px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:5px;font-weight:600;font-size:12px;text-align:center" onmouseover="this.style.opacity=.8" onmouseout="this.style.opacity=1">' +
+            '<span style="font-size:20px">'+a.icon+'</span>' +
+            '<span style="line-height:1.2">'+a.lbl+'</span>' +
+          '</button>';
+        }).join('') +
+      '</div>';
   }
 }
 
