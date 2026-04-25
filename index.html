@@ -3228,7 +3228,7 @@ function openDrawer(appId) {
   currentDrawerApplicant = app;
   document.getElementById('drawer-name').textContent = app.name;
   document.getElementById('drawer-meta').innerHTML = `
-    <span style="font-family:'IBM Plex Mono',monospace">${app.displayId || app.id}</span> · ${app.job}
+    <span style="font-family:monospace">${app.displayId || app.id}</span> · ${app.job}
   `;
 
   // Hide restricted tabs from Viewers
@@ -3271,13 +3271,13 @@ function switchDrawerTab(tab, btn) {
          ['Position',`<span style="font-size:13px">${(app.job||'').split('·')[0]||'—'}</span>`],
          ['Destination',app.destination || ((app.job||'').split('·')[1]||'—').trim()],
          ['Gender',app.gender||'—'],
-         ['Passport',`<span style="font-family:'IBM Plex Mono',monospace;font-size:12px">${app.passport||'—'}</span>`]]
+         ['Passport',`<span style="font-family:monospace;font-size:12px">${app.passport||'—'}</span>`]]
       : [['Status',pillHtml(app.status)],['Medical',pillHtml(app.medical,'medical')],
          ['Agent',`<span style="font-weight:700">${app.agent||'Unassigned'}</span>`],
-         ['Applied',`<span style="font-family:'IBM Plex Mono',monospace;font-size:12px">${app.date}</span>`],
+         ['Applied',`<span style="font-family:monospace;font-size:12px">${app.date}</span>`],
          ['Contact',app.contact],['Email',app.email],
          ['Gender',app.gender||'—'],
-         ['Passport',`<span style="font-family:'IBM Plex Mono',monospace;font-size:12px">${app.passport||'—'}</span>`],
+         ['Passport',`<span style="font-family:monospace;font-size:12px">${app.passport||'—'}</span>`],
          ['Destination',app.destination||'—']];
     panel.innerHTML = `
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
@@ -3334,12 +3334,12 @@ function switchDrawerTab(tab, btn) {
     panel.innerHTML = exps.length ? `
       <div style="background:var(--brand-l);border:1px solid #BFCFFF;border-radius:8px;padding:12px 14px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center">
         <span style="font-size:12px;color:var(--brand);font-weight:700">Total Expenses</span>
-        <span style="font-size:16px;font-weight:800;font-family:'IBM Plex Mono',monospace;color:var(--brand)">₱${total.toLocaleString()}</span>
+        <span style="font-size:16px;font-weight:800;font-family:monospace;color:var(--brand)">₱${total.toLocaleString()}</span>
       </div>
       <div style="display:flex;flex-direction:column;gap:6px">
         ${exps.map(e=>`<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:var(--s2);border:1px solid var(--border);border-radius:7px">
           <div><div style="font-size:12.5px;font-weight:700">${e.desc}</div><div style="font-size:11px;color:var(--muted)">${e.category} · ${e.date}</div></div>
-          <div style="text-align:right"><div style="font-size:13px;font-weight:800;font-family:'IBM Plex Mono',monospace">₱${e.amount.toLocaleString()}</div><span class="pill ${e.status==='Paid'?'pill-green':'pill-amber'}">${e.status}</span></div>
+          <div style="text-align:right"><div style="font-size:13px;font-weight:800;font-family:monospace">₱${e.amount.toLocaleString()}</div><span class="pill ${e.status==='Paid'?'pill-green':'pill-amber'}">${e.status}</span></div>
         </div>`).join('')}
       </div>
     ` : `<div class="empty-state"><div class="empty-icon">💸</div><div class="empty-title">No Expenses</div><div class="empty-sub">No expenses recorded for this applicant.</div><button class="btn btn-p btn-sm" onclick="openAddExpense(app&&app.name)">Record Expense</button></div>`;
@@ -3496,77 +3496,202 @@ function addAudit(action, entity, detail) {
 // DASHBOARD
 // ════════════════════════════════════════════════════════
 function renderDashboard() {
-  const _dashApps   = getScopedApplicants();
-  const _dashJobs   = getScopedJobs();
-  const repatriated = _dashApps.filter(a=>a.status==='Repatriated').length;
-  const inPipeline  = _dashApps.filter(a=>!['Deployed','Repatriated','Rejected','Backout'].includes(a.status)).length;
-  const stats = [
-    { label: 'Total Applicants', val: _dashApps.length, badge: '+'+inPipeline+' active', dir: 'up', icon: '👤', bg: 'var(--brand-l)', color: 'var(--brand)' },
-    { label: 'Active Deployments', val: _dashApps.filter(a=>a.status==='Deployed').length, badge: repatriated+' repatriated', dir: 'up', icon: '✈️', bg: 'var(--gbg)', color: 'var(--green)' },
-    { label: 'Open Job Orders', val: _dashJobs.filter(j=>j.status==='Open').length, badge: 'Stable', dir: 'up', icon: '💼', bg: 'var(--abg)', color: 'var(--amber)' },
-    { label: 'Pending Documents', val: DB.documents.filter(d=>d.status==='Pending').length, badge: '-1', dir: 'down', icon: '📄', bg: 'var(--pbg)', color: 'var(--purple)' },
-  ];
-  document.getElementById('dash-stats').innerHTML = stats.map(s => `
-    <div class="stat-card">
+  const _dashApps = getScopedApplicants();
+  const _dashJobs = getScopedJobs();
+
+  // ── Computed metrics ─────────────────────────────────────────────
+  const totalApps    = _dashApps.length;
+  const deployed     = _dashApps.filter(a=>a.status==='Deployed').length;
+  const inPipeline   = _dashApps.filter(a=>!['Deployed','Repatriated','Rejected','Backout'].includes(a.status)).length;
+  const repatriated  = _dashApps.filter(a=>a.status==='Repatriated').length;
+  const openJobs     = _dashJobs.filter(j=>j.status==='Open').length;
+  const filledJobs   = _dashJobs.filter(j=>j.status==='Filled').length;
+  const pendingDocs  = DB.documents.filter(d=>d.status==='Pending').length;
+  const approvedDocs = DB.documents.filter(d=>d.status==='Approved').length;
+  const totalSlots   = _dashJobs.reduce(function(s,j){return s+(j.slots||0);},0);
+  const filledSlots  = _dashJobs.reduce(function(s,j){return s+(j.filled||0);},0);
+  const deployRate   = totalApps ? Math.round(deployed/totalApps*100) : 0;
+  const slotUtilRate = totalSlots ? Math.round(filledSlots/totalSlots*100) : 0;
+
+  // ── Pipeline breakdown ───────────────────────────────────────────
+  var pipelineStages = ['For Selection','Applied','Screening','Interview','Selected','Medical','Processing','Visa','OWWA'];
+  var pipelineCounts = pipelineStages.map(function(s){
+    return { stage: s, count: _dashApps.filter(function(a){return a.status===s;}).length };
+  }).filter(function(x){return x.count>0;});
+
+  // ── Status distribution for donut ───────────────────────────────
+  var statusColors = {
+    'Deployed':'var(--green)','In Pipeline':'var(--brand)',
+    'Repatriated':'var(--red)','Backout':'var(--amber)','Rejected':'#94a3b8'
+  };
+
+  // ── KPI Cards ────────────────────────────────────────────────────
+  document.getElementById('dash-stats').innerHTML = `
+    <div class="stat-card" style="border-left:3px solid var(--brand)">
       <div class="stat-top">
-        <div class="stat-icon" style="background:${s.bg};color:${s.color}">${s.icon}</div>
-        <div class="stat-badge ${s.dir}">${s.badge}</div>
+        <div class="stat-icon" style="background:var(--brand-l);color:var(--brand);font-size:20px">👥</div>
+        <div style="text-align:right">
+          <div style="font-size:10px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.07em">Total Applicants</div>
+          <div style="font-size:28px;font-weight:800;line-height:1.1;color:var(--brand)">${totalApps}</div>
+        </div>
       </div>
-      <div class="stat-val">${s.val}</div>
-      <div class="stat-lbl">${s.label}</div>
-    </div>
-  `).join('');
-
-  const chartData = [
-    {lbl:'Jan',v:5,p:4},{lbl:'Feb',v:8,p:6},{lbl:'Mar',v:6,p:7},
-    {lbl:'Apr',v:10,p:8},{lbl:'May',v:7,p:5},{lbl:'Jun',v:9,p:7}
-  ];
-  const maxV = Math.max(...chartData.map(d=>Math.max(d.v,d.p)));
-  document.getElementById('chart-bars').innerHTML = chartData.map(d=>`
-    <div class="bar-group">
-      <div style="display:flex;gap:3px;align-items:flex-end;height:140px;width:100%">
-        <div class="bar" style="background:var(--brand);height:${d.v/maxV*100}%;opacity:.9"></div>
-        <div class="bar" style="background:var(--border);height:${d.p/maxV*100}%;opacity:.9"></div>
+      <div style="display:flex;gap:8px;margin-top:10px">
+        <span style="font-size:11px;background:var(--brand-l);color:var(--brand);padding:2px 8px;border-radius:99px;font-weight:600">🔵 ${inPipeline} active</span>
+        <span style="font-size:11px;background:var(--gbg);color:var(--green);padding:2px 8px;border-radius:99px;font-weight:600">✈ ${deployed} deployed</span>
       </div>
     </div>
-  `).join('');
-  document.getElementById('chart-labels').innerHTML = chartData.map(d=>`<span>${d.lbl}</span>`).join('');
-
-  document.getElementById('activity-feed').innerHTML = DB.auditLog.slice(0,5).map(l=>`
-    <div class="activity-item">
-      <div class="activity-dot" style="background:${{'create':'var(--green)','update':'var(--brand)','delete':'var(--red)','export':'var(--amber)'}[l.type]||'var(--dim)'}"></div>
-      <div class="activity-text">
-        <div class="activity-title">${l.detail}</div>
-        <div class="activity-time">${l.user} · ${l.time}</div>
+    <div class="stat-card" style="border-left:3px solid var(--green)">
+      <div class="stat-top">
+        <div class="stat-icon" style="background:var(--gbg);color:var(--green);font-size:20px">✈️</div>
+        <div style="text-align:right">
+          <div style="font-size:10px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.07em">Deploy Rate</div>
+          <div style="font-size:28px;font-weight:800;line-height:1.1;color:var(--green)">${deployRate}%</div>
+        </div>
+      </div>
+      <div style="margin-top:10px">
+        <div class="prog-bar" style="height:6px;border-radius:3px">
+          <div class="prog-fill" style="background:var(--green);width:${deployRate}%;border-radius:3px"></div>
+        </div>
+        <div style="font-size:11px;color:var(--muted);margin-top:4px">${repatriated} repatriated</div>
       </div>
     </div>
-  `).join('');
-
-  document.getElementById('top-jobs').innerHTML = DB.jobs.slice(0,4).map(j=>`
-    <div style="margin-bottom:10px">
-      <div style="display:flex;justify-content:space-between;margin-bottom:4px">
-        <span style="font-size:12.5px;font-weight:700">${j.title}</span>
-        <span style="font-size:11px;font-family:'IBM Plex Mono',monospace;color:var(--muted)">${j.filled}/${j.slots}</span>
+    <div class="stat-card" style="border-left:3px solid var(--amber)">
+      <div class="stat-top">
+        <div class="stat-icon" style="background:var(--abg);color:var(--amber);font-size:20px">💼</div>
+        <div style="text-align:right">
+          <div style="font-size:10px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.07em">Job Orders</div>
+          <div style="font-size:28px;font-weight:800;line-height:1.1;color:var(--amber)">${openJobs} <span style="font-size:14px;color:var(--muted)">open</span></div>
+        </div>
       </div>
-      <div class="prog-bar"><div class="prog-fill" style="background:var(--brand);width:${j.slots?j.filled/j.slots*100:0}%"></div></div>
-      <div style="font-size:11px;color:var(--muted);margin-top:2px">${j.country}</div>
+      <div style="margin-top:10px">
+        <div class="prog-bar" style="height:6px;border-radius:3px">
+          <div class="prog-fill" style="background:var(--amber);width:${slotUtilRate}%;border-radius:3px"></div>
+        </div>
+        <div style="font-size:11px;color:var(--muted);margin-top:4px">${filledSlots}/${totalSlots} slots filled · ${filledJobs} fully filled</div>
+      </div>
     </div>
-  `).join('');
-
-  const docByStatus = {Approved:0,Pending:0,Rejected:0};
-  DB.documents.forEach(d => docByStatus[d.status]++);
-  document.getElementById('doc-status-summary').innerHTML = Object.entries(docByStatus).map(([k,v])=>`
-    <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border)">
-      ${pillHtml(k)} <span style="font-size:14px;font-weight:800;font-family:'IBM Plex Mono',monospace">${v}</span>
+    <div class="stat-card" style="border-left:3px solid var(--purple)">
+      <div class="stat-top">
+        <div class="stat-icon" style="background:var(--pbg);color:var(--purple);font-size:20px">📄</div>
+        <div style="text-align:right">
+          <div style="font-size:10px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.07em">Documents</div>
+          <div style="font-size:28px;font-weight:800;line-height:1.1;color:var(--purple)">${pendingDocs} <span style="font-size:14px;color:var(--muted)">pending</span></div>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:10px">
+        <span style="font-size:11px;background:var(--gbg);color:var(--green);padding:2px 8px;border-radius:99px;font-weight:600">✓ ${approvedDocs} approved</span>
+      </div>
     </div>
-  `).join('');
+  `;
 
-  document.getElementById('quick-actions').innerHTML = [
-    ['+ New Applicant', openAddApplicant, 'btn-p'],
-    ['+ Job Order', openAddJob, 'btn-s'],
-    ['+ Upload Doc', openUploadDoc, 'btn-s'],
-    ['Export Report', ()=>exportData('applicants'), 'btn-s'],
-  ].map(([lbl, fn, cls]) => `<button class="btn ${cls} btn-sm" onclick="(${fn.toString()})()" style="justify-content:center">${lbl}</button>`).join('');
+  // ── Pipeline funnel chart ─────────────────────────────────────────
+  const chartEl = document.getElementById('chart-bars');
+  const labelsEl = document.getElementById('chart-labels');
+  if (chartEl && labelsEl) {
+    if (pipelineCounts.length === 0) {
+      chartEl.innerHTML = '<div style="height:140px;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:13px">No pipeline data</div>';
+      labelsEl.innerHTML = '';
+    } else {
+      const maxCount = Math.max(...pipelineCounts.map(function(x){return x.count;}), 1);
+      const stageColors = {
+        'For Selection':'#94a3b8','Applied':'var(--brand)','Screening':'var(--purple)',
+        'Interview':'var(--amber)','Selected':'var(--green)','Medical':'var(--teal)',
+        'Processing':'#0891B2','Visa':'var(--purple)','OWWA':'var(--teal)'
+      };
+      chartEl.innerHTML = pipelineCounts.map(function(x) {
+        var pct = Math.round(x.count/maxCount*100);
+        var color = stageColors[x.stage] || 'var(--brand)';
+        return '<div class="bar-group" style="position:relative">' +
+          '<div style="display:flex;gap:3px;align-items:flex-end;height:140px;width:100%">' +
+            '<div class="bar" style="background:'+color+';height:'+pct+'%;opacity:.85;border-radius:4px 4px 0 0;position:relative" title="'+x.stage+': '+x.count+'">' +
+              '<span style="position:absolute;top:-18px;left:50%;transform:translateX(-50%);font-size:10px;font-weight:700;color:'+color+'">'+x.count+'</span>' +
+            '</div>' +
+          '</div>' +
+        '</div>';
+      }).join('');
+      labelsEl.innerHTML = pipelineCounts.map(function(x){
+        return '<span style="font-size:9px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:50px;display:inline-block;text-align:center">'+x.stage+'</span>';
+      }).join('');
+    }
+  }
+
+  // ── Recent Activity ───────────────────────────────────────────────
+  const actEl = document.getElementById('activity-feed');
+  if (actEl) {
+    const actionColors = { create:'var(--green)', update:'var(--brand)', delete:'var(--red)', export:'var(--amber)' };
+    const actionIcons  = { create:'＋', update:'✎', delete:'✕', export:'↓' };
+    actEl.innerHTML = DB.auditLog.slice(0,8).map(function(l){
+      var col = actionColors[l.type] || 'var(--dim)';
+      var ico = actionIcons[l.type] || '•';
+      return '<div class="activity-item" style="padding:8px 0;border-bottom:1px solid var(--border)">' +
+        '<div style="width:24px;height:24px;border-radius:50%;background:'+col+'22;color:'+col+';display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0">'+ico+'</div>' +
+        '<div class="activity-text" style="flex:1;min-width:0">' +
+          '<div class="activity-title" style="font-size:12.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+l.detail+'</div>' +
+          '<div class="activity-time" style="font-size:11px;color:var(--muted)">'+l.user+' · '+l.time+'</div>' +
+        '</div>' +
+      '</div>';
+    }).join('') || '<div style="padding:16px;text-align:center;color:var(--muted);font-size:13px">No activity yet</div>';
+  }
+
+  // ── Top Job Orders ────────────────────────────────────────────────
+  const jobsEl = document.getElementById('top-jobs');
+  if (jobsEl) {
+    var openJobsSorted = _dashJobs.filter(function(j){return j.status==='Open';})
+      .sort(function(a,b){return (b.filled/Math.max(b.slots,1))-(a.filled/Math.max(a.slots,1))})
+      .slice(0,5);
+    jobsEl.innerHTML = openJobsSorted.length ? openJobsSorted.map(function(j){
+      var pct = j.slots ? Math.round(j.filled/j.slots*100) : 0;
+      var remaining = (j.slots||0)-(j.filled||0);
+      var barColor = pct>=80?'var(--amber)':pct>=100?'var(--red)':'var(--brand)';
+      return '<div style="padding:10px 0;border-bottom:1px solid var(--border)">' +
+        '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px">' +
+          '<div>' +
+            '<div style="font-size:13px;font-weight:700">'+j.title+'</div>' +
+            '<div style="font-size:11px;color:var(--muted)">'+j.employer+' · '+j.country+'</div>' +
+          '</div>' +
+          '<div style="text-align:right">' +
+            '<div style="font-size:12px;font-weight:800;font-family:monospace">'+j.filled+'/'+j.slots+'</div>' +
+            '<div style="font-size:10px;color:'+(remaining<=2?'var(--red)':'var(--muted)')+'">'+remaining+' left</div>' +
+          '</div>' +
+        '</div>' +
+        '<div class="prog-bar" style="height:5px;border-radius:3px">' +
+          '<div class="prog-fill" style="background:'+barColor+';width:'+pct+'%;border-radius:3px"></div>' +
+        '</div>' +
+      '</div>';
+    }).join('') : '<div style="padding:16px;text-align:center;color:var(--muted);font-size:13px">No open job orders</div>';
+  }
+
+  // ── Document Status Summary ───────────────────────────────────────
+  const docEl = document.getElementById('doc-status-summary');
+  if (docEl) {
+    var docStats = [
+      { k:'Approved', v:approvedDocs, color:'var(--green)', icon:'✓' },
+      { k:'Pending',  v:pendingDocs,  color:'var(--amber)', icon:'⏳' },
+      { k:'Rejected', v:DB.documents.filter(function(d){return d.status==='Rejected';}).length, color:'var(--red)', icon:'✕' },
+    ];
+    docEl.innerHTML = docStats.map(function(d){
+      return '<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border)">' +
+        '<div style="display:flex;align-items:center;gap:8px">' +
+          '<div style="width:28px;height:28px;border-radius:6px;background:'+d.color+'22;color:'+d.color+';display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700">'+d.icon+'</div>' +
+          '<span style="font-size:13px;font-weight:600">'+d.k+'</span>' +
+        '</div>' +
+        '<span style="font-size:18px;font-weight:800;font-family:monospace;color:'+d.color+'">'+d.v+'</span>' +
+      '</div>';
+    }).join('');
+  }
+
+  // ── Quick Actions ─────────────────────────────────────────────────
+  const qaEl = document.getElementById('quick-actions');
+  if (qaEl) {
+    qaEl.innerHTML = [
+      { lbl:'+ New Applicant', fn:'openAddApplicant()', cls:'btn-p', icon:'👤' },
+      { lbl:'+ Job Order',     fn:'openAddJob()',        cls:'btn-s', icon:'💼' },
+      { lbl:'+ Upload Doc',    fn:'openUploadDoc()',     cls:'btn-s', icon:'📄' },
+      { lbl:'Export Report',   fn:"exportData('applicants')", cls:'btn-s', icon:'⬇' },
+    ].map(function(a){
+      return '<button class="btn '+a.cls+' btn-sm" onclick="'+a.fn+'" style="display:flex;align-items:center;gap:6px;justify-content:center">'+a.icon+' '+a.lbl+'</button>';
+    }).join('');
+  }
 }
 
 // ════════════════════════════════════════════════════════
@@ -3606,7 +3731,7 @@ function renderKanban() {
               <div class="kanban-card-name">${a.name}</div>
               <div class="kanban-card-sub">${a.job}</div>
               <div class="kanban-card-foot">
-                <span style="font-size:10px;color:var(--dim);font-family:'IBM Plex Mono',monospace">${a.displayId||a.id}</span>
+                <span style="font-size:10px;color:var(--dim);font-family:monospace">${a.displayId||a.id}</span>
                 ${pillHtml(a.medical,'medical')}
               </div>
             </div>
@@ -3660,7 +3785,7 @@ function renderApplicants() {
   tbody.innerHTML = pageApps.length ? pageApps.map(a => `
     <tr>
       <td><input type="checkbox" class="table-check" ${selectedApps.has(a.id)?'checked':''} onchange="toggleSelect('${a.id}',this)" aria-label="Select ${a.name}"></td>
-      <td><span style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--muted)">${a.displayId||a.id}</span></td>
+      <td><span style="font-family:monospace;font-size:11.5px;color:var(--muted)">${a.displayId||a.id}</span></td>
       <td>
         <div style="font-weight:700;cursor:pointer;color:var(--text)" onclick="openDrawer('${a.id}')">${a.name}</div>
         <div style="font-size:11px;color:var(--muted)">${a.email}</div>
@@ -3673,7 +3798,7 @@ function renderApplicants() {
       </td>
       <td style="font-size:12.5px;color:var(--text2)">${a.agent}</td>
       <td>${pillHtml(a.medical,'medical')}</td>
-      <td style="font-size:11.5px;font-family:'IBM Plex Mono',monospace;color:var(--muted)">${a.date}</td>
+      <td style="font-size:11.5px;font-family:monospace;color:var(--muted)">${a.date}</td>
       <td style="text-align:right;white-space:nowrap">
         <button class="btn btn-ghost btn-xs" onclick="openDrawer('${a.id}')" data-tip="View details" aria-label="View ${a.name}">View</button>
         <button class="btn btn-ghost btn-xs" onclick="editApplicant('${a.id}')" data-tip="Edit" aria-label="Edit ${a.name}">Edit</button>
@@ -3946,7 +4071,7 @@ function renderDocs() {
       <div class="doc-info">
         <div class="doc-name">${d.name}</div>
         <div class="doc-meta">${d.applicant} &middot; ${d.type}</div>
-        <div class="doc-meta" style="font-family:'IBM Plex Mono',monospace;font-size:10.5px">${d.date} &middot; ${d.size}</div>
+        <div class="doc-meta" style="font-family:monospace;font-size:10.5px">${d.date} &middot; ${d.size}</div>
       </div>
       <div class="doc-actions">
         ${pillHtml(d.status)}
@@ -4221,7 +4346,7 @@ function renderJobs() {
         <div style="font-size:11px;color:var(--muted);font-weight:400">${grp.country} · Deadline: ${grp.deadline||'TBD'}</div>
       </td>
       <td colspan="3" style="padding:10px 12px">
-        <div style="font-size:12px;font-family:'IBM Plex Mono',monospace;margin-bottom:4px">${totalFilled}/${totalSlots} slots · ${pct}% filled</div>
+        <div style="font-size:12px;font-family:monospace;margin-bottom:4px">${totalFilled}/${totalSlots} slots · ${pct}% filled</div>
         <div class="prog-bar" style="width:120px"><div class="prog-fill" style="background:var(--brand);width:${pct}%"></div></div>
       </td>
       <td colspan="2" style="padding:10px 12px">${pillHtml(grp.status)}</td>
@@ -4233,17 +4358,17 @@ function renderJobs() {
     grp.positions.forEach(function(j) {
       var pPct = j.slots ? Math.round(j.filled/j.slots*100) : 0;
       rows += `<tr>
-        <td style="padding-left:24px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted)">${j.id}</td>
+        <td style="padding-left:24px;font-family:monospace;font-size:11px;color:var(--muted)">${j.id}</td>
         <td style="padding-left:24px;font-size:13px;font-weight:600">↳ ${j.title}</td>
         <td style="font-size:12px;color:var(--muted)"><span style="font-size:10px">Employer hidden — see above</span></td>
-        <td style="text-align:center;font-family:'IBM Plex Mono',monospace">${j.slots}</td>
+        <td style="text-align:center;font-family:monospace">${j.slots}</td>
         <td style="text-align:center">
-          <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;margin-bottom:3px">${j.filled}/${j.slots}</div>
+          <div style="font-family:monospace;font-size:12px;margin-bottom:3px">${j.filled}/${j.slots}</div>
           <div class="prog-bar" style="width:60px"><div class="prog-fill" style="background:var(--brand);width:${pPct}%"></div></div>
         </td>
-        <td style="font-size:12px;font-family:'IBM Plex Mono',monospace">${j.salary||'TBD'}</td>
+        <td style="font-size:12px;font-family:monospace">${j.salary||'TBD'}</td>
         <td>${pillHtml(j.status)}</td>
-        <td style="font-size:11.5px;font-family:'IBM Plex Mono',monospace;color:var(--muted)">${j.deadline||'TBD'}</td>
+        <td style="font-size:11.5px;font-family:monospace;color:var(--muted)">${j.deadline||'TBD'}</td>
         <td style="text-align:right">
           <button class="btn btn-ghost btn-xs" onclick="confirmDelete('job','${j.id}')" style="color:var(--red)" title="Delete this position">✕</button>
         </td>
@@ -4496,7 +4621,7 @@ function renderAnalytics() {
   if (barsEl) {
     barsEl.innerHTML = vals.map((v,i)=>`
       <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%">
-        <span style="font-size:10px;font-family:'IBM Plex Mono',monospace;color:var(--text);font-weight:700">${v}</span>
+        <span style="font-size:10px;font-family:monospace;color:var(--text);font-weight:700">${v}</span>
         <div style="width:100%;flex:1;display:flex;align-items:flex-end">
           <div style="width:100%;border-radius:4px 4px 0 0;background:var(--brand);opacity:${0.35+v/maxV*0.65};height:${Math.max(4,v/maxV*100)}%;min-height:4px;transition:height .6s ease"></div>
         </div>
@@ -4515,7 +4640,7 @@ function renderAnalytics() {
       <div style="margin-bottom:10px">
         <div style="display:flex;justify-content:space-between;margin-bottom:5px">
           <span style="font-size:12.5px;font-weight:700">${k}</span>
-          <span style="font-size:12px;font-family:'IBM Plex Mono',monospace;color:var(--muted)">${v} (${DB.applicants.length?Math.round(v/DB.applicants.length*100):0}%)</span>
+          <span style="font-size:12px;font-family:monospace;color:var(--muted)">${v} (${DB.applicants.length?Math.round(v/DB.applicants.length*100):0}%)</span>
         </div>
         <div class="prog-bar"><div class="prog-fill" style="background:${colors[k]||'var(--brand)'};width:${DB.applicants.length?v/DB.applicants.length*100:0}%"></div></div>
       </div>`).join('');
@@ -4530,7 +4655,7 @@ function renderAnalytics() {
     destEl.innerHTML = dests.length ? dests.map(([c,n])=>`
       <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border)">
         <span style="font-size:12.5px;font-weight:700">🌍 ${c}</span>
-        <span style="font-size:13px;font-weight:800;font-family:'IBM Plex Mono',monospace">${n}</span>
+        <span style="font-size:13px;font-weight:800;font-family:monospace">${n}</span>
       </div>`).join('') : '<div style="color:var(--muted);font-size:12px">No data</div>';
   }
 
@@ -4549,7 +4674,7 @@ function renderAnalytics() {
           <div style="font-size:12.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${a.name}</div>
           <div style="font-size:11px;color:var(--muted)">${a.count} applicant${a.count!==1?'s':''} · ${a.deployed} deployed</div>
         </div>
-        <div style="font-size:13px;font-weight:800;font-family:'IBM Plex Mono',monospace;color:var(--green)">${a.count?Math.round(a.deployed/a.count*100):0}%</div>
+        <div style="font-size:13px;font-weight:800;font-family:monospace;color:var(--green)">${a.count?Math.round(a.deployed/a.count*100):0}%</div>
       </div>`).join('');
   }
 }
@@ -4879,7 +5004,7 @@ function renderIntegrations() {
       <div class="integ-info">
         <div class="integ-name">${ig.name}</div>
         <div class="integ-sub">${ig.desc}</div>
-        <div style="margin-top:4px;font-size:10.5px;font-family:'IBM Plex Mono',monospace;color:var(--dim)">${ig.category}</div>
+        <div style="margin-top:4px;font-size:10.5px;font-family:monospace;color:var(--dim)">${ig.category}</div>
       </div>
       <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
         ${pillHtml(ig.connected?'Active':'Inactive')}
