@@ -1777,7 +1777,7 @@ button[disabled][data-rbac-locked] {
             <!-- Channels section -->
             <div style="padding:4px 12px;font-size:10px;font-weight:700;color:var(--muted);letter-spacing:.08em;display:flex;align-items:center;justify-content:space-between">
               CHANNELS
-              <button onclick="openNewRoomModal()" style="background:none;border:none;color:var(--brand);cursor:pointer;font-size:16px;line-height:1;padding:0" title="New channel">＋</button>
+              <button onclick="openNewRoomModal()" id="btn-new-channel" style="background:none;border:none;color:var(--brand);cursor:pointer;font-size:16px;line-height:1;padding:0" title="New channel">＋</button>
             </div>
             <div id="chat-rooms-list"></div>
 
@@ -5361,6 +5361,22 @@ var _defaultRooms = [
 ];
 
 // Merge stored rooms with defaults
+function getViewerAllowedRooms() {
+  var role = getCurrentRole();
+  if (role !== 'Viewer') return null; // null = no restriction
+  var u = getCurrentUser();
+  if (!u || !u.email) return [];
+  // Viewer gets: general room always + any rooms assigned via viewerScopes
+  var allowedRoomIds = new Set(['room-general']);
+  // Add rooms explicitly assigned (stored in viewerScopes[email].chatRooms)
+  var chatRooms = viewerScopes[(u.email||'').toLowerCase() + ':chatRooms'];
+  if (Array.isArray(chatRooms)) {
+    chatRooms.forEach(function(rid){ allowedRoomIds.add(rid); });
+  }
+  // Also add DM rooms for this user
+  return allowedRoomIds;
+}
+
 function getChatRooms() {
   var stored = DB.chatMessages.__rooms || [];
   var ids = stored.map(function(r){ return r.id; });
@@ -5419,8 +5435,17 @@ function renderChat() {
 
 function renderChatRooms() {
   var q     = (document.getElementById('chat-search')||{value:''}).value.toLowerCase();
-  var rooms = getChatRooms().filter(function(r){ return !q || r.name.includes(q); });
-  var dms   = getChatDMs().filter(function(d){ return !q || d.name.toLowerCase().includes(q); });
+  var _allowedRooms = getViewerAllowedRooms(); // null = all, Set = restricted
+  var rooms = getChatRooms().filter(function(r){
+    if (_allowedRooms !== null && !_allowedRooms.has(r.id)) return false;
+    return !q || r.name.includes(q);
+  });
+  // Viewers only see DMs to/from themselves
+  var me = (window._ramsSessionUser && window._ramsSessionUser.name) || '';
+  var dms = getChatDMs().filter(function(d){
+    if (_allowedRooms !== null && !d.id.includes(me.toLowerCase().replace(/[^a-z]/g,'-'))) return false;
+    return !q || d.name.toLowerCase().includes(q);
+  });
 
   var rl = document.getElementById('chat-rooms-list');
   var dl = document.getElementById('chat-dms-list');
@@ -9486,14 +9511,40 @@ function openViewerScope(userEmail, userName) {
     }).join('');
   }
   openOverlay('overlay-viewer-scope');
+  // Populate chat rooms list
+  var roomList = document.getElementById('vs-room-list');
+  if (roomList) {
+    var assignedRooms = viewerScopes[(_scopingUserEmail) + ':chatRooms'] || [];
+    var allRooms = getChatRooms();
+    if (!allRooms.length) {
+      roomList.innerHTML = '<div style="font-size:12px;color:var(--muted)">No channels created yet</div>';
+    } else {
+      roomList.innerHTML = allRooms.map(function(r) {
+        var checked = assignedRooms.indexOf(r.id) !== -1;
+        return '<label style="display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--s2);border-radius:7px;cursor:pointer">' +
+          '<input type="checkbox" data-room-id="' + r.id + '"' + (checked ? ' checked' : '') + '>' +
+          '<span style="font-size:13px">' + (r.icon||'#') + ' ' + r.name + '</span>' +
+          '<span style="font-size:11px;color:var(--muted);margin-left:auto">' + (r.desc||'') + '</span>' +
+        '</label>';
+      }).join('');
+    }
+  }
 }
+
 
 function saveViewerScope() {
   var checked = document.querySelectorAll('#vs-job-list input[type="checkbox"]:checked');
   var jobIds = Array.from(checked).map(function(cb) { return cb.dataset.jobId; });
+  var checkedRooms = document.querySelectorAll('#vs-room-list input[type="checkbox"]:checked');
+  var chatRoomIds = Array.from(checkedRooms).map(function(cb){ return cb.dataset.roomId; });
   viewerScopes[_scopingUserEmail] = jobIds;
+  viewerScopes[_scopingUserEmail + ':chatRooms'] = chatRoomIds;
+  // Also store as object for getViewerAllowedRooms
+  if (typeof viewerScopes[_scopingUserEmail] === 'object' && !Array.isArray(viewerScopes[_scopingUserEmail])) {
+    // already object format
+  }
   saveViewerScopes();
-  addAudit('UPDATE', 'Viewer Scope', 'Updated access scope for ' + _scopingUserEmail + ' — ' + jobIds.length + ' job order(s)');
+  addAudit('UPDATE', 'Viewer Scope', 'Updated access scope for ' + _scopingUserEmail + ' — ' + jobIds.length + ' job(s), ' + chatRoomIds.length + ' room(s)');
   closeOverlay('overlay-viewer-scope');
   toast('Scope saved — ' + jobIds.length + ' job order' + (jobIds.length !== 1 ? 's' : '') + ' assigned', 'success');
   var me = getCurrentUser();
@@ -10478,7 +10529,10 @@ function stopChatPoll() {
         👁 Viewer will <strong>only</strong> see selected job orders and applicants assigned to those jobs. Uncheck all to block all access.
       </div>
       <div style="font-size:12px;font-weight:700;color:var(--muted);margin-bottom:10px;text-transform:uppercase;letter-spacing:.06em">Job Orders</div>
-      <div id="vs-job-list" style="display:flex;flex-direction:column;gap:6px;max-height:340px;overflow-y:auto"></div>
+      <div id="vs-job-list" style="display:flex;flex-direction:column;gap:6px;max-height:200px;overflow-y:auto"></div>
+      <div style="font-size:12px;font-weight:700;color:var(--muted);margin:16px 0 10px;text-transform:uppercase;letter-spacing:.06em">Allowed Chat Rooms</div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:8px">Viewer always has access to #general. Add extra rooms below.</div>
+      <div id="vs-room-list" style="display:flex;flex-direction:column;gap:6px;max-height:160px;overflow-y:auto"></div>
     </div>
     <div class="modal-footer">
       <button class="btn btn-ghost" onclick="closeOverlay('overlay-viewer-scope')">Cancel</button>
