@@ -1260,8 +1260,19 @@ button[disabled][data-rbac-locked] {
         </div>
         <select class="filter-select" id="app-status-filter" onchange="filterApplicants()" aria-label="Filter by status">
           <option value="">All Status</option>
-          <option>Applied</option><option>Screening</option><option>Interview</option>
-          <option>Medical</option><option>Deployed</option><option>Rejected</option>
+          <option>For Selection</option>
+          <option>Applied</option>
+          <option>Screening</option>
+          <option>Interview</option>
+          <option>Selected</option>
+          <option>Medical</option>
+          <option>Processing</option>
+          <option>Visa</option>
+          <option>OWWA</option>
+          <option>Deployed</option>
+          <option>Repatriated</option>
+          <option>Backout</option>
+          <option>Rejected</option>
         </select>
         <select class="filter-select" id="app-agent-filter" onchange="filterApplicants()" aria-label="Filter by agent">
           <option value="">All Agents</option>
@@ -1269,6 +1280,9 @@ button[disabled][data-rbac-locked] {
         <select class="filter-select" id="app-medical-filter" onchange="filterApplicants()" aria-label="Filter by medical">
           <option value="">All Medical</option>
           <option>Passed</option><option>Pending</option><option>Failed</option>
+        </select>
+        <select class="filter-select" id="app-joborder-filter" onchange="filterApplicants()" aria-label="Filter by job order" style="max-width:200px">
+          <option value="">All Job Orders</option>
         </select>
         <div style="display:flex;gap:6px;margin-left:auto">
           <button class="btn btn-ghost btn-sm" onclick="clearFilters()" style="font-size:11.5px">Clear</button>
@@ -4157,14 +4171,19 @@ function renderKanban() {
 }
 
 function filterApplicants() {
-  const q = document.getElementById('app-search').value.toLowerCase();
-  const s = document.getElementById('app-status-filter').value;
-  const a = document.getElementById('app-agent-filter').value;
-  const m = document.getElementById('app-medical-filter').value;
-  filteredApps = DB.applicants.filter(x =>
-    (!q || x.name.toLowerCase().includes(q) || x.id.toLowerCase().includes(q) || x.contact.includes(q)) &&
-    (!s || x.status === s) && (!a || x.agent === a) && (!m || x.medical === m)
-  );
+  const q  = document.getElementById('app-search').value.toLowerCase();
+  const s  = document.getElementById('app-status-filter').value;
+  const a  = document.getElementById('app-agent-filter').value;
+  const m  = document.getElementById('app-medical-filter').value;
+  const jo = document.getElementById('app-joborder-filter') ? document.getElementById('app-joborder-filter').value : '';
+  filteredApps = getScopedApplicants().filter(function(x) {
+    if (q  && !(x.name.toLowerCase().includes(q) || (x.displayId||x.id).toLowerCase().includes(q) || (x.contact||'').includes(q) || (x.passport||'').toLowerCase().includes(q))) return false;
+    if (s  && x.status  !== s)  return false;
+    if (a  && x.agent   !== a)  return false;
+    if (m  && x.medical !== m)  return false;
+    if (jo && x._jobOrderId !== jo) return false;
+    return true;
+  });
   appPage = 1;
   renderApplicants();
 }
@@ -4173,6 +4192,8 @@ function clearFilters() {
   document.getElementById('app-status-filter').value = '';
   document.getElementById('app-agent-filter').value = '';
   document.getElementById('app-medical-filter').value = '';
+  var jof = document.getElementById('app-joborder-filter');
+  if (jof) jof.value = '';
   filterApplicants();
 }
 function sortTable(col) {
@@ -4190,9 +4211,20 @@ function sortTable(col) {
 }
 function renderApplicants() {
   const agentFilter = document.getElementById('app-agent-filter');
-  const agents = [...new Set(DB.applicants.map(a=>a.agent).filter(Boolean))];
+  const agents = [...new Set(getScopedApplicants().map(a=>a.agent).filter(Boolean))];
   if (agentFilter.options.length <= 1) {
     agents.forEach(a => { const o = document.createElement('option'); o.value = a; o.text = a; agentFilter.appendChild(o); });
+  }
+  // Populate job order filter with jobs that have applicants
+  const joFilter = document.getElementById('app-joborder-filter');
+  if (joFilter && joFilter.options.length <= 1) {
+    var usedJobIds = new Set(getScopedApplicants().map(function(a){ return a._jobOrderId; }).filter(Boolean));
+    DB.jobs.filter(function(j){ return usedJobIds.has(j.id) || usedJobIds.has(j._dbId); }).forEach(function(j) {
+      var o = document.createElement('option');
+      o.value = j.id;
+      o.text  = j.title + ' @ ' + (j.employer||'') + (j.country ? ' · ' + j.country : '');
+      joFilter.appendChild(o);
+    });
   }
   const start = (appPage-1)*APP_PER_PAGE;
   const pageApps = filteredApps.slice(start, start+APP_PER_PAGE);
