@@ -2812,7 +2812,15 @@ async function apiDeleteJob(dbId) {
 
 async function apiCreateExpense(data) {
   if (window._ramsSessionToken === 'demo') return { ok: true };
-  var payload = { description: data.desc, amount: data.amount, category: data.category, status: data.status, expense_date: data.date };
+  var payload = {
+    description:  data.desc,
+    amount:       data.amount,
+    category:     data.category,
+    status:       data.status,
+    expense_date: data.date,
+    applicant_id: data.applicantId || null,
+    notes:        data.ref || null,
+  };
   var r = await apiFetch('/expenses', { method: 'POST', body: JSON.stringify(payload) });
   if (r.ok) { data._dbId = r.data.id; data.id = r.data.id; }
   return r;
@@ -2844,7 +2852,7 @@ var _pageFetchMap = {
   pipeline:    function() { return _smartFetch('applicants'); },
   jobs:        function() { return _smartFetch('jobs'); },
   documents:   function() { return _smartFetch('applicants'); },
-  accounting:  function() { return _smartSync(['expenses','agents']); },
+  accounting:  function() { return Promise.all([_smartFetch('expenses'), fetchAgents()]); },
   settings:    function() { return _smartFetch('users'); },
   audit:       function() { return _smartFetch('audit'); },
   analytics:   function() { return _smartSync(['applicants','jobs']); },
@@ -2937,7 +2945,15 @@ async function fetchExpenses() {
   var r = await apiFetch('/expenses?limit=500');
   if (!r.ok) return;
   _markFresh('expenses');
-  DB.expenses = r.data.map(mapExpense);
+  var fresh = r.data.map(mapExpense);
+  // Preserve applicant name if server didn't return it
+  fresh.forEach(function(e) {
+    if (!e.applicant) {
+      var local = DB.expenses.find(function(x){ return x.id === e.id || x._dbId === e.id; });
+      if (local && local.applicant) e.applicant = local.applicant;
+    }
+  });
+  DB.expenses = fresh;
   autosave('expenses');
   if (currentPage === 'accounting' && typeof renderExpensesTab === 'function') renderExpensesTab();
 }
@@ -4495,7 +4511,17 @@ function confirmDelete(type, id) {
         else toast('Delete sync failed: '+r.error,'error');
       });
     }
-    if (type==='expense') { DB.expenses=DB.expenses.filter(x=>x.id!==id); addAudit('DELETE','Expense',`Deleted ${name}`); renderAccounting(); }
+    if (type==='expense') {
+      var _delExp = DB.expenses.find(x=>x.id===id);
+      DB.expenses = DB.expenses.filter(x=>x.id!==id);
+      autosave('expenses');
+      addAudit('DELETE','Expense','Deleted '+name);
+      if (_delExp) {
+        var _expDbId = _delExp._dbId || _delExp.id;
+        apiDeleteExpense(_expDbId).then(function(r){ if(!r.ok) toast('Expense deleted locally; server sync failed','error'); });
+      }
+      renderAccounting();
+    }
     if (type==='job') { DB.jobs=DB.jobs.filter(x=>x.id!==id); addAudit('DELETE','Job Order',`Deleted ${name}`); renderJobs(); }
     if (type==='document') {
       var _delDoc = DB.documents.find(x=>x.id===id);
@@ -5317,11 +5343,19 @@ function saveExpense() {
     amount:      amt,
     status:      document.getElementById('e-status').value || 'Paid',
     ref:         (document.getElementById('e-ref') ? document.getElementById('e-ref').value.trim() : '') || null,
-    postedBy:    (function(){ try{ return JSON.parse('{}').name||'Admin'; }catch(e){ return 'Admin'; } })(),
+    postedBy:    (window._ramsSessionUser && window._ramsSessionUser.name) || 'System',
   };
 
   DB.expenses.unshift(exp);
-  apiCreateExpense(exp).then(function(r){ if(!r.ok) toast('Expense saved locally; sync failed: '+r.error,'error'); });
+  autosave('expenses');  // persist locally immediately in case API fails
+
+  apiCreateExpense(exp).then(function(r) {
+    if (!r.ok) {
+      toast('Expense saved locally; server sync failed: ' + r.error, 'error');
+    } else {
+      autosave('expenses'); // update with server-assigned _dbId
+    }
+  });
 
   // Auto-trigger accounting if applicant status warrants it
   if (app) {
