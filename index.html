@@ -2847,9 +2847,9 @@ function _markFresh(key) {
 
 // ── Per-page fetch map ────────────────────────────────────────────────
 var _pageFetchMap = {
-  dashboard:   function() { return _smartSync(['applicants','jobs','expenses']); },
-  applicants:  function() { return _smartFetch('applicants'); },
-  pipeline:    function() { return _smartFetch('applicants'); },
+  dashboard:   function() { return _smartSync(['applicants','jobs','expenses','agents']); },
+  applicants:  function() { return Promise.all([_smartFetch('applicants'), _smartFetch('agents')]); },
+  pipeline:    function() { return Promise.all([_smartFetch('applicants'), _smartFetch('agents')]); },
   jobs:        function() { return _smartFetch('jobs'); },
   documents:   function() { return _smartFetch('applicants'); },
   accounting:  function() { return Promise.all([_smartFetch('expenses'), fetchAgents()]); },
@@ -3033,12 +3033,13 @@ function _updateAuditDOM() {
 async function syncAllFromAPI() {
   var isLive = window._ramsSessionToken && window._ramsSessionToken !== 'demo';
   if (!isLive) return;
-  var [apps, jobs, expenses, users, audit] = await Promise.all([
+  var [apps, jobs, expenses, users, audit, agentsR] = await Promise.all([
     apiFetch('/applicants?limit=500'),
     apiFetch('/jobs?limit=200'),
     apiFetch('/expenses?limit=500'),
     apiFetch('/users'),
     apiFetch('/audit?limit=100'),
+    apiFetch('/agents'),
   ]);
   if (apps.ok) {
     var _freshApps = (apps.data.data || apps.data).map(mapApplicant);
@@ -3069,9 +3070,13 @@ async function syncAllFromAPI() {
     }; });
     _markFresh('audit');
   }
+  if (agentsR && agentsR.ok && Array.isArray(agentsR.data)) {
+    DB.agents = agentsR.data.map(mapAgent);
+    _markFresh('agents');
+  }
   // Persist to Store in background (non-blocking)
   Promise.all([
-    autosave('applicants'), autosave('jobs'), autosave('expenses'), autosave('users'),
+    autosave('applicants'), autosave('jobs'), autosave('expenses'), autosave('users'), autosave('agents'),
   ]).catch(function(){});
 }
 
