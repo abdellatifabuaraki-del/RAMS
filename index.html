@@ -3087,9 +3087,14 @@ function startPolling() {
     var idle    = Date.now() - _lastActivity > 120000;
     var fetchFn = _pageFetchMap[currentPage];
     if (fetchFn) fetchFn().catch(function(){});
-    // Check permissions updated by admin
-    if (typeof loadSharedPermissions === 'function') {
-      loadSharedPermissions().then(function(){ applyRBAC(); }).catch(function(){});
+    // Fast timestamp check before loading full permissions
+    if (typeof loadSharedPermissions === 'function' && Store) {
+      Store.get('rams:shared:perms:ts', true).then(function(ts) {
+        var serverTs = ts ? parseInt(typeof ts === 'string' ? ts : (ts.value||'0')) : 0;
+        if (serverTs > (window._localPermTs || 0)) {
+          loadSharedPermissions().then(function(){ applyRBAC(); }).catch(function(){});
+        }
+      }).catch(function(){});
     }
     // Schedule next tick
     clearTimeout(_pollInterval);
@@ -3163,42 +3168,41 @@ const Store = (() => {
   // L1 in-memory cache — avoids repeated JSON parse on hot reads
   const _mem = {};
 
-  async function get(key) {
-    if (_mem[key] !== undefined) return _mem[key];  // L1 hit
+  async function get(key, shared) {
+    if (!shared && _mem[key] !== undefined) return _mem[key];  // L1 hit (local only)
     try {
       var raw;
       if (useCloud) {
-        var r = await window.storage.get(key);
+        var r = await window.storage.get(key, shared === true);
         raw = r ? r.value : null;
       } else {
         raw = localStorage.getItem(key);
       }
       var parsed = raw ? JSON.parse(raw) : null;
-      _mem[key] = parsed;  // populate L1
+      if (!shared) _mem[key] = parsed;  // only cache local reads
       return parsed;
     } catch(e) { return null; }
   }
 
-  async function set(key, value) {
-    _mem[key] = value;  // update L1 immediately (sync)
+  async function set(key, value, shared) {
     var serialized = JSON.stringify(value);
+    if (!shared) _mem[key] = value;  // update L1 for local writes
     try {
-      if (useCloud) { await window.storage.set(key, serialized); }
+      if (useCloud) { await window.storage.set(key, serialized, shared === true); }
       else          { localStorage.setItem(key, serialized); }
       return true;
-    } catch(e) { delete _mem[key]; return false; }
+    } catch(e) { if (!shared) delete _mem[key]; return false; }
   }
 
-  async function remove(key) {
-    delete _mem[key];
+  async function remove(key, shared) {
+    if (!shared) delete _mem[key];
     try {
-      if (useCloud) { await window.storage.delete(key); }
+      if (useCloud) { await window.storage.delete(key, shared === true); }
       else          { localStorage.removeItem(key); }
     } catch(e) {}
   }
 
   async function clear(prefix) {
-    // Clear only keys with given prefix (or all rams: keys)
     var p = prefix || 'rams:';
     Object.keys(_mem).forEach(function(k){ if(k.startsWith(p)) delete _mem[k]; });
     try {
@@ -6371,8 +6375,9 @@ async function savePermissions() {
   // Persist to shared Store so ALL logged-in users get the new permissions
   try {
     var permData = { permissions: PERMISSIONS, rolesConfig: ROLES_CONFIG, ts: Date.now() };
-    await Store.set('rams:shared:permissions', JSON.stringify(permData), true); // shared=true
-    await Store.set('rams:shared:permissions', JSON.stringify(permData));       // also local
+    await Store.set('rams:shared:permissions', permData, true);  // shared — all browsers
+    await Store.set('rams:shared:permissions', permData);         // local cache too
+    await Store.set('rams:shared:perms:ts', String(Date.now()), true); // fast-check timestamp
   } catch(e) { console.warn('Permissions sync failed:', e); }
 
   // Re-apply RBAC for current user immediately
@@ -10244,9 +10249,9 @@ async function loadSharedPermissions() {
     var r = await Store.get('rams:shared:permissions', true);
     if (!r) r = await Store.get('rams:shared:permissions');
     if (!r) return;
-    var raw  = typeof r === 'string' ? r : (r.value || null);
-    if (!raw) return;
-    var data = JSON.parse(raw);
+    // Store.get returns the already-parsed value (Store does JSON.parse internally)
+    var data = r;
+    if (typeof data === 'string') { try { data = JSON.parse(data); } catch(e) { return; } }
     if (!data || !data.permissions || !Array.isArray(data.permissions)) return;
     // Apply permissions matrix
     data.permissions.forEach(function(row, i) {
@@ -10259,7 +10264,8 @@ async function loadSharedPermissions() {
       });
     }
     _permissionsOriginal = PERMISSIONS.map(function(row){ return row.slice(); });
-    console.log('[RBAC] Loaded shared permissions (updated', new Date(data.ts).toLocaleTimeString(), ')');
+    window._localPermTs = data.ts || Date.now();  // remember what we loaded
+    console.log('[RBAC] Loaded shared permissions ts=' + window._localPermTs);
   } catch(e) { console.warn('[RBAC] Failed to load shared permissions:', e); }
 }
 
